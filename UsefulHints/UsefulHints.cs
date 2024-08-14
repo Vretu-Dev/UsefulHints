@@ -13,13 +13,14 @@ namespace UsefulHints
 {
     public class Plugin : Plugin<Config>
     {
-        public override string Name => "Useful_Hints";
+        public override string Name => "Useful Hints";
         public override string Author => "Vretu";
         public override string Prefix { get; } = "UH";
-        public override Version Version => new Version(1, 0, 0);
+        public override Version Version => new Version(1, 0, 1);
         public override Version RequiredExiledVersion { get; } = new Version(8, 9, 8);
 
         private readonly Dictionary<Player, CoroutineHandle> activeCoroutines = new Dictionary<Player, CoroutineHandle>();
+
 
         public override void OnEnabled()
         {
@@ -28,6 +29,8 @@ namespace UsefulHints
             Exiled.Events.Handlers.Map.ExplodingGrenade += OnExplodingGrenade;
             Exiled.Events.Handlers.Server.WaitingForPlayers += OnWaitingForPlayers;
             Exiled.Events.Handlers.Player.PickingUpItem += OnPickingUpItem;
+            Exiled.Events.Handlers.Player.InteractingDoor += OnInteractingDoor;
+            Exiled.Events.Handlers.Player.ChangedItem += OnChangedItem;
             base.OnEnabled();
         }
 
@@ -38,14 +41,17 @@ namespace UsefulHints
             Exiled.Events.Handlers.Map.ExplodingGrenade -= OnExplodingGrenade;
             Exiled.Events.Handlers.Server.WaitingForPlayers -= OnWaitingForPlayers;
             Exiled.Events.Handlers.Player.PickingUpItem += OnPickingUpItem;
+            Exiled.Events.Handlers.Player.InteractingDoor += OnInteractingDoor;
+            Exiled.Events.Handlers.Player.ChangedItem += OnChangedItem;
             base.OnDisabled();
         }
-
+        // SCP 096 Handler
         private void OnScp096AddingTarget(AddingTargetEventArgs ev)
         {
             ev.Target.ShowHint(Config.Scp096LookMessage, 5);
         }
-
+        // SCP 268 Handler
+        private Dictionary<Player, ItemType> activeItems = new Dictionary<Player, ItemType>();
         private void OnItemUsed(UsedItemEventArgs ev)
         {
             if (ev.Item.Type == ItemType.SCP268)
@@ -58,9 +64,30 @@ namespace UsefulHints
 
                 var coroutine = Timing.RunCoroutine(Scp268Timer(ev.Player));
                 activeCoroutines.Add(ev.Player, coroutine);
+                activeItems.Add(ev.Player, ev.Item.Type);
+            }
+        }
+        private void OnInteractingDoor(InteractingDoorEventArgs ev)
+        {
+            if (activeCoroutines.ContainsKey(ev.Player) && activeItems.ContainsKey(ev.Player) && activeItems[ev.Player] == ItemType.SCP268)
+            {
+                Timing.KillCoroutines(activeCoroutines[ev.Player]);
+                activeCoroutines.Remove(ev.Player);
+                activeItems.Remove(ev.Player);
             }
         }
 
+        private void OnChangedItem(ChangedItemEventArgs ev)
+        {
+            if (activeCoroutines.ContainsKey(ev.Player) && activeItems.ContainsKey(ev.Player) && activeItems[ev.Player] == ItemType.SCP268)
+            {
+                Timing.KillCoroutines(activeCoroutines[ev.Player]);
+                activeCoroutines.Remove(ev.Player);
+                activeItems.Remove(ev.Player);
+            }
+        }
+
+        // SCP 2176 Handler
         private void OnExplodingGrenade(ExplodingGrenadeEventArgs ev)
         {
             if (ev.Projectile.Base is Scp2176Projectile)
@@ -79,13 +106,14 @@ namespace UsefulHints
             }
         }
 
+        // Timers for SCP 268 & SCP 2176
         private IEnumerator<float> Scp268Timer(Player player)
         {
             float duration = Config.Scp268Duration;
 
             while (duration > 0)
             {
-                player.ShowHint($"<color=purple>{string.Format(Config.Scp268TimeLeftMessage, (int)duration)}</color>", 1);
+                player.ShowHint($"<color=purple>{string.Format(Config.Scp268TimeLeftMessage, (int)duration)}</color>", 1.15f);
                 yield return Timing.WaitForSeconds(1f);
                 duration -= 1f;
             }
@@ -98,7 +126,7 @@ namespace UsefulHints
 
             while (duration > 0)
             {
-                player.ShowHint($"<color=green>{string.Format(Config.Scp2176TimeLeftMessage, (int)duration)}</color>", 1);
+                player.ShowHint($"<color=green>{string.Format(Config.Scp2176TimeLeftMessage, (int)duration)}</color>", 1.15f);
                 yield return Timing.WaitForSeconds(1f);
                 duration -= 1f;
             }
@@ -109,7 +137,7 @@ namespace UsefulHints
         {
             activeCoroutines.Clear();
         }
-
+        // Jailbird Hint
         private void OnPickingUpItem(PickingUpItemEventArgs ev)
         {
             if (ev.Pickup is JailbirdPickup jailbirdPickup)
