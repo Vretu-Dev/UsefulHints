@@ -23,3 +23,6 @@ UH:
   scp2176_time_left_message: 'Remaining: {0}s'
   jailbird_use_message: 'Jailbird has been used {0} times'
 ```
+### Showcase:
+https://github.com/user-attachments/assets/f2125ab2-4ee3-4c71-a697-88949c00ddc2
+
