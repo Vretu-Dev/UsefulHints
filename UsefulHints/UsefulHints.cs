@@ -40,9 +40,9 @@ namespace UsefulHints
             Exiled.Events.Handlers.Player.UsedItem -= OnItemUsed;
             Exiled.Events.Handlers.Map.ExplodingGrenade -= OnExplodingGrenade;
             Exiled.Events.Handlers.Server.WaitingForPlayers -= OnWaitingForPlayers;
-            Exiled.Events.Handlers.Player.PickingUpItem += OnPickingUpItem;
-            Exiled.Events.Handlers.Player.InteractingDoor += OnInteractingDoor;
-            Exiled.Events.Handlers.Player.ChangedItem += OnChangedItem;
+            Exiled.Events.Handlers.Player.PickingUpItem -= OnPickingUpItem;
+            Exiled.Events.Handlers.Player.InteractingDoor -= OnInteractingDoor;
+            Exiled.Events.Handlers.Player.ChangedItem -= OnChangedItem;
             base.OnDisabled();
         }
         // SCP 096 Handler
