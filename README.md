@@ -25,9 +25,10 @@ UH:
   scp268_time_left_message: 'Remaining: {0}s'
   scp2176_time_left_message: 'Remaining: {0}s'
   jailbird_use_message: 'Jailbird has been used {0} times'
-  human_kill_message: '<b><color=green>Player</color> {0}</b> had the most kills: <b><color=yellow>{1}</color></b>'
-  scp_kill_message: '<b><color=red>SCP</color> {0}</b> had the most kills: <b><color=yellow>{1}</color></b>'
-  escaper_message: '<b><color=green>Player</color> {0}</b> escaped <color=yellow>first</color> from the facility</b>'
+  human_kill_message: '<size=30><b><color=green>Player</color> {0}</b> had the most kills: <color=yellow>{1}</color></size>'
+  scp_kill_message: '<size=30><b><color=red>SCP</color> {0}</b> had the most kills: <color=yellow>{1}</color></size>'
+  escaper_message: '<size=30><b><color=green>Player</color> {0}</b> escaped <color=yellow>first</color> from the facility</size>'
+  first_death_message: '<size=30><b><color=green>Player</color> {0}</b> died <color=yellow>first</color></size>'
   kill_count_message: 'You have {0} kills'
 ```
 ### Showcase:
