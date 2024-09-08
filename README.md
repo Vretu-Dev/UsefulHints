@@ -3,11 +3,13 @@
 ![downloads](https://img.shields.io/github/downloads/Vretu-Dev/UsefulHints/total)
 
 ### Features:
-- Show how much time is left on SCP268
-- Set SCP268 Duration Time
-- Show when you will look at the face SCP096
-- Show the SCP2176 length lockdown
-- Shows how many times the Jailbird charge has been used
+- How much time is left on SCP268
+- Set SCP268 duration Time
+- SCP2176 lockdown time
+- Announcement when you look at the face of SCP096
+- Hint how many times the Jailbird charge has been used
+- Summary of the game
+- Kill counter
 
 Minimum Exiled Version: 8.9.8
 
