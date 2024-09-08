@@ -12,6 +12,7 @@
 - Kill counter
 
 Minimum Exiled Version: 8.9.8
+Credits for @NamelessSCP for using the [RoundMVP](https://github.com/NamelessSCP/RoundMVP) idea.
 
 ### Config:
 
