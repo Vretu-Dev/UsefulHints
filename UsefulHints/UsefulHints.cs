@@ -16,10 +16,12 @@ namespace UsefulHints
         public override string Name => "Useful Hints";
         public override string Author => "Vretu";
         public override string Prefix { get; } = "UH";
-        public override Version Version => new Version(1, 0, 1);
+        public override Version Version => new Version(1, 1, 0);
         public override Version RequiredExiledVersion { get; } = new Version(8, 9, 8);
 
         private readonly Dictionary<Player, CoroutineHandle> activeCoroutines = new Dictionary<Player, CoroutineHandle>();
+
+        private readonly Dictionary<Player, int> playerKills = new Dictionary<Player, int>();
 
 
         public override void OnEnabled()
@@ -31,6 +33,7 @@ namespace UsefulHints
             Exiled.Events.Handlers.Player.PickingUpItem += OnPickingUpItem;
             Exiled.Events.Handlers.Player.InteractingDoor += OnInteractingDoor;
             Exiled.Events.Handlers.Player.ChangedItem += OnChangedItem;
+            Exiled.Events.Handlers.Player.Died += OnPlayerDied;
             base.OnEnabled();
         }
 
@@ -43,6 +46,7 @@ namespace UsefulHints
             Exiled.Events.Handlers.Player.PickingUpItem -= OnPickingUpItem;
             Exiled.Events.Handlers.Player.InteractingDoor -= OnInteractingDoor;
             Exiled.Events.Handlers.Player.ChangedItem -= OnChangedItem;
+            Exiled.Events.Handlers.Player.Died -= OnPlayerDied;
             base.OnDisabled();
         }
         // SCP 096 Handler
@@ -144,6 +148,26 @@ namespace UsefulHints
             {
                 int remainingCharges = jailbirdPickup.TotalCharges;
                 ev.Player.ShowHint(string.Format(Config.JailbirdUseMessage, remainingCharges), 4);
+            }
+        }
+
+        private void OnPlayerDied(DiedEventArgs ev)
+        {
+            if (ev.Attacker != null)
+            {
+                Player killer = ev.Attacker; // Assuming DiedEventArgs has a Killer property
+
+                // Kill count update
+                if (playerKills.ContainsKey(killer))
+                {
+                    playerKills[killer]++;
+                }
+                else
+                {
+                    playerKills[killer] = 1;
+                }
+                // Show the updated kill count
+                killer.ShowHint(string.Format(Config.KillCountMessage, playerKills[killer]), 4);
             }
         }
     }
