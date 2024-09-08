@@ -16,6 +16,8 @@ namespace UsefulHints
 
         private Player firstEscaper = null;
 
+        private Player firstDeath = null;
+
         public override void OnEnabled()
         {
             Exiled.Events.Handlers.Player.Died += OnPlayerDied;
@@ -37,6 +39,10 @@ namespace UsefulHints
         {
             Player attacker = ev.Attacker;
 
+            if (firstDeath == null)
+            {
+                firstDeath = ev.Player;
+            }
             if (attacker != null && attacker != ev.Player)
             {
                 if (attacker.Role.Team == Team.SCPs)
@@ -77,7 +83,8 @@ namespace UsefulHints
                 text += string.Format(Config.ScpKillMessage, scpKiller.Nickname, scpKills[scpKiller]) + "\n";
             if (firstEscaper != null)
                 text += string.Format(Config.EscaperMessage, firstEscaper.Nickname) + "\n";
-
+            if (firstDeath != null)
+                text += string.Format(Config.FirstDeathMessage, firstDeath.Nickname) + "\n";
             if (!string.IsNullOrEmpty(text))
                 Map.Broadcast(10, text, BroadcastFlags.Normal, true);
         }
@@ -87,6 +94,7 @@ namespace UsefulHints
             scpKills.Clear();
             humanKills.Clear();
             firstEscaper = null;
+            firstDeath = null;
         }
         // Helper to find player with most kills
         private Player GetTopKiller(Dictionary<Player, int> kills)
