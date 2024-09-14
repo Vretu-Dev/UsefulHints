@@ -2,7 +2,7 @@
 
 ![downloads](https://img.shields.io/github/downloads/Vretu-Dev/UsefulHints/total)
 
-### Features:
+## Features:
 - How much time is left on SCP268
 - Set SCP268 duration Time
 - SCP2176 lockdown time
@@ -11,10 +11,10 @@
 - Summary of the game
 - Kill counter
 
-Minimum Exiled Version: 8.9.8
-### Credits for @NamelessSCP for using the [RoundMVP](https://github.com/NamelessSCP/RoundMVP) idea.
+### Minimum Exiled Version: 8.9.8
+### Credits for [@NamelessSCP](https://github.com/NamelessSCP) for using the [RoundMVP](https://github.com/NamelessSCP/RoundMVP) idea.
 
-### Config:
+## Config:
 
 ```yaml
 UH:
