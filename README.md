@@ -32,11 +32,10 @@ UH:
   escaper_message: '<size=27><color=#70EE9C>{0}</color> escaped first from the facility: <color=yellow>{1}:{2}</color></size>'
   kill_count_message: '{0} kills'
 ```
-### Showcase:
+## Showcase:
+### Hints:
 https://github.com/user-attachments/assets/f2125ab2-4ee3-4c71-a697-88949c00ddc2
-
-![sum](https://github.com/user-attachments/assets/90901022-3a6b-4d8c-9676-4fd4e3d0cbbb)
-
-
-
-
+### Summary:
+<p align="center">
+    <img src="https://github.com/user-attachments/assets/38238ca6-30f8-432d-a50d-71cacea1212b">
+</p>
