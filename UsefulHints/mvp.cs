@@ -60,20 +60,21 @@ namespace UsefulHints
                 humanDamage[attacker] += (int)Math.Round(ev.Amount);
             }
         }
-        // Handler for "When Player died"
+        // Handler for "When Player dying" (FirstScpKiller)
         private void OnPlayerDying(DyingEventArgs ev)
         {
             Player attacker = ev.Attacker;
             Player victim = ev.Player;
 
-            if (victim.Role.Team == Team.SCPs) // Check if the victim is an SCP
+            if (victim.Role.Team == Team.SCPs)
             {
-                if (firstScpKiller == null) // Only set the first SCP killer if it's not already set
+                if (firstScpKiller == null)
                 {
                     firstScpKiller = attacker;
                 }
             }
         }
+        // Handler for "When Player died" (SCP and Human kill count)
         private void OnPlayerDied(DiedEventArgs ev)
         {
             Player attacker = ev.Attacker;
