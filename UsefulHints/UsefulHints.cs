@@ -8,6 +8,9 @@ using Exiled.Events.EventArgs.Player;
 using Exiled.Events.EventArgs.Scp096;
 using InventorySystem.Items.ThrowableProjectiles;
 using MEC;
+using System.Linq;
+using Exiled.API.Enums;
+using Exiled.API.Extensions;
 
 namespace UsefulHints
 {
@@ -16,7 +19,7 @@ namespace UsefulHints
         public override string Name => "Useful Hints";
         public override string Author => "Vretu";
         public override string Prefix { get; } = "UH";
-        public override Version Version => new Version(1, 1, 3);
+        public override Version Version => new Version(1, 1, 4);
         public override Version RequiredExiledVersion { get; } = new Version(8, 9, 8);
 
         private readonly Dictionary<Player, CoroutineHandle> activeCoroutines = new Dictionary<Player, CoroutineHandle>();
@@ -34,6 +37,7 @@ namespace UsefulHints
             Exiled.Events.Handlers.Player.InteractingDoor += OnInteractingDoor;
             Exiled.Events.Handlers.Player.ChangedItem += OnChangedItem;
             Exiled.Events.Handlers.Player.Died += OnPlayerDied;
+            Exiled.Events.Handlers.Player.PickingUpItem += On207Pickup;
             base.OnEnabled();
         }
 
@@ -47,7 +51,21 @@ namespace UsefulHints
             Exiled.Events.Handlers.Player.InteractingDoor -= OnInteractingDoor;
             Exiled.Events.Handlers.Player.ChangedItem -= OnChangedItem;
             Exiled.Events.Handlers.Player.Died -= OnPlayerDied;
+            Exiled.Events.Handlers.Player.PickingUpItem -= On207Pickup;
             base.OnDisabled();
+        }
+        // SCP 207 Handler
+        private void On207Pickup(PickingUpItemEventArgs ev)
+        {
+            if (ev.Pickup.Type == ItemType.SCP207)
+            {
+                CustomPlayerEffects.StatusEffectBase scp207Effect = ev.Player.ActiveEffects.FirstOrDefault(effect => effect.GetEffectType() == EffectType.Scp207);
+
+                if (scp207Effect != null)
+                {
+                    ev.Player.ShowHint($"<color=#A60C0E>{string.Format(Config.Scp207HintMessage, scp207Effect.Intensity)}</color>", 4);
+                }
+            }
         }
         // SCP 096 Handler
         private void OnScp096AddingTarget(AddingTargetEventArgs ev)

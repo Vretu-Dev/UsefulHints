@@ -12,6 +12,7 @@ namespace UsefulHints
         public string Scp268TimeLeftMessage { get; set; } = "Remaining: {0}s";
         public string Scp2176TimeLeftMessage { get; set; } = "Remaining: {0}s";
         public string JailbirdUseMessage { get; set; } = "Jailbird has been used {0} times";
+        public string Scp207HintMessage { get; set; } = "You are on {0} SCP-207";
         public string KillCountMessage { get; set; } = "{0} kills";
         [Description("Should a summary of the round be displayed.")]
         public bool EnableSummary { get; set; } = true;
