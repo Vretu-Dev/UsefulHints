@@ -19,7 +19,7 @@ namespace UsefulHints
         public override string Name => "Useful Hints";
         public override string Author => "Vretu";
         public override string Prefix { get; } = "UH";
-        public override Version Version => new Version(1, 1, 4);
+        public override Version Version => new Version(1, 1, 5);
         public override Version RequiredExiledVersion { get; } = new Version(8, 9, 8);
 
         private readonly Dictionary<Player, CoroutineHandle> activeCoroutines = new Dictionary<Player, CoroutineHandle>();
