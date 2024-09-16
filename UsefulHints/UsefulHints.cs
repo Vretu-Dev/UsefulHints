@@ -23,9 +23,7 @@ namespace UsefulHints
         public override Version RequiredExiledVersion { get; } = new Version(8, 9, 8);
 
         private readonly Dictionary<Player, CoroutineHandle> activeCoroutines = new Dictionary<Player, CoroutineHandle>();
-
         private readonly Dictionary<Player, int> playerKills = new Dictionary<Player, int>();
-
 
         public override void OnEnabled()
         {
@@ -33,29 +31,28 @@ namespace UsefulHints
             Exiled.Events.Handlers.Player.UsedItem += OnItemUsed;
             Exiled.Events.Handlers.Map.ExplodingGrenade += OnExplodingGrenade;
             Exiled.Events.Handlers.Server.WaitingForPlayers += OnWaitingForPlayers;
-            Exiled.Events.Handlers.Player.PickingUpItem += OnPickingUpItem;
+            Exiled.Events.Handlers.Player.PickingUpItem += OnPickingUpJailbird;
+            Exiled.Events.Handlers.Player.PickingUpItem += OnPickingUpSCP207;
             Exiled.Events.Handlers.Player.InteractingDoor += OnInteractingDoor;
             Exiled.Events.Handlers.Player.ChangedItem += OnChangedItem;
             Exiled.Events.Handlers.Player.Died += OnPlayerDied;
-            Exiled.Events.Handlers.Player.PickingUpItem += On207Pickup;
             base.OnEnabled();
         }
-
         public override void OnDisabled()
         {
             Exiled.Events.Handlers.Scp096.AddingTarget -= OnScp096AddingTarget;
             Exiled.Events.Handlers.Player.UsedItem -= OnItemUsed;
             Exiled.Events.Handlers.Map.ExplodingGrenade -= OnExplodingGrenade;
             Exiled.Events.Handlers.Server.WaitingForPlayers -= OnWaitingForPlayers;
-            Exiled.Events.Handlers.Player.PickingUpItem -= OnPickingUpItem;
+            Exiled.Events.Handlers.Player.PickingUpItem -= OnPickingUpJailbird;
+            Exiled.Events.Handlers.Player.PickingUpItem -= OnPickingUpSCP207;
             Exiled.Events.Handlers.Player.InteractingDoor -= OnInteractingDoor;
             Exiled.Events.Handlers.Player.ChangedItem -= OnChangedItem;
             Exiled.Events.Handlers.Player.Died -= OnPlayerDied;
-            Exiled.Events.Handlers.Player.PickingUpItem -= On207Pickup;
             base.OnDisabled();
         }
         // SCP 207 Handler
-        private void On207Pickup(PickingUpItemEventArgs ev)
+        private void OnPickingUpSCP207(PickingUpItemEventArgs ev)
         {
             if (ev.Pickup.Type == ItemType.SCP207)
             {
@@ -98,7 +95,6 @@ namespace UsefulHints
                 activeItems.Remove(ev.Player);
             }
         }
-
         private void OnChangedItem(ChangedItemEventArgs ev)
         {
             if (activeCoroutines.ContainsKey(ev.Player) && activeItems.ContainsKey(ev.Player) && activeItems[ev.Player] == ItemType.SCP268)
@@ -108,7 +104,6 @@ namespace UsefulHints
                 activeItems.Remove(ev.Player);
             }
         }
-
         // SCP 2176 Handler
         private void OnExplodingGrenade(ExplodingGrenadeEventArgs ev)
         {
@@ -127,7 +122,6 @@ namespace UsefulHints
                 }
             }
         }
-
         // Timers for SCP 268 & SCP 2176
         private IEnumerator<float> Scp268Timer(Player player)
         {
@@ -141,10 +135,9 @@ namespace UsefulHints
             }
             activeCoroutines.Remove(player);
         }
-
         private IEnumerator<float> Scp2176Timer(Player player)
         {
-            float duration = 13f;  // 13 sekund
+            float duration = 13f;
 
             while (duration > 0)
             {
@@ -159,8 +152,8 @@ namespace UsefulHints
         {
             activeCoroutines.Clear();
         }
-        // Jailbird Hint
-        private void OnPickingUpItem(PickingUpItemEventArgs ev)
+        // Jailbird Handler
+        private void OnPickingUpJailbird(PickingUpItemEventArgs ev)
         {
             if (ev.Pickup is JailbirdPickup jailbirdPickup)
             {
@@ -168,14 +161,13 @@ namespace UsefulHints
                 ev.Player.ShowHint(string.Format(Config.JailbirdUseMessage, remainingCharges), 4);
             }
         }
-
+        // Kill Counter Handler
         private void OnPlayerDied(DiedEventArgs ev)
         {
             if (ev.Attacker != null)
             {
-                Player killer = ev.Attacker; // Assuming DiedEventArgs has a Killer property
+                Player killer = ev.Attacker;
 
-                // Kill count update
                 if (playerKills.ContainsKey(killer))
                 {
                     playerKills[killer]++;
@@ -184,7 +176,6 @@ namespace UsefulHints
                 {
                     playerKills[killer] = 1;
                 }
-                // Show the updated kill count
                 killer.ShowHint(string.Format(Config.KillCountMessage, playerKills[killer]), 4);
             }
         }
