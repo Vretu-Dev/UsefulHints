@@ -25,6 +25,7 @@ UH:
   scp268_time_left_message: 'Remaining: {0}s'
   scp2176_time_left_message: 'Remaining: {0}s'
   jailbird_use_message: 'Jailbird has been used {0} times'
+  scp207_hint_message: 'You are on {0} SCP-207'
   kill_count_message: '{0} kills'
   # Should a summary of the round be displayed.
   enable_summary: true
