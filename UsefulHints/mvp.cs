@@ -9,7 +9,7 @@ using Player = Exiled.API.Features.Player;
 
 namespace UsefulHints
 {
-    public class MVP : Plugin
+    public class MVP : UsefulHints
     {
         private Dictionary<Player, int> scpKills = new Dictionary<Player, int>();
         private Dictionary<Player, int> humanKills = new Dictionary<Player, int>();

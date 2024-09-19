@@ -11,16 +11,20 @@ using MEC;
 using System.Linq;
 using Exiled.API.Enums;
 using Exiled.API.Extensions;
+using HarmonyLib;
 
 namespace UsefulHints
 {
-    public class Plugin : Plugin<Config>
+    public class UsefulHints : Plugin<Config>
     {
         public override string Name => "Useful Hints";
         public override string Author => "Vretu";
         public override string Prefix { get; } = "UH";
-        public override Version Version => new Version(1, 1, 5);
+        public override Version Version => new Version(1, 2, 0);
         public override Version RequiredExiledVersion { get; } = new Version(8, 9, 8);
+
+        public static UsefulHints Instance;
+        public Harmony harmony;
 
         private readonly Dictionary<Player, CoroutineHandle> activeCoroutines = new Dictionary<Player, CoroutineHandle>();
         private readonly Dictionary<Player, int> playerKills = new Dictionary<Player, int>();
@@ -36,6 +40,13 @@ namespace UsefulHints
             Exiled.Events.Handlers.Player.InteractingDoor += OnInteractingDoor;
             Exiled.Events.Handlers.Player.ChangedItem += OnChangedItem;
             Exiled.Events.Handlers.Player.Died += OnPlayerDied;
+
+            if(Config.EnableCustomJailbirdSettings)
+            {
+            Instance = this;
+            harmony = new Harmony("Patchouli");
+            harmony.PatchAll();
+            }
             base.OnEnabled();
         }
         public override void OnDisabled()
