@@ -22,9 +22,9 @@ namespace UsefulHints
         public override string Prefix { get; } = "UH";
         public override Version Version => new Version(1, 2, 0);
         public override Version RequiredExiledVersion { get; } = new Version(8, 9, 8);
-
-        public static UsefulHints Instance;
-        public Harmony harmony;
+        public static UsefulHints Instance { get; private set; }
+        public Harmony Harmony { get; private set; }
+        public string HarmonyName { get; private set; }
 
         private readonly Dictionary<Player, CoroutineHandle> activeCoroutines = new Dictionary<Player, CoroutineHandle>();
         private readonly Dictionary<Player, int> playerKills = new Dictionary<Player, int>();
@@ -40,12 +40,12 @@ namespace UsefulHints
             Exiled.Events.Handlers.Player.InteractingDoor += OnInteractingDoor;
             Exiled.Events.Handlers.Player.ChangedItem += OnChangedItem;
             Exiled.Events.Handlers.Player.Died += OnPlayerDied;
-
-            if(Config.EnableCustomJailbirdSettings)
+            if (Config.EnableCustomJailbirdSettings)
             {
-            Instance = this;
-            harmony = new Harmony("Patchouli");
-            harmony.PatchAll();
+                Instance = this;
+                HarmonyName = $"com-vretu.uh-{DateTime.UtcNow.Ticks}";
+                Harmony = new Harmony(HarmonyName);
+                Harmony.PatchAll();
             }
             base.OnEnabled();
         }
@@ -60,6 +60,10 @@ namespace UsefulHints
             Exiled.Events.Handlers.Player.InteractingDoor -= OnInteractingDoor;
             Exiled.Events.Handlers.Player.ChangedItem -= OnChangedItem;
             Exiled.Events.Handlers.Player.Died -= OnPlayerDied;
+            if (Config.EnableCustomJailbirdSettings)
+            {
+                Harmony.UnpatchAll(HarmonyName);
+            }
             base.OnDisabled();
         }
         // SCP 207 Handler
