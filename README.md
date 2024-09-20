@@ -17,7 +17,7 @@
 ### Minimum Exiled Version: 8.9.8
 ### Credits:
 - Thanks [@NamelessSCP](https://github.com/NamelessSCP) for using the [RoundMVP](https://github.com/NamelessSCP/RoundMVP) idea.<br>
-- Thanks [@NamelessSCP](https://github.com/NamelessSCP) for using the [RoundMVP](https://github.com/NamelessSCP/RoundMVP) idea.<br>
+- Thanks [@cherniichernish](https://steamcommunity.com/id/Denis_Ik/) for using Jailbird Patch.<br>
 - Thanks [@XoMiya-WPC](https://github.com/XoMiya-WPC) for using the [WhoAreMyTeammates](https://github.com/XoMiya-WPC/WhoAreMyTeammates) idea.<br>
 ## Config:
 
