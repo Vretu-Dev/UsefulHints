@@ -1,5 +1,6 @@
 ﻿using Exiled.API.Enums;
 using Exiled.API.Interfaces;
+using PlayerRoles;
 using System.ComponentModel;
 
 namespace UsefulHints
@@ -22,6 +23,13 @@ namespace UsefulHints
         public string TopDamageMessage { get; set; } = "<size=27><color=#70EE9C>{0}</color> did the most damage: <color=yellow>{1}</color></size>";
         public string FirstScpKillerMessage { get; set; } = "<size=27><color=#70EE9C>{0}</color> was the first to kill <color=red>SCP</color></size>";
         public string EscaperMessage { get; set; } = "<size=27><color=#70EE9C>{0}</color> escaped first from the facility: <color=yellow>{1}:{2}</color></size>";
+        [Description("Should a teammates list be displayed.")]
+        public bool TeammateHintEnable { get; set; } = true;
+        public float TeammateHintDelay { get; set; } = 4f;
+        public string TeammateHintMessage { get; set; } = "<align=left><size=28><color=yellow>Your Teammates</color></size> \n<size=25><color=#4BA3C3>{0}</color></size></align>";
+        public float TeammateMessageDuration { get; set; } = 8f;
+        public string AloneHintMessage { get; set; } = "<align=left><color=red>You are playing Solo</color></align>";
+        public float AloneMessageDuration { get; set; } = 4f;
         [Description("Jailbird Custom Settings:")]
         public bool EnableCustomJailbirdSettings { get; set; } = false;
         public EffectType JailbirdEffect { get; set; } = (EffectType)13;

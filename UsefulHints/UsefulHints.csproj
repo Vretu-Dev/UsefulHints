@@ -116,13 +116,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="config.cs" />
-    <Compile Include="Patch.cs" />
-    <Compile Include="mvp.cs" />
+    <Compile Include="Modules\teammates.cs" />
+    <Compile Include="Patches\Patch.cs" />
+    <Compile Include="Modules\mvp.cs" />
     <Compile Include="UsefulHints.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
