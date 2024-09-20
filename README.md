@@ -15,7 +15,8 @@
 ### Minimum Exiled Version: 8.9.8
 ### Credits:
 - Thanks [@NamelessSCP](https://github.com/NamelessSCP) for using the [RoundMVP](https://github.com/NamelessSCP/RoundMVP) idea.<br>
-- Thanks [@cherniichernish](https://steamcommunity.com/id/Denis_Ik/) for using Jailbird Patch.
+- Thanks [@NamelessSCP](https://github.com/NamelessSCP) for using the [RoundMVP](https://github.com/NamelessSCP/RoundMVP) idea.<br>
+- Thanks [@XoMiya-WPC](https://github.com/XoMiya-WPC) for using the [WhoAreMyTeammates](https://github.com/XoMiya-WPC/WhoAreMyTeammates) idea.<br>
 ## Config:
 
 ```yaml
@@ -36,6 +37,15 @@ UH:
   top_damage_message: '<size=27><color=#70EE9C>{0}</color> did the most damage: <color=yellow>{1}</color></size>'
   first_scp_killer_message: '<size=27><color=#70EE9C>{0}</color> was the first to kill <color=red>SCP</color></size>'
   escaper_message: '<size=27><color=#70EE9C>{0}</color> escaped first from the facility: <color=yellow>{1}:{2}</color></size>'
+  # Should a teammates list be displayed.
+  teammate_hint_enable: true
+  teammate_hint_delay: 4
+  teammate_hint_message: |-
+    <align=left><size=28><color=yellow>Your Teammates</color></size> 
+    <size=25><color=#4BA3C3>{0}</color></size></align>
+  teammate_message_duration: 8
+  alone_hint_message: '<align=left><color=red>You are playing Solo</color></align>'
+  alone_message_duration: 4
   # Jailbird Custom Settings:
   enable_custom_jailbird_settings: false
   jailbird_effect: Flashed
@@ -48,4 +58,9 @@ https://github.com/user-attachments/assets/f2125ab2-4ee3-4c71-a697-88949c00ddc2
 ### Summary:
 <p align="center">
     <img src="https://github.com/user-attachments/assets/38238ca6-30f8-432d-a50d-71cacea1212b">
+</p>
+
+### Teammates:
+<p align="center">
+<img src="https://github.com/user-attachments/assets/9cd2ecce-237d-4801-bbe5-c253e8e22121">
 </p>
