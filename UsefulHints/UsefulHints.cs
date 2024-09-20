@@ -20,7 +20,7 @@ namespace UsefulHints
         public override string Name => "Useful Hints";
         public override string Author => "Vretu";
         public override string Prefix { get; } = "UH";
-        public override Version Version => new Version(1, 2, 0);
+        public override Version Version => new Version(1, 2, 1);
         public override Version RequiredExiledVersion { get; } = new Version(8, 9, 8);
         public static UsefulHints Instance { get; private set; }
         public Harmony Harmony { get; private set; }
@@ -40,6 +40,7 @@ namespace UsefulHints
             Exiled.Events.Handlers.Player.InteractingDoor += OnInteractingDoor;
             Exiled.Events.Handlers.Player.ChangedItem += OnChangedItem;
             Exiled.Events.Handlers.Player.Died += OnPlayerDied;
+            Exiled.Events.Handlers.Server.RoundStarted += OnRoundStartedTeammates;
             if (Config.EnableCustomJailbirdSettings)
             {
                 Instance = this;
@@ -60,6 +61,7 @@ namespace UsefulHints
             Exiled.Events.Handlers.Player.InteractingDoor -= OnInteractingDoor;
             Exiled.Events.Handlers.Player.ChangedItem -= OnChangedItem;
             Exiled.Events.Handlers.Player.Died -= OnPlayerDied;
+            Exiled.Events.Handlers.Server.RoundStarted -= OnRoundStartedTeammates;
             if (Config.EnableCustomJailbirdSettings)
             {
                 Harmony.UnpatchAll(HarmonyName);
@@ -192,6 +194,38 @@ namespace UsefulHints
                     playerKills[killer] = 1;
                 }
                 killer.ShowHint(string.Format(Config.KillCountMessage, playerKills[killer]), 4);
+            }
+        }
+        // Teammates Handler
+        private IEnumerator<float> DelayedDisplayTeammates()
+        {
+            yield return Timing.WaitForSeconds(Config.TeammateHintDelay);
+            DisplayTeammates();
+        }
+        private void OnRoundStartedTeammates()
+        {
+            Timing.RunCoroutine(DelayedDisplayTeammates());
+        }
+        private void DisplayTeammates()
+        {
+            if (Config.TeammateHintEnable)
+            {
+                foreach (var player in Player.List)
+                {
+                    List<string> teammates = Player.List
+                        .Where(p => p.Role.Team == player.Role.Team && p != player)
+                        .Select(p => p.Nickname)
+                        .ToList();
+
+                    if (teammates.Count > 0)
+                    {
+                        player.ShowHint(string.Format(Config.TeammateHintMessage, string.Join("\n", teammates)), Config.TeammateMessageDuration);
+                    }
+                    else
+                    {
+                        player.ShowHint(string.Format(Config.AloneHintMessage), Config.AloneMessageDuration);
+                    }
+                }
             }
         }
     }

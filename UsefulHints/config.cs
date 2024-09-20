@@ -1,6 +1,5 @@
 ﻿using Exiled.API.Enums;
 using Exiled.API.Interfaces;
-using PlayerRoles;
 using System.ComponentModel;
 
 namespace UsefulHints
