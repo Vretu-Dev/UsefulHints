@@ -11,6 +11,8 @@
 - Hint how many SCP 207 you are at when you pick it up
 - Summary of the game
 - Kill counter
+- Hint show your teammates at the start of the game
+- Jailbird Custom Setting
 
 ### Minimum Exiled Version: 8.9.8
 ### Credits:
