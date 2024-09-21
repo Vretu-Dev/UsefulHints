@@ -20,7 +20,7 @@ namespace UsefulHints
         public override string Name => "Useful Hints";
         public override string Author => "Vretu";
         public override string Prefix { get; } = "UH";
-        public override Version Version => new Version(1, 2, 2);
+        public override Version Version => new Version(1, 2, 3);
         public override Version RequiredExiledVersion { get; } = new Version(8, 9, 8);
         public static UsefulHints Instance { get; private set; }
         public Harmony Harmony { get; private set; }

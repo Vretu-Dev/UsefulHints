@@ -126,7 +126,7 @@ namespace UsefulHints
                 if (firstScpKiller != null)
                     text += string.Format(UsefulHints.Instance.Config.FirstScpKillerMessage, firstScpKiller.Nickname) + "\n";
                 if (!string.IsNullOrEmpty(text))
-                    Map.Broadcast(10, text, BroadcastFlags.Normal, true);
+                    Map.Broadcast(UsefulHints.Instance.Config.SummaryMessageDuration, text, BroadcastFlags.Normal, true);
             }
         }
         // Reset Handlers

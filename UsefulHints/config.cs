@@ -18,6 +18,7 @@ namespace UsefulHints
         public string KillCountMessage { get; set; } = "{0} kills";
         [Description("Should a summary of the round be displayed.")]
         public bool EnableSummary { get; set; } = true;
+        public ushort SummaryMessageDuration { get; set; } = 10;
         public string HumanKillMessage { get; set; } = "<size=27><color=#70EE9C>{0}</color> had the most kills as <color=green>Human</color>: <color=yellow>{1}</color></size>";
         public string ScpKillMessage { get; set; } = "<size=27><color=#70EE9C>{0}</color> had the most kills as <color=red>SCP</color>: <color=yellow>{1}</color></size>";
         public string TopDamageMessage { get; set; } = "<size=27><color=#70EE9C>{0}</color> did the most damage: <color=yellow>{1}</color></size>";
