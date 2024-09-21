@@ -1,6 +1,7 @@
 # UsefulHints for EXILED
 
-![downloads](https://img.shields.io/github/downloads/Vretu-Dev/UsefulHints/total)
+[![downloads](https://img.shields.io/github/downloads/Vretu-Dev/UsefulHints/total)](https://github.com/Vretu-Dev/UsefulHints/releases/latest)<br><br>
+**If you like this plugin you can support me!** <p text-align="center"> [![PayPal](https://img.shields.io/badge/PayPal-00457C?style=for-the-badge&logo=paypal&logoColor=white)](https://www.paypal.com/paypalme/vretu)</p>
 
 ## Features:
 - SCP-268 time remaining after use
@@ -34,6 +35,7 @@ UH:
   kill_count_message: '{0} kills'
   # Should a summary of the round be displayed.
   enable_summary: true
+  summary_message_duration: 10
   human_kill_message: '<size=27><color=#70EE9C>{0}</color> had the most kills as <color=green>Human</color>: <color=yellow>{1}</color></size>'
   scp_kill_message: '<size=27><color=#70EE9C>{0}</color> had the most kills as <color=red>SCP</color>: <color=yellow>{1}</color></size>'
   top_damage_message: '<size=27><color=#70EE9C>{0}</color> did the most damage: <color=yellow>{1}</color></size>'
