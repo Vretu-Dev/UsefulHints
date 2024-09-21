@@ -12,6 +12,7 @@ using System.Linq;
 using Exiled.API.Enums;
 using Exiled.API.Extensions;
 using HarmonyLib;
+using PluginAPI.Events;
 
 namespace UsefulHints
 {
@@ -20,7 +21,7 @@ namespace UsefulHints
         public override string Name => "Useful Hints";
         public override string Author => "Vretu";
         public override string Prefix { get; } = "UH";
-        public override Version Version => new Version(1, 2, 1);
+        public override Version Version => new Version(1, 2, 2);
         public override Version RequiredExiledVersion { get; } = new Version(8, 9, 8);
         public static UsefulHints Instance { get; private set; }
         public Harmony Harmony { get; private set; }
@@ -41,9 +42,10 @@ namespace UsefulHints
             Exiled.Events.Handlers.Player.ChangedItem += OnChangedItem;
             Exiled.Events.Handlers.Player.Died += OnPlayerDied;
             Exiled.Events.Handlers.Server.RoundStarted += OnRoundStartedTeammates;
+            Instance = this;
+            MVP.RegisterEvents();
             if (Config.EnableCustomJailbirdSettings)
             {
-                Instance = this;
                 HarmonyName = $"com-vretu.uh-{DateTime.UtcNow.Ticks}";
                 Harmony = new Harmony(HarmonyName);
                 Harmony.PatchAll();
@@ -62,6 +64,8 @@ namespace UsefulHints
             Exiled.Events.Handlers.Player.ChangedItem -= OnChangedItem;
             Exiled.Events.Handlers.Player.Died -= OnPlayerDied;
             Exiled.Events.Handlers.Server.RoundStarted -= OnRoundStartedTeammates;
+            Instance = null;
+            MVP.UnregisterEvents();
             if (Config.EnableCustomJailbirdSettings)
             {
                 Harmony.UnpatchAll(HarmonyName);

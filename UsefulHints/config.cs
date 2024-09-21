@@ -1,4 +1,5 @@
-﻿using Exiled.API.Enums;
+﻿using CustomPlayerEffects;
+using Exiled.API.Enums;
 using Exiled.API.Interfaces;
 using System.ComponentModel;
 
@@ -31,7 +32,7 @@ namespace UsefulHints
         public float AloneMessageDuration { get; set; } = 4f;
         [Description("Jailbird Custom Settings:")]
         public bool EnableCustomJailbirdSettings { get; set; } = false;
-        public EffectType JailbirdEffect { get; set; } = (EffectType)13;
+        public EffectType JailbirdEffect { get; set; } = EffectType.Flashed;
         public float JailbirdEffectDuration { get; set; } = 4f;
         public byte JailbirdEffectIntensity { get; set; } = 1;
     }

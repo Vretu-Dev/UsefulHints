@@ -9,18 +9,18 @@ using Player = Exiled.API.Features.Player;
 
 namespace UsefulHints
 {
-    public class MVP : UsefulHints
+    public static class MVP
     {
-        private Dictionary<Player, int> scpKills = new Dictionary<Player, int>();
-        private Dictionary<Player, int> humanKills = new Dictionary<Player, int>();
-        private Dictionary<Player, float> humanDamage = new Dictionary<Player, float>();
+        private static Dictionary<Player, int> scpKills = new Dictionary<Player, int>();
+        private static Dictionary<Player, int> humanKills = new Dictionary<Player, int>();
+        private static Dictionary<Player, float> humanDamage = new Dictionary<Player, float>();
 
-        private Player firstEscaper = null;
-        private Player firstScpKiller = null;
-        private DateTime roundStartTime;
-        private TimeSpan escapeTime;
+        private static Player firstEscaper = null;
+        private static Player firstScpKiller = null;
+        private static DateTime roundStartTime;
+        private static TimeSpan escapeTime;
 
-        public override void OnEnabled()
+        public static void RegisterEvents()
         {
             Exiled.Events.Handlers.Player.Died += OnPlayerDied;
             Exiled.Events.Handlers.Player.Dying += OnPlayerDying;
@@ -29,9 +29,8 @@ namespace UsefulHints
             Exiled.Events.Handlers.Server.RoundEnded += OnRoundEnded;
             Exiled.Events.Handlers.Server.RestartingRound += OnRestartingRound;
             Exiled.Events.Handlers.Server.RoundStarted += OnRoundStarted;
-            base.OnEnabled();
         }
-        public override void OnDisabled()
+        public static void UnregisterEvents()
         {
             Exiled.Events.Handlers.Player.Died -= OnPlayerDied;
             Exiled.Events.Handlers.Player.Dying -= OnPlayerDying;
@@ -40,14 +39,13 @@ namespace UsefulHints
             Exiled.Events.Handlers.Server.RoundEnded -= OnRoundEnded;
             Exiled.Events.Handlers.Server.RestartingRound -= OnRestartingRound;
             Exiled.Events.Handlers.Server.RoundStarted -= OnRoundStarted;
-            base.OnDisabled();
         }
-        private void OnRoundStarted()
+        private static void OnRoundStarted()
         {
             roundStartTime = DateTime.Now;
         }
         // Handler for player hurting another player
-        private void OnPlayerHurting(HurtingEventArgs ev)
+        private static void OnPlayerHurting(HurtingEventArgs ev)
         {
             Player attacker = ev.Attacker;
             Player victim = ev.Player;
@@ -61,7 +59,7 @@ namespace UsefulHints
             }
         }
         // Handler for "When Player dying" (FirstScpKiller)
-        private void OnPlayerDying(DyingEventArgs ev)
+        private static void OnPlayerDying(DyingEventArgs ev)
         {
             Player attacker = ev.Attacker;
             Player victim = ev.Player;
@@ -75,7 +73,7 @@ namespace UsefulHints
             }
         }
         // Handler for "When Player died" (SCP and Human kill count)
-        private void OnPlayerDied(DiedEventArgs ev)
+        private static void OnPlayerDied(DiedEventArgs ev)
         {
             Player attacker = ev.Attacker;
 
@@ -98,7 +96,7 @@ namespace UsefulHints
             }
         }
         // Handler for Escaped Player
-        private void OnPlayerEscaping(EscapingEventArgs ev)
+        private static void OnPlayerEscaping(EscapingEventArgs ev)
         {
             if (firstEscaper == null)
             {
@@ -107,9 +105,9 @@ namespace UsefulHints
             }
         }
         // Handler for End Round messages
-        private void OnRoundEnded(RoundEndedEventArgs ev)
+        private static void OnRoundEnded(RoundEndedEventArgs ev)
         {
-            if (Config.EnableSummary)
+            if (UsefulHints.Instance.Config.EnableSummary)
             {
                 string text = "";
 
@@ -118,21 +116,21 @@ namespace UsefulHints
                 Player topDamageDealer = GetTopDamageDealer(humanDamage);
 
                 if (humanKiller != null)
-                    text += string.Format(Config.HumanKillMessage, humanKiller.Nickname, humanKills[humanKiller]) + "\n";
+                    text += string.Format(UsefulHints.Instance.Config.HumanKillMessage, humanKiller.Nickname, humanKills[humanKiller]) + "\n";
                 if (scpKiller != null)
-                    text += string.Format(Config.ScpKillMessage, scpKiller.Nickname, scpKills[scpKiller]) + "\n";
+                    text += string.Format(UsefulHints.Instance.Config.ScpKillMessage, scpKiller.Nickname, scpKills[scpKiller]) + "\n";
                 if (topDamageDealer != null)
-                    text += string.Format(Config.TopDamageMessage, topDamageDealer.Nickname, humanDamage[topDamageDealer]) + "\n";
+                    text += string.Format(UsefulHints.Instance.Config.TopDamageMessage, topDamageDealer.Nickname, humanDamage[topDamageDealer]) + "\n";
                 if (firstEscaper != null)
-                    text += string.Format(Config.EscaperMessage, firstEscaper.Nickname, escapeTime.Minutes, escapeTime.Seconds) + "\n";
+                    text += string.Format(UsefulHints.Instance.Config.EscaperMessage, firstEscaper.Nickname, escapeTime.Minutes, escapeTime.Seconds) + "\n";
                 if (firstScpKiller != null)
-                    text += string.Format(Config.FirstScpKillerMessage, firstScpKiller.Nickname) + "\n";
+                    text += string.Format(UsefulHints.Instance.Config.FirstScpKillerMessage, firstScpKiller.Nickname) + "\n";
                 if (!string.IsNullOrEmpty(text))
                     Map.Broadcast(10, text, BroadcastFlags.Normal, true);
             }
         }
         // Reset Handlers
-        private void OnRestartingRound()
+        private static void OnRestartingRound()
         {
             scpKills.Clear();
             humanKills.Clear();
@@ -141,7 +139,7 @@ namespace UsefulHints
             firstScpKiller = null;
         }
         // Helper to find player with most kills
-        private Player GetTopKiller(Dictionary<Player, int> kills)
+        private static Player GetTopKiller(Dictionary<Player, int> kills)
         {
             Player topKiller = null;
             int maxKills = 0;
@@ -157,7 +155,7 @@ namespace UsefulHints
             return topKiller;
         }
         // Helper to find player with most damage
-        private Player GetTopDamageDealer(Dictionary<Player, float> damage)
+        private static Player GetTopDamageDealer(Dictionary<Player, float> damage)
         {
             Player topDealer = null;
             float maxDamage = 0;
