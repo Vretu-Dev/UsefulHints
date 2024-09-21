@@ -12,7 +12,6 @@ using System.Linq;
 using Exiled.API.Enums;
 using Exiled.API.Extensions;
 using HarmonyLib;
-using PluginAPI.Events;
 
 namespace UsefulHints
 {

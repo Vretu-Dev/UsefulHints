@@ -27,7 +27,7 @@ namespace UsefulHints
             newInstructions.InsertRange(index, new CodeInstruction[2]
             {
             new CodeInstruction(OpCodes.Ldloc_S, 12),
-            new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(Patch), nameof(EnableEffect), new[] { typeof(HitboxIdentity) }))
+           new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(Patch), nameof(EnableEffect), new[] { typeof(HitboxIdentity) }))
             });
             for (int z = 0; z < newInstructions.Count; z++)
             {
