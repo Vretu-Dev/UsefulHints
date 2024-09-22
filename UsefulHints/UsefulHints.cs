@@ -20,7 +20,7 @@ namespace UsefulHints
         public override string Name => "Useful Hints";
         public override string Author => "Vretu";
         public override string Prefix { get; } = "UH";
-        public override Version Version => new Version(1, 2, 3);
+        public override Version Version => new Version(1, 2, 4);
         public override Version RequiredExiledVersion { get; } = new Version(8, 9, 8);
         public static UsefulHints Instance { get; private set; }
         public Harmony Harmony { get; private set; }
@@ -149,7 +149,7 @@ namespace UsefulHints
 
             while (duration > 0)
             {
-                player.ShowHint($"<color=purple>{string.Format(Config.Scp268TimeLeftMessage, (int)duration)}</color>", 1.15f);
+                player.ShowHint($"<color=purple>\n\n\n\n\n\n\n\n\n\n{string.Format(Config.Scp268TimeLeftMessage, (int)duration)}</color>", 1.15f);
                 yield return Timing.WaitForSeconds(1f);
                 duration -= 1f;
             }
@@ -161,7 +161,7 @@ namespace UsefulHints
 
             while (duration > 0)
             {
-                player.ShowHint($"<color=green>{string.Format(Config.Scp2176TimeLeftMessage, (int)duration)}</color>", 1.15f);
+                player.ShowHint($"<color=#1CAA21>\n\n\n\n\n\n\n\n\n\n{string.Format(Config.Scp2176TimeLeftMessage, (int)duration)}</color>", 1.15f);
                 yield return Timing.WaitForSeconds(1f);
                 duration -= 1f;
             }
@@ -178,7 +178,7 @@ namespace UsefulHints
             if (ev.Pickup is JailbirdPickup jailbirdPickup)
             {
                 int remainingCharges = jailbirdPickup.TotalCharges;
-                ev.Player.ShowHint(string.Format(Config.JailbirdUseMessage, remainingCharges), 4);
+                ev.Player.ShowHint($"<color=#00B7EB>{string.Format(Config.JailbirdUseMessage, remainingCharges)}</color>", 4);
             }
         }
         // Kill Counter Handler
