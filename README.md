@@ -45,8 +45,8 @@ UH:
   teammate_hint_enable: true
   teammate_hint_delay: 4
   teammate_hint_message: |-
-    <align=left><size=28><color=yellow>Your Teammates</color></size> 
-    <size=25><color=#4BA3C3>{0}</color></size></align>
+    <align=left><size=28><color=#70EE9C>Your Teammates</color></size> 
+    <size=25><color=yellow>{0}</color></size></align>
   teammate_message_duration: 8
   alone_hint_message: '<align=left><color=red>You are playing Solo</color></align>'
   alone_message_duration: 4
