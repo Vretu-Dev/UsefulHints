@@ -27,7 +27,7 @@ namespace UsefulHints
         [Description("Should a teammates list be displayed.")]
         public bool TeammateHintEnable { get; set; } = true;
         public float TeammateHintDelay { get; set; } = 4f;
-        public string TeammateHintMessage { get; set; } = "<align=left><size=28><color=yellow>Your Teammates</color></size> \n<size=25><color=#4BA3C3>{0}</color></size></align>";
+        public string TeammateHintMessage { get; set; } = "<align=left><size=28><color=#70EE9C>Your Teammates</color></size> \n<size=25><color=yellow>{0}</color></size></align>";
         public float TeammateMessageDuration { get; set; } = 8f;
         public string AloneHintMessage { get; set; } = "<align=left><color=red>You are playing Solo</color></align>";
         public float AloneMessageDuration { get; set; } = 4f;
