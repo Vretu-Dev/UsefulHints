@@ -178,7 +178,7 @@ namespace UsefulHints
             if (ev.Pickup is JailbirdPickup jailbirdPickup)
             {
                 int remainingCharges = jailbirdPickup.TotalCharges;
-                if(remainingCharges < 4)
+                if (remainingCharges < 4)
                 {
                     ev.Player.ShowHint($"<color=#00B7EB>{string.Format(Config.JailbirdUseMessage, remainingCharges)}</color>", 4);
                 }
