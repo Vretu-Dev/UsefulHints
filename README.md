@@ -13,6 +13,7 @@
 - Summary of the game
 - Kill counter
 - Hint show your teammates at the start of the game
+- Broadcast last human alive for players
 - Jailbird Custom Setting
 
 ### Minimum Exiled Version: 8.9.8
@@ -50,6 +51,10 @@ UH:
   teammate_message_duration: 8
   alone_hint_message: '<align=left><color=red>You are playing Solo</color></align>'
   alone_message_duration: 4
+  # Should a last human broadcast be displayed.
+  enable_last_alive_human_broadcast: true
+  broadcast_for_human: '<color=red>You are the last human alive!</color>'
+  broadcast_for_scp: '<color=#70EE9C>{0}</color> is the last human alive playing as {1} in <color=yellow>{2}</color>'
   # Jailbird Custom Settings:
   enable_custom_jailbird_settings: false
   jailbird_effect: Flashed
@@ -67,4 +72,10 @@ https://github.com/user-attachments/assets/f2125ab2-4ee3-4c71-a697-88949c00ddc2
 ### Teammates:
 <p align="center">
 <img src="https://github.com/user-attachments/assets/9cd2ecce-237d-4801-bbe5-c253e8e22121">
+</p>
+
+### Last Alive Human:
+<p align="center">
+<img src="https://github.com/user-attachments/assets/c1a547af-c01a-4060-b810-0aeece2a9f7f">
+<img src="https://github.com/user-attachments/assets/14829059-9249-4f53-a54b-2f5820a6f208">
 </p>
