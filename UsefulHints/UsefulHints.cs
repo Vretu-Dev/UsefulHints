@@ -20,7 +20,7 @@ namespace UsefulHints
         public override string Name => "Useful Hints";
         public override string Author => "Vretu";
         public override string Prefix { get; } = "UH";
-        public override Version Version => new Version(1, 2, 5);
+        public override Version Version => new Version(1, 3, 0);
         public override Version RequiredExiledVersion { get; } = new Version(8, 9, 8);
         public static UsefulHints Instance { get; private set; }
         public Harmony Harmony { get; private set; }
@@ -43,6 +43,7 @@ namespace UsefulHints
             Exiled.Events.Handlers.Server.RoundStarted += OnRoundStartedTeammates;
             Instance = this;
             MVP.RegisterEvents();
+            Last.RegisterEvents();
             if (Config.EnableCustomJailbirdSettings)
             {
                 HarmonyName = $"com-vretu.uh-{DateTime.UtcNow.Ticks}";
@@ -65,6 +66,7 @@ namespace UsefulHints
             Exiled.Events.Handlers.Server.RoundStarted -= OnRoundStartedTeammates;
             Instance = null;
             MVP.UnregisterEvents();
+            Last.UnregisterEvents();
             if (Config.EnableCustomJailbirdSettings)
             {
                 Harmony.UnpatchAll(HarmonyName);

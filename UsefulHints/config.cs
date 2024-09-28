@@ -31,6 +31,10 @@ namespace UsefulHints
         public float TeammateMessageDuration { get; set; } = 8f;
         public string AloneHintMessage { get; set; } = "<align=left><color=red>You are playing Solo</color></align>";
         public float AloneMessageDuration { get; set; } = 4f;
+        [Description("Should a last human broadcast be displayed.")]
+        public bool EnableLastAliveHumanBroadcast { get; set; } = true;
+        public string BroadcastForHuman { get; set; } = "<color=red>You are the last human alive!</color>";
+        public string BroadcastForScp { get; set; } = "<color=#70EE9C>{0}</color> is the last human alive playing as {1} in <color=yellow>{2}</color>";
         [Description("Jailbird Custom Settings:")]
         public bool EnableCustomJailbirdSettings { get; set; } = false;
         public EffectType JailbirdEffect { get; set; } = EffectType.Flashed;
