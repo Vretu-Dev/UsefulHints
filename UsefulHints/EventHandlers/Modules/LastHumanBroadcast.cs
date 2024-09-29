@@ -18,25 +18,22 @@ namespace UsefulHints.EventHandlers.Modules
         }
         private static void OnPlayerDied(DiedEventArgs ev)
         {
-            if (UsefulHints.Instance.Config.EnableLastHumanBroadcast)
+            var aliveHumans = Player.List.Where(p => p.IsAlive && IsHuman(p));
+
+            if (aliveHumans.Count() == 1)
             {
-                var aliveHumans = Player.List.Where(p => p.IsAlive && IsHuman(p));
+                Player lastAlive = aliveHumans.First();
 
-                if (aliveHumans.Count() == 1)
+                lastAlive.Broadcast(10, UsefulHints.Instance.Config.BroadcastForHuman);
+
+                var zone = GetZoneName(lastAlive);
+                var teamName = GetRoleTeamName(lastAlive);
+
+                string message = string.Format(UsefulHints.Instance.Config.BroadcastForScp, lastAlive.Nickname, teamName, zone);
+
+                foreach (var scp in Player.List.Where(p => p.Role.Team == Team.SCPs))
                 {
-                    Player lastAlive = aliveHumans.First();
-
-                    lastAlive.Broadcast(10, UsefulHints.Instance.Config.BroadcastForHuman);
-
-                    var zone = GetZoneName(lastAlive);
-                    var teamName = GetRoleTeamName(lastAlive);
-
-                    string message = string.Format(UsefulHints.Instance.Config.BroadcastForScp, lastAlive.Nickname, teamName, zone);
-
-                    foreach (var scp in Player.List.Where(p => p.Role.Team == Team.SCPs))
-                    {
-                        scp.Broadcast(10, message);
-                    }
+                    scp.Broadcast(10, message);
                 }
             }
         }

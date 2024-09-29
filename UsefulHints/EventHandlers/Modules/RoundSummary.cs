@@ -107,27 +107,24 @@ namespace UsefulHints.EventHandlers.Modules
         // Handler for End Round messages
         private static void OnRoundEnded(RoundEndedEventArgs ev)
         {
-            if (UsefulHints.Instance.Config.EnableRoundSummary)
-            {
-                string text = "";
+            string text = "";
 
-                Player humanKiller = GetTopKiller(humanKills);
-                Player scpKiller = GetTopKiller(scpKills);
-                Player topDamageDealer = GetTopDamageDealer(humanDamage);
+            Player humanKiller = GetTopKiller(humanKills);
+            Player scpKiller = GetTopKiller(scpKills);
+            Player topDamageDealer = GetTopDamageDealer(humanDamage);
 
-                if (humanKiller != null)
-                    text += string.Format(UsefulHints.Instance.Config.HumanKillMessage, humanKiller.Nickname, humanKills[humanKiller]) + "\n";
-                if (scpKiller != null)
-                    text += string.Format(UsefulHints.Instance.Config.ScpKillMessage, scpKiller.Nickname, scpKills[scpKiller]) + "\n";
-                if (topDamageDealer != null)
-                    text += string.Format(UsefulHints.Instance.Config.TopDamageMessage, topDamageDealer.Nickname, humanDamage[topDamageDealer]) + "\n";
-                if (firstEscaper != null)
-                    text += string.Format(UsefulHints.Instance.Config.EscaperMessage, firstEscaper.Nickname, escapeTime.Minutes, escapeTime.Seconds) + "\n";
-                if (firstScpKiller != null)
-                    text += string.Format(UsefulHints.Instance.Config.FirstScpKillerMessage, firstScpKiller.Nickname) + "\n";
-                if (!string.IsNullOrEmpty(text))
-                    Map.Broadcast(UsefulHints.Instance.Config.RoundSummaryMessageDuration, text, BroadcastFlags.Normal, true);
-            }
+            if (humanKiller != null)
+                text += string.Format(UsefulHints.Instance.Config.HumanKillMessage, humanKiller.Nickname, humanKills[humanKiller]) + "\n";
+            if (scpKiller != null)
+                text += string.Format(UsefulHints.Instance.Config.ScpKillMessage, scpKiller.Nickname, scpKills[scpKiller]) + "\n";
+            if (topDamageDealer != null)
+                text += string.Format(UsefulHints.Instance.Config.TopDamageMessage, topDamageDealer.Nickname, humanDamage[topDamageDealer]) + "\n";
+            if (firstEscaper != null)
+                text += string.Format(UsefulHints.Instance.Config.EscaperMessage, firstEscaper.Nickname, escapeTime.Minutes, escapeTime.Seconds) + "\n";
+            if (firstScpKiller != null)
+                text += string.Format(UsefulHints.Instance.Config.FirstScpKillerMessage, firstScpKiller.Nickname) + "\n";
+            if (!string.IsNullOrEmpty(text))
+                Map.Broadcast(UsefulHints.Instance.Config.RoundSummaryMessageDuration, text, BroadcastFlags.Normal, true);
         }
         // Reset Handlers
         private static void OnRestartingRound()

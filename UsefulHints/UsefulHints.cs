@@ -8,7 +8,7 @@ namespace UsefulHints
         public override string Name => "Useful Hints";
         public override string Author => "Vretu";
         public override string Prefix { get; } = "UH";
-        public override Version Version => new Version(1, 4, 1);
+        public override Version Version => new Version(1, 4, 2);
         public override Version RequiredExiledVersion { get; } = new Version(8, 9, 8);
         public static UsefulHints Instance { get; private set; }
         public override void OnEnabled()
@@ -17,10 +17,10 @@ namespace UsefulHints
             if(Config.EnableHints){ EventHandlers.Entities.SCP096.RegisterEvents(); }
             if(Config.EnableHints){ EventHandlers.Items.Hints.RegisterEvents(); }
             if(Config.EnableCustomJailbirdSettings){ EventHandlers.Modules.JailbirdPatchHandler.RegisterEvents(); }
-            EventHandlers.Modules.KillCounter.RegisterEvents();
-            EventHandlers.Modules.LastHumanBroadcast.RegisterEvents();
-            EventHandlers.Modules.RoundSummary.RegisterEvents();
-            EventHandlers.Modules.Teammates.RegisterEvents();
+            if(Config.EnableKillCounter){ EventHandlers.Modules.KillCounter.RegisterEvents(); }
+            if(Config.EnableLastHumanBroadcast){EventHandlers.Modules.LastHumanBroadcast.RegisterEvents(); }
+            if(Config.EnableRoundSummary){ EventHandlers.Modules.RoundSummary.RegisterEvents(); }
+            if(Config.EnableTeammates){ EventHandlers.Modules.Teammates.RegisterEvents(); }
             base.OnEnabled();
         }
         public override void OnDisabled()
@@ -29,10 +29,10 @@ namespace UsefulHints
             if(Config.EnableHints){ EventHandlers.Entities.SCP096.UnregisterEvents(); }
             if(Config.EnableHints){ EventHandlers.Items.Hints.UnregisterEvents(); }
             if(Config.EnableCustomJailbirdSettings){ EventHandlers.Modules.JailbirdPatchHandler.UnregisterEvents(); }
-            EventHandlers.Modules.KillCounter.UnregisterEvents();
-            EventHandlers.Modules.LastHumanBroadcast.UnregisterEvents();
-            EventHandlers.Modules.RoundSummary.UnregisterEvents();
-            EventHandlers.Modules.Teammates.UnregisterEvents();
+            if(Config.EnableKillCounter){ EventHandlers.Modules.KillCounter.UnregisterEvents(); }
+            if(Config.EnableLastHumanBroadcast){ EventHandlers.Modules.LastHumanBroadcast.UnregisterEvents(); }
+            if(Config.EnableRoundSummary){ EventHandlers.Modules.RoundSummary.UnregisterEvents(); }
+            if(Config.EnableTeammates){ EventHandlers.Modules.Teammates.UnregisterEvents(); }
             base.OnDisabled();
         }
     }

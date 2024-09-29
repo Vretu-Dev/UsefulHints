@@ -26,23 +26,20 @@ namespace UsefulHints.EventHandlers.Modules
         }
         private static void DisplayTeammates()
         {
-            if (UsefulHints.Instance.Config.EnableTeammates)
+            foreach (var player in Player.List)
             {
-                foreach (var player in Player.List)
-                {
-                    List<string> teammates = Player.List
-                        .Where(p => p.Role.Team == player.Role.Team && p != player)
-                        .Select(p => p.Nickname)
-                        .ToList();
+                List<string> teammates = Player.List
+                    .Where(p => p.Role.Team == player.Role.Team && p != player)
+                    .Select(p => p.Nickname)
+                    .ToList();
 
-                    if (teammates.Count > 0)
-                    {
-                        player.ShowHint(string.Format(UsefulHints.Instance.Config.TeammateHintMessage, string.Join("\n", teammates)), UsefulHints.Instance.Config.TeammateMessageDuration);
-                    }
-                    else
-                    {
-                        player.ShowHint(string.Format(UsefulHints.Instance.Config.AloneHintMessage), UsefulHints.Instance.Config.AloneMessageDuration);
-                    }
+                if (teammates.Count > 0)
+                {
+                    player.ShowHint(string.Format(UsefulHints.Instance.Config.TeammateHintMessage, string.Join("\n", teammates)), UsefulHints.Instance.Config.TeammateMessageDuration);
+                }
+                else
+                {
+                    player.ShowHint(string.Format(UsefulHints.Instance.Config.AloneHintMessage), UsefulHints.Instance.Config.AloneMessageDuration);
                 }
             }
         }

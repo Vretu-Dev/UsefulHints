@@ -17,22 +17,19 @@ namespace UsefulHints.EventHandlers.Modules
         }
         private static void OnPlayerDied(DiedEventArgs ev)
         {
-            if (UsefulHints.Instance.Config.EnableKillCounter)
+            if (ev.Attacker != null && ev.Attacker != ev.Player)
             {
-                if (ev.Attacker != null && ev.Attacker != ev.Player)
-                {
-                    Player killer = ev.Attacker;
+                Player killer = ev.Attacker;
 
-                    if (playerKills.ContainsKey(killer))
-                    {
-                        playerKills[killer]++;
-                    }
-                    else
-                    {
-                        playerKills[killer] = 1;
-                    }
-                    killer.ShowHint(string.Format(UsefulHints.Instance.Config.KillCountMessage, playerKills[killer]), 4);
+                if (playerKills.ContainsKey(killer))
+                {
+                    playerKills[killer]++;
                 }
+                else
+                {
+                    playerKills[killer] = 1;
+                }
+                killer.ShowHint(string.Format(UsefulHints.Instance.Config.KillCountMessage, playerKills[killer]), 4);
             }
         }
     }
