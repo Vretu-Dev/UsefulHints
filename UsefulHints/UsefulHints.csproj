@@ -69,7 +69,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="EXILEDOFFICIAL">
+    <PackageReference Include="EXILED-OFFICIAL">
       <Version>8.12.2</Version>
     </PackageReference>
     <PackageReference Include="Lib.Harmony">
