@@ -28,7 +28,7 @@ UH:
   is_enabled: true
   debug: false
   # [Module] Hints:
-  enable_hints: false
+  enable_hints: true
   scp096_look_message: 'You looked at SCP-096!'
   scp268_duration: 15
   scp268_time_left_message: 'Remaining: {0}s'
