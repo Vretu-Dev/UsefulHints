@@ -28,7 +28,7 @@ namespace UsefulHints
             Instance = null;
             if(Config.EnableHints){ EventHandlers.Entities.SCP096.UnregisterEvents(); }
             if(Config.EnableHints){ EventHandlers.Items.Hints.UnregisterEvents(); }
-            if(Config.EnableCustomJailbirdSettings) { EventHandlers.Modules.JailbirdPatchHandler.UnregisterEvents(); }
+            if(Config.EnableCustomJailbirdSettings){ EventHandlers.Modules.JailbirdPatchHandler.UnregisterEvents(); }
             EventHandlers.Modules.KillCounter.UnregisterEvents();
             EventHandlers.Modules.LastHumanBroadcast.UnregisterEvents();
             EventHandlers.Modules.RoundSummary.UnregisterEvents();
