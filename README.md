@@ -1,6 +1,9 @@
-# UsefulHints for EXILED
 
-[![downloads](https://img.shields.io/github/downloads/Vretu-Dev/UsefulHints/total)](https://github.com/Vretu-Dev/UsefulHints/releases/latest)<br><br>
+![UsefulHints](https://github.com/user-attachments/assets/a01fc940-f540-4c8b-8caf-65848a22335d)<br><br><br>
+[![downloads](https://img.shields.io/github/downloads/Vretu-Dev/UsefulHints/total?style=for-the-badge&logo=icloud&color=%233A6D8C)](https://github.com/Vretu-Dev/UsefulHints/releases/latest)ㅤ
+![Latest](https://img.shields.io/github/v/tag/Vretu-Dev/UsefulHints?style=for-the-badge&label=Latest%20Version&color=%23D91656)
+
+# UsefulHints for EXILED
 **If you like this plugin you can support me!** <p text-align="center"> [![PayPal](https://img.shields.io/badge/PayPal-00457C?style=for-the-badge&logo=paypal&logoColor=white)](https://www.paypal.com/paypalme/vretu)</p>
 
 ## Features:
