@@ -12,9 +12,10 @@
 - SCP-2176 lockdown time
 - Hint when you look at the SCP-096 face
 - Hint how many times the Jailbird charge has been used
-- Hint how many SCP 207 you are at when you pick it up
-- Summary of the game
+- Hint how many SCP-207 & Anti SCP-207 you are at when you pick it up
+- Warnings hint when you are on SCP-207, Anti SCP-207 and SCP-1853
 - Kill counter
+- Summary of the game
 - Hint show your teammates at the start of the game
 - Broadcast last human alive for players
 - Jailbird Custom Setting
