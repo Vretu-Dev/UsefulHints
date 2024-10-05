@@ -37,8 +37,14 @@ UH:
   scp268_duration: 15
   scp268_time_left_message: 'Remaining: {0}s'
   scp2176_time_left_message: 'Remaining: {0}s'
-  jailbird_use_message: 'Jailbird has been used {0}/5 times'
+  jailbird_use_message: 'Remaining charge: {0}'
   scp207_hint_message: 'You are on {0} SCP-207'
+  anti_scp207_hint_message: 'You are on {0} Anti SCP-207'
+  # [Module] Warnings:
+  enable_warnings: true
+  scp207_warning: '<color=yellow>⚠</color> You are already on <color=#A60C0E>SCP-207</color>'
+  anti_scp207_warning: '<color=yellow>⚠</color> You are already on <color=#2969AD>Anti SCP-207</color>'
+  scp1853_warning: '<color=yellow>⚠</color> You are already on <color=#1CAA21>SCP-1853</color>'
   # [Module] Kill Counter:
   enable_kill_counter: true
   kill_count_message: '{0} kills'
