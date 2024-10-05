@@ -58,7 +58,6 @@
   <ItemGroup>
     <Compile Include="Config.cs" />
     <Compile Include="EventHandlers\Entities\SCP096.cs" />
-    <Compile Include="EventHandlers\Items\WarningHints.cs" />
     <Compile Include="EventHandlers\Modules\JailbirdPatchHandler.cs" />
     <Compile Include="EventHandlers\Items\Hints.cs" />
     <Compile Include="EventHandlers\Modules\KillCounter.cs" />

@@ -47,15 +47,6 @@ namespace UsefulHints.EventHandlers.Items
                     ev.Player.ShowHint($"<color=#A60C0E>{string.Format(UsefulHints.Instance.Config.Scp207HintMessage, scp207Effect.Intensity)}</color>", 4);
                 }
             }
-            if (ev.Pickup.Type == ItemType.AntiSCP207)
-            {
-                CustomPlayerEffects.StatusEffectBase antiscp207Effect = ev.Player.ActiveEffects.FirstOrDefault(effect => effect.GetEffectType() == EffectType.AntiScp207);
-
-                if (antiscp207Effect != null)
-                {
-                    ev.Player.ShowHint($"<color=#2969AD>{string.Format(UsefulHints.Instance.Config.AntiScp207HintMessage, antiscp207Effect.Intensity)}</color>", 4);
-                }
-            }
         }
         // SCP 268 Handler
         private static void OnSCP268Used(UsedItemEventArgs ev)
@@ -143,9 +134,8 @@ namespace UsefulHints.EventHandlers.Items
         {
             if (ev.Pickup is JailbirdPickup jailbirdPickup)
             {
-                int maxCharges = 5;
-                int remainingCharges = maxCharges - jailbirdPickup.TotalCharges;
-                if (remainingCharges > 1)
+                int remainingCharges = jailbirdPickup.TotalCharges;
+                if (remainingCharges < 4)
                 {
                     ev.Player.ShowHint($"<color=#00B7EB>{string.Format(UsefulHints.Instance.Config.JailbirdUseMessage, remainingCharges)}</color>", 4);
                 }

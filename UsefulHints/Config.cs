@@ -15,14 +15,8 @@ namespace UsefulHints
         public float Scp268Duration { get; set; } = 15f;
         public string Scp268TimeLeftMessage { get; set; } = "Remaining: {0}s";
         public string Scp2176TimeLeftMessage { get; set; } = "Remaining: {0}s";
-        public string JailbirdUseMessage { get; set; } = "Remaining charge: {0}";
+        public string JailbirdUseMessage { get; set; } = "Jailbird has been used {0}/5 times";
         public string Scp207HintMessage { get; set; } = "You are on {0} SCP-207";
-        public string AntiScp207HintMessage { get; set; } = "You are on {0} Anti SCP-207";
-        [Description("[Module] Warnings:")]
-        public bool EnableWarnings { get; set; } = true;
-        public string Scp207Warning { get; set; } = "<color=yellow>\u26A0</color> You are already on <color=#A60C0E>SCP-207</color>";
-        public string AntiScp207Warning { get; set; } = "<color=yellow>\u26A0</color> You are already on <color=#2969AD>Anti SCP-207</color>";
-        public string Scp1853Warning { get; set; } = "<color=yellow>\u26A0</color> You are already on <color=#1CAA21>SCP-1853</color>";
         [Description("[Module] Kill Counter:")]
         public bool EnableKillCounter { get; set; } = true;
         public string KillCountMessage { get; set; } = "{0} kills";
