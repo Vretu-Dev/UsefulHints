@@ -25,7 +25,7 @@ namespace UsefulHints
         public string Scp1853Warning { get; set; } = "<color=yellow>\u26A0</color> You are already on <color=#1CAA21>SCP-1853</color>";
         [Description("[Module] Friendly Fire Warning:")]
         public bool EnableFfWarning { get; set; } = true;
-        public string FriendlyFireWarning { get; set; } = "<size=27><color=yellow>\u26A0 Not hurt your teammate</color></size>";
+        public string FriendlyFireWarning { get; set; } = "<size=27><color=yellow>\u26A0 Do not hurt your teammate</color></size>";
         public string DamageTakenAlert { get; set; } = "<size=27><color=red>{0}</color> <color=yellow>teammate damaging you</color></size>";
         public bool ClassDAreTeammates { get; set; } = true;
         [Description("[Module] Kill Counter:")]
