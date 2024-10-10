@@ -16,6 +16,8 @@ namespace UsefulHints
             Instance = this;
             if(Config.EnableHints){ EventHandlers.Entities.SCP096.RegisterEvents(); }
             if(Config.EnableHints){ EventHandlers.Items.Hints.RegisterEvents(); }
+            if(Config.EnableWarnings){ EventHandlers.Items.WarningHints.RegisterEvents(); }
+            if(Config.EnableFfWarning){ EventHandlers.Modules.FFWarning.RegisterEvents(); }
             if(Config.EnableCustomJailbirdSettings){ EventHandlers.Modules.JailbirdPatchHandler.RegisterEvents(); }
             if(Config.EnableKillCounter){ EventHandlers.Modules.KillCounter.RegisterEvents(); }
             if(Config.EnableLastHumanBroadcast){EventHandlers.Modules.LastHumanBroadcast.RegisterEvents(); }
@@ -28,6 +30,8 @@ namespace UsefulHints
             Instance = null;
             if(Config.EnableHints){ EventHandlers.Entities.SCP096.UnregisterEvents(); }
             if(Config.EnableHints){ EventHandlers.Items.Hints.UnregisterEvents(); }
+            if(Config.EnableWarnings){ EventHandlers.Items.WarningHints.UnregisterEvents(); }
+            if(Config.EnableFfWarning){ EventHandlers.Modules.FFWarning.UnregisterEvents(); }
             if(Config.EnableCustomJailbirdSettings){ EventHandlers.Modules.JailbirdPatchHandler.UnregisterEvents(); }
             if(Config.EnableKillCounter){ EventHandlers.Modules.KillCounter.UnregisterEvents(); }
             if(Config.EnableLastHumanBroadcast){ EventHandlers.Modules.LastHumanBroadcast.UnregisterEvents(); }

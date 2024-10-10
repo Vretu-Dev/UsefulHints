@@ -1,7 +1,7 @@
 
 ![UsefulHints](https://github.com/user-attachments/assets/a01fc940-f540-4c8b-8caf-65848a22335d)<br><br><br>
 [![downloads](https://img.shields.io/github/downloads/Vretu-Dev/UsefulHints/total?style=for-the-badge&logo=icloud&color=%233A6D8C)](https://github.com/Vretu-Dev/UsefulHints/releases/latest)ㅤ
-![Latest](https://img.shields.io/github/v/tag/Vretu-Dev/UsefulHints?style=for-the-badge&label=Latest%20Version&color=%23D91656)
+![Latest](https://img.shields.io/github/v/release/Vretu-Dev/UsefulHints?style=for-the-badge&label=Latest%20Release&color=%23D91656)
 
 # UsefulHints for EXILED
 **If you like this plugin you can support me!** <p text-align="center"> [![PayPal](https://img.shields.io/badge/PayPal-00457C?style=for-the-badge&logo=paypal&logoColor=white)](https://www.paypal.com/paypalme/vretu)</p>
@@ -12,9 +12,11 @@
 - SCP-2176 lockdown time
 - Hint when you look at the SCP-096 face
 - Hint how many times the Jailbird charge has been used
-- Hint how many SCP 207 you are at when you pick it up
-- Summary of the game
+- Hint how many SCP-207 & Anti SCP-207 you are at when you pick it up
+- Warnings hint when you are on SCP-207, Anti SCP-207 and SCP-1853
+- Warning when you hurting your teammates
 - Kill counter
+- Summary of the game
 - Hint show your teammates at the start of the game
 - Broadcast last human alive for players
 - Jailbird Custom Setting
@@ -36,8 +38,19 @@ UH:
   scp268_duration: 15
   scp268_time_left_message: 'Remaining: {0}s'
   scp2176_time_left_message: 'Remaining: {0}s'
-  jailbird_use_message: 'Jailbird has been used {0}/5 times'
+  jailbird_use_message: 'Remaining charge: {0}'
   scp207_hint_message: 'You are on {0} SCP-207'
+  anti_scp207_hint_message: 'You are on {0} Anti SCP-207'
+  # [Module] Items Warnings:
+  enable_warnings: true
+  scp207_warning: '<color=yellow>⚠</color> You are already on <color=#A60C0E>SCP-207</color>'
+  anti_scp207_warning: '<color=yellow>⚠</color> You are already on <color=#2969AD>Anti SCP-207</color>'
+  scp1853_warning: '<color=yellow>⚠</color> You are already on <color=#1CAA21>SCP-1853</color>'
+  # [Module] Friendly Fire Warning:
+  enable_ff_warning: true
+  friendly_fire_warning: '<size=25><color=yellow>⚠ Not hurt your teammate</color></size>'
+  damage_taken_alert: '<size=27><color=red>{0}</color> <color=yellow>teammate damaging you</color></size>'
+  class_d_are_teammates: true
   # [Module] Kill Counter:
   enable_kill_counter: true
   kill_count_message: '{0} kills'
