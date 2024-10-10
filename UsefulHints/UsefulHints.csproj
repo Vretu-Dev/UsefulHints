@@ -71,8 +71,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="EXILED-OFFICIAL">
-      <Version>8.12.2</Version>
+    <PackageReference Include="EXILED">
+      <Version>9.0.0-beta.5</Version>
     </PackageReference>
     <PackageReference Include="Lib.Harmony">
       <Version>2.3.3</Version>
