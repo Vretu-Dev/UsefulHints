@@ -14,6 +14,7 @@
 - Hint how many times the Jailbird charge has been used
 - Hint how many SCP-207 & Anti SCP-207 you are at when you pick it up
 - Warnings hint when you are on SCP-207, Anti SCP-207 and SCP-1853
+- Warning when you hurting your teammates
 - Kill counter
 - Summary of the game
 - Hint show your teammates at the start of the game
@@ -40,11 +41,16 @@ UH:
   jailbird_use_message: 'Remaining charge: {0}'
   scp207_hint_message: 'You are on {0} SCP-207'
   anti_scp207_hint_message: 'You are on {0} Anti SCP-207'
-  # [Module] Warnings:
+  # [Module] Items Warnings:
   enable_warnings: true
   scp207_warning: '<color=yellow>⚠</color> You are already on <color=#A60C0E>SCP-207</color>'
   anti_scp207_warning: '<color=yellow>⚠</color> You are already on <color=#2969AD>Anti SCP-207</color>'
   scp1853_warning: '<color=yellow>⚠</color> You are already on <color=#1CAA21>SCP-1853</color>'
+  # [Module] Friendly Fire Warning:
+  enable_ff_warning: true
+  friendly_fire_warning: '<size=25><color=yellow>⚠ Not hurt your teammate</color></size>'
+  damage_taken_alert: '<size=27><color=red>{0}</color> <color=yellow>teammate damaging you</color></size>'
+  class_d_are_teammates: true
   # [Module] Kill Counter:
   enable_kill_counter: true
   kill_count_message: '{0} kills'
