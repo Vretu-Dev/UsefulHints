@@ -1,9 +1,5 @@
-﻿using System.Linq;
-using CustomPlayerEffects;
-using Exiled.API.Enums;
-using Exiled.API.Extensions;
+﻿using CustomPlayerEffects;
 using Exiled.Events.EventArgs.Player;
-using MEC;
 
 namespace UsefulHints.EventHandlers.Items
 {

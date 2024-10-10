@@ -18,11 +18,16 @@ namespace UsefulHints
         public string JailbirdUseMessage { get; set; } = "Remaining charge: {0}";
         public string Scp207HintMessage { get; set; } = "You are on {0} SCP-207";
         public string AntiScp207HintMessage { get; set; } = "You are on {0} Anti SCP-207";
-        [Description("[Module] Warnings:")]
+        [Description("[Module] Items Warnings:")]
         public bool EnableWarnings { get; set; } = true;
         public string Scp207Warning { get; set; } = "<color=yellow>\u26A0</color> You are already on <color=#A60C0E>SCP-207</color>";
         public string AntiScp207Warning { get; set; } = "<color=yellow>\u26A0</color> You are already on <color=#2969AD>Anti SCP-207</color>";
         public string Scp1853Warning { get; set; } = "<color=yellow>\u26A0</color> You are already on <color=#1CAA21>SCP-1853</color>";
+        [Description("[Module] Friendly Fire Warning:")]
+        public bool EnableFfWarning { get; set; } = true;
+        public string FriendlyFireWarning { get; set; } = "<size=27><color=yellow>\u26A0 Not hurt your teammate</color></size>";
+        public string DamageTakenAlert { get; set; } = "<size=27><color=red>{0}</color> <color=yellow>teammate damaging you</color></size>";
+        public bool ClassDAreTeammates { get; set; } = true;
         [Description("[Module] Kill Counter:")]
         public bool EnableKillCounter { get; set; } = true;
         public string KillCountMessage { get; set; } = "{0} kills";
