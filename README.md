@@ -7,19 +7,19 @@
 **If you like this plugin you can support me!** <p text-align="center"> [![PayPal](https://img.shields.io/badge/PayPal-00457C?style=for-the-badge&logo=paypal&logoColor=white)](https://www.paypal.com/paypalme/vretu)</p>
 
 ## Features:
-- SCP-268 time remaining after use
-- SCP-268 duration time
-- SCP-2176 lockdown time
-- Hint when you look at the SCP-096 face
-- Hint how many times the Jailbird charge has been used
-- Hint how many SCP-207 & Anti SCP-207 you are at when you pick it up
-- Warnings hint when you are on SCP-207, Anti SCP-207 and SCP-1853
-- Warning when you hurting your teammates
-- Kill counter
-- Summary of the game
-- Hint show your teammates at the start of the game
-- Broadcast last human alive for players
-- Jailbird Custom Setting
+- Display remaining time after using SCP-268
+- SCP-268 countdown timer
+- SCP-2176 lockdown timer
+- Hint displayed when looking at SCP-096's face
+- Track remaining Jailbird charges
+- Display SCP-207 & Anti SCP-207 doses when picked up
+- Warning hints when affected by SCP-207, Anti SCP-207, or SCP-1853
+- Friendly fire warnings when damaging teammates
+- Kill counter for players
+- End-of-game summary
+- Show teammates at the start of the round
+- Broadcast the last human alive
+- Custom settings for Jailbird
 
 ### Minimum Exiled Version: 8.9.8
 ### Credits:
@@ -32,37 +32,37 @@
 UH:
   is_enabled: true
   debug: false
-  # [Module] Hints:
+  # Hints Settings:
   enable_hints: true
   scp096_look_message: 'You looked at SCP-096!'
   scp268_duration: 15
   scp268_time_left_message: 'Remaining: {0}s'
   scp2176_time_left_message: 'Remaining: {0}s'
-  jailbird_use_message: 'Remaining charge: {0}'
-  scp207_hint_message: 'You are on {0} SCP-207'
-  anti_scp207_hint_message: 'You are on {0} Anti SCP-207'
-  # [Module] Items Warnings:
+  jailbird_use_message: 'Remaining charges: {0}'
+  scp207_hint_message: 'You have {0} doses of SCP-207'
+  anti_scp207_hint_message: 'You have {0} doses of Anti SCP-207'
+  # Item Warnings:
   enable_warnings: true
-  scp207_warning: '<color=yellow>⚠</color> You are already on <color=#A60C0E>SCP-207</color>'
-  anti_scp207_warning: '<color=yellow>⚠</color> You are already on <color=#2969AD>Anti SCP-207</color>'
-  scp1853_warning: '<color=yellow>⚠</color> You are already on <color=#1CAA21>SCP-1853</color>'
-  # [Module] Friendly Fire Warning:
+  scp207_warning: '<color=yellow>⚠</color> You are already affected by <color=#A60C0E>SCP-207</color>'
+  anti_scp207_warning: '<color=yellow>⚠</color> You are already affected by <color=#2969AD>Anti SCP-207</color>'
+  scp1853_warning: '<color=yellow>⚠</color> You are already affected by <color=#1CAA21>SCP-1853</color>'
+  # Friendly Fire Warning:
   enable_ff_warning: true
-  friendly_fire_warning: '<size=25><color=yellow>⚠ Not hurt your teammate</color></size>'
-  damage_taken_alert: '<size=27><color=red>{0}</color> <color=yellow>teammate damaging you</color></size>'
+  friendly_fire_warning: '<size=25><color=yellow>⚠ Do not hurt your teammate</color></size>'
+  damage_taken_warning: '<size=27><color=red>{0}</color> <color=yellow>(teammate) hit you</color></size>'
   class_d_are_teammates: true
-  # [Module] Kill Counter:
+  # Kill Counter:
   enable_kill_counter: true
   kill_count_message: '{0} kills'
-  # [Module] Round Summary:
+  # Round Summary:
   enable_round_summary: true
   round_summary_message_duration: 10
-  human_kill_message: '<size=27><color=#70EE9C>{0}</color> had the most kills as <color=green>Human</color>: <color=yellow>{1}</color></size>'
-  scp_kill_message: '<size=27><color=#70EE9C>{0}</color> had the most kills as <color=red>SCP</color>: <color=yellow>{1}</color></size>'
-  top_damage_message: '<size=27><color=#70EE9C>{0}</color> did the most damage: <color=yellow>{1}</color></size>'
-  first_scp_killer_message: '<size=27><color=#70EE9C>{0}</color> was the first to kill <color=red>SCP</color></size>'
+  human_kill_message: '<size=27><color=#70EE9C>{0}</color> had the most kills as a <color=green>Human</color>: <color=yellow>{1}</color></size>'
+  scp_kill_message: '<size=27><color=#70EE9C>{0}</color> had the most kills as a <color=red>SCP</color>: <color=yellow>{1}</color></size>'
+  top_damage_message: '<size=27><color=#70EE9C>{0}</color> dealt the most damage: <color=yellow>{1}</color></size>'
+  first_scp_killer_message: '<size=27><color=#70EE9C>{0}</color> was the first to kill an <color=red>SCP</color></size>'
   escaper_message: '<size=27><color=#70EE9C>{0}</color> escaped first from the facility: <color=yellow>{1}:{2}</color></size>'
-  # [Module] Teammates:
+  # Teammates:
   enable_teammates: true
   teammate_hint_delay: 4
   teammate_hint_message: |-
@@ -71,11 +71,11 @@ UH:
   teammate_message_duration: 8
   alone_hint_message: '<align=left><color=red>You are playing Solo</color></align>'
   alone_message_duration: 4
-  # [Module] Last Human Broadcast:
+  # Last Human Broadcast:
   enable_last_human_broadcast: true
   broadcast_for_human: '<color=red>You are the last human alive!</color>'
-  broadcast_for_scp: '<color=#70EE9C>{0}</color> is the last human alive playing as {1} in <color=yellow>{2}</color>'
-  # [Module] Jailbird Custom Settings:
+  broadcast_for_scp: '<color=#70EE9C>{0}</color> is the last human alive, playing as {1} in <color=yellow>{2}</color>'
+  # Jailbird Custom Settings:
   enable_custom_jailbird_settings: false
   jailbird_effect: Flashed
   jailbird_effect_duration: 4

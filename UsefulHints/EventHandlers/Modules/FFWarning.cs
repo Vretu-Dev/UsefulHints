@@ -25,13 +25,13 @@ namespace UsefulHints.EventHandlers.Modules
                         if (UsefulHints.Instance.Config.ClassDAreTeammates)
                         {
                             ev.Attacker.ShowHint(string.Format(UsefulHints.Instance.Config.FriendlyFireWarning), 1);
-                            ev.Player.ShowHint(string.Format(UsefulHints.Instance.Config.FriendlyFireWarning, ev.Attacker.Nickname), 2);
+                            ev.Player.ShowHint(string.Format(UsefulHints.Instance.Config.DamageTakenWarning, ev.Attacker.Nickname), 2);
                         }
                     }
                     else
                     {
                         ev.Attacker.ShowHint(string.Format(UsefulHints.Instance.Config.FriendlyFireWarning), 1);
-                        ev.Player.ShowHint(string.Format(UsefulHints.Instance.Config.DamageTakenAlert, ev.Attacker.Nickname), 2);
+                        ev.Player.ShowHint(string.Format(UsefulHints.Instance.Config.DamageTakenWarning, ev.Attacker.Nickname), 2);
                     }
                 }
             }
