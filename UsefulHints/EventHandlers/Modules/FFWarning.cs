@@ -1,6 +1,7 @@
 ﻿using Exiled.API.Features;
 using Exiled.Events.EventArgs.Player;
 using PlayerRoles;
+using System;
 
 namespace UsefulHints.EventHandlers.Modules
 {
@@ -18,7 +19,7 @@ namespace UsefulHints.EventHandlers.Modules
         {
             if (ev.Attacker != null && ev.Player != null && ev.Attacker.Role != null && ev.Player.Role != null)
             {
-                if (ev.Attacker.Role.Side == ev.Player.Role.Side)
+                if (ev.Attacker.Role.Side == ev.Player.Role.Side && ev.Attacker != ev.Player)
                 {
                     if (ev.Attacker.Role.Team == Team.ClassD && ev.Player.Role.Team == Team.ClassD)
                     {
