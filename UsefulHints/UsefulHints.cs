@@ -1,4 +1,5 @@
 ﻿using System;
+using Exiled.API.Enums;
 using Exiled.API.Features;
 
 namespace UsefulHints
@@ -8,8 +9,9 @@ namespace UsefulHints
         public override string Name => "Useful Hints";
         public override string Author => "Vretu";
         public override string Prefix { get; } = "UH";
-        public override Version Version => new Version(1, 6, 1);
+        public override Version Version => new Version(1, 6, 2);
         public override Version RequiredExiledVersion { get; } = new Version(8, 9, 8);
+        public override PluginPriority Priority { get; } = PluginPriority.Low;
         public static UsefulHints Instance { get; private set; }
         public override void OnEnabled()
         {

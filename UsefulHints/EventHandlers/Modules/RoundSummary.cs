@@ -98,7 +98,7 @@ namespace UsefulHints.EventHandlers.Modules
         // Handler for Escaped Player
         private static void OnPlayerEscaping(EscapingEventArgs ev)
         {
-            if (firstEscaper == null)
+            if (firstEscaper == null && ev.IsAllowed)
             {
                 firstEscaper = ev.Player;
                 escapeTime = DateTime.Now - roundStartTime;
@@ -120,7 +120,7 @@ namespace UsefulHints.EventHandlers.Modules
             if (topDamageDealer != null)
                 text += string.Format(UsefulHints.Instance.Config.TopDamageMessage, topDamageDealer.Nickname, humanDamage[topDamageDealer]) + "\n";
             if (firstEscaper != null)
-                text += string.Format(UsefulHints.Instance.Config.EscaperMessage, firstEscaper.Nickname, escapeTime.Minutes, escapeTime.Seconds) + "\n";
+                text += string.Format(UsefulHints.Instance.Config.EscaperMessage, firstEscaper.Nickname, escapeTime.Minutes.ToString("D2"), escapeTime.Seconds.ToString("D2")) + "\n";
             if (firstScpKiller != null)
                 text += string.Format(UsefulHints.Instance.Config.FirstScpKillerMessage, firstScpKiller.Nickname) + "\n";
             if (!string.IsNullOrEmpty(text))
