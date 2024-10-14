@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using Exiled.API.Enums;
 using Exiled.API.Extensions;
@@ -17,7 +18,10 @@ namespace UsefulHints.EventHandlers.Items
         private static Dictionary<Player, ItemType> activeItems = new Dictionary<Player, ItemType>();
         public static void RegisterEvents()
         {
+            Exiled.Events.Handlers.Player.PickingUpItem += OnPickingUpMicroHid;
             Exiled.Events.Handlers.Player.PickingUpItem += OnPickingUpSCP207;
+            Exiled.Events.Handlers.Player.UsedItem += OnSCP1576Used;
+            Exiled.Events.Handlers.Player.ChangedItem += OnSCP1576ChangedItem;
             Exiled.Events.Handlers.Player.UsedItem += OnSCP268Used;
             Exiled.Events.Handlers.Player.InteractingDoor += OnSCP268Interacting;
             Exiled.Events.Handlers.Player.ChangedItem += OnSCP268ChangedItem;
@@ -27,13 +31,38 @@ namespace UsefulHints.EventHandlers.Items
         }
         public static void UnregisterEvents()
         {
+            Exiled.Events.Handlers.Player.PickingUpItem -= OnPickingUpMicroHid;
             Exiled.Events.Handlers.Player.PickingUpItem -= OnPickingUpSCP207;
+            Exiled.Events.Handlers.Player.UsedItem -= OnSCP1576Used;
+            Exiled.Events.Handlers.Player.ChangedItem -= OnSCP1576ChangedItem;
             Exiled.Events.Handlers.Player.UsedItem -= OnSCP268Used;
             Exiled.Events.Handlers.Player.InteractingDoor -= OnSCP268Interacting;
             Exiled.Events.Handlers.Player.ChangedItem -= OnSCP268ChangedItem;
             Exiled.Events.Handlers.Map.ExplodingGrenade -= OnSCP2176Grenade;
             Exiled.Events.Handlers.Server.WaitingForPlayers -= OnWaitingForPlayers;
             Exiled.Events.Handlers.Player.PickingUpItem -= OnPickingUpJailbird;
+        }
+        private static void OnPickingUpMicroHid(PickingUpItemEventArgs ev)
+        {
+            if (ev.Pickup.Type == ItemType.MicroHID)
+            {
+                var microHidPickup = ev.Pickup.Base as InventorySystem.Items.MicroHID.MicroHIDPickup;
+
+                if (microHidPickup != null)
+                {
+                    float energyPercentage = microHidPickup.Energy * 100;
+                    float roundedEnergyPercentage = (float)Math.Round(energyPercentage, 1);
+
+                    if (roundedEnergyPercentage < 5)
+                    {
+                        ev.Player.ShowHint($"<color=red>{string.Format(UsefulHints.Instance.Config.MicroLowEnergyMessage)}</color>", 4);
+                    }
+                    else
+                    {
+                        ev.Player.ShowHint($"<color=#4169E1>{string.Format(UsefulHints.Instance.Config.MicroEnergyMessage, roundedEnergyPercentage)}</color>", 4);
+                    }
+                }
+            }
         }
         // SCP 207 Handler
         private static void OnPickingUpSCP207(PickingUpItemEventArgs ev)
@@ -56,6 +85,47 @@ namespace UsefulHints.EventHandlers.Items
                     ev.Player.ShowHint($"<color=#2969AD>{string.Format(UsefulHints.Instance.Config.AntiScp207HintMessage, antiscp207Effect.Intensity)}</color>", 4);
                 }
             }
+        }
+        // SCP 1576 Handler
+        private static void OnSCP1576Used(UsedItemEventArgs ev)
+        {
+            if (ev.Item.Type == ItemType.SCP1576)
+            {
+                if (activeCoroutines.TryGetValue(ev.Player, out var existingCoroutine))
+                {
+                    Timing.KillCoroutines(existingCoroutine);
+                    activeCoroutines.Remove(ev.Player);
+                }
+                if (activeItems.ContainsKey(ev.Player))
+                {
+                    activeItems.Remove(ev.Player);
+                }
+
+                var coroutine = Timing.RunCoroutine(Scp1576Timer(ev.Player));
+                activeCoroutines[ev.Player] = coroutine;
+                activeItems[ev.Player] = ev.Item.Type;
+            }
+        }
+        private static void OnSCP1576ChangedItem(ChangedItemEventArgs ev)
+        {
+            if (activeCoroutines.ContainsKey(ev.Player) && activeItems.ContainsKey(ev.Player) && activeItems[ev.Player] == ItemType.SCP1576)
+            {
+                Timing.KillCoroutines(activeCoroutines[ev.Player]);
+                activeCoroutines.Remove(ev.Player);
+                activeItems.Remove(ev.Player);
+            }
+        }
+        private static IEnumerator<float> Scp1576Timer(Player player)
+        {
+            float duration = 30f;
+
+            while (duration > 0)
+            {
+                player.ShowHint($"<color=#FFA500>{new string('\n', 10)}{string.Format(UsefulHints.Instance.Config.Scp1576TimeLeftMessage, (int)duration)}</color>", 1.15f);
+                yield return Timing.WaitForSeconds(1f);
+                duration -= 1f;
+            }
+            activeCoroutines.Remove(player);
         }
         // SCP 268 Handler
         private static void OnSCP268Used(UsedItemEventArgs ev)

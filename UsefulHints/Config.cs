@@ -15,7 +15,10 @@ namespace UsefulHints
         public float Scp268Duration { get; set; } = 15f;
         public string Scp268TimeLeftMessage { get; set; } = "Remaining: {0}s";
         public string Scp2176TimeLeftMessage { get; set; } = "Remaining: {0}s";
+        public string Scp1576TimeLeftMessage { get; set; } = "Remaining: {0}s";
         public string JailbirdUseMessage { get; set; } = "Remaining charges: {0}";
+        public string MicroEnergyMessage { get; set; } = "Remaining energy: {0}%";
+        public string MicroLowEnergyMessage { get; set; } = "Low Energy";
         public string Scp207HintMessage { get; set; } = "You have {0} doses of SCP-207";
         public string AntiScp207HintMessage { get; set; } = "You have {0} doses of Anti SCP-207";
         [Description("Item Warnings:")]
