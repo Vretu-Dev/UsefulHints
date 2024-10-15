@@ -39,7 +39,7 @@ namespace UsefulHints.EventHandlers.Modules
         }
         private static bool IsHuman(Player player)
         {
-            return player.Role.Team == Team.FoundationForces || player.Role.Team == Team.ClassD || player.Role.Team == Team.Scientists || player.Role.Team == Team.ChaosInsurgency;
+            return (player.Role.Team == Team.FoundationForces || player.Role.Team == Team.ClassD || player.Role.Team == Team.Scientists || player.Role.Team == Team.ChaosInsurgency) && (!UsefulHints.Instance.Config.IgnoreTutorialRole || player.Role.Type != RoleTypeId.Tutorial);
         }
         private static string GetZoneName(Player player)
         {

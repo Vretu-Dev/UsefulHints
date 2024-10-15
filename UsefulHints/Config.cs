@@ -53,6 +53,8 @@ namespace UsefulHints
         public bool EnableLastHumanBroadcast { get; set; } = true;
         public string BroadcastForHuman { get; set; } = "<color=red>You are the last human alive!</color>";
         public string BroadcastForScp { get; set; } = "<color=#70EE9C>{0}</color> is the last human alive, playing as {1} in <color=yellow>{2}</color>";
+        public bool IgnoreTutorialRole { get; set; } = true;
+
         [Description("Jailbird Custom Settings:")]
         public bool EnableCustomJailbirdSettings { get; set; } = false;
         public EffectType JailbirdEffect { get; set; } = EffectType.Flashed;
