@@ -41,7 +41,10 @@ UH:
   scp268_duration: 15
   scp268_time_left_message: 'Remaining: {0}s'
   scp2176_time_left_message: 'Remaining: {0}s'
+  scp1576_time_left_message: 'Remaining: {0}s'
   jailbird_use_message: 'Remaining charges: {0}'
+  micro_energy_message: 'Remaining energy: {0}%'
+  micro_low_energy_message: 'Low Energy'
   scp207_hint_message: 'You have {0} doses of SCP-207'
   anti_scp207_hint_message: 'You have {0} doses of Anti SCP-207'
   # Item Warnings:
@@ -78,6 +81,7 @@ UH:
   enable_last_human_broadcast: true
   broadcast_for_human: '<color=red>You are the last human alive!</color>'
   broadcast_for_scp: '<color=#70EE9C>{0}</color> is the last human alive, playing as {1} in <color=yellow>{2}</color>'
+  ignore_tutorial_role: true
   # Jailbird Custom Settings:
   enable_custom_jailbird_settings: false
   jailbird_effect: Flashed
