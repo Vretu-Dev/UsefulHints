@@ -91,9 +91,9 @@ namespace UsefulHints.EventHandlers.Items
         {
             if (ev.Item.Type == ItemType.SCP1576)
             {
-                if (activeCoroutines.TryGetValue(ev.Player, out var existingCoroutine))
+                if (activeCoroutines.ContainsKey(ev.Player))
                 {
-                    Timing.KillCoroutines(existingCoroutine);
+                    Timing.KillCoroutines(activeCoroutines[ev.Player]);
                     activeCoroutines.Remove(ev.Player);
                 }
                 if (activeItems.ContainsKey(ev.Player))
@@ -136,6 +136,10 @@ namespace UsefulHints.EventHandlers.Items
                 {
                     Timing.KillCoroutines(activeCoroutines[ev.Player]);
                     activeCoroutines.Remove(ev.Player);
+                }
+                if (activeItems.ContainsKey(ev.Player))
+                {
+                    activeItems.Remove(ev.Player);
                 }
 
                 var coroutine = Timing.RunCoroutine(Scp268Timer(ev.Player));
