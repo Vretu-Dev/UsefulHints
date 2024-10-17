@@ -9,9 +9,11 @@
 ## Features:
 - Display remaining time after using SCP-268
 - SCP-268 countdown timer
+- SCP-1576 countdown timer
 - SCP-2176 lockdown timer
 - Hint displayed when looking at SCP-096's face
 - Track remaining Jailbird charges
+- Track remaining MicroHid energy
 - Display SCP-207 & Anti SCP-207 doses when picked up
 - Warning hints when affected by SCP-207, Anti SCP-207, or SCP-1853
 - Friendly fire warnings when damaging teammates
@@ -54,7 +56,7 @@ UH:
   scp1853_warning: '<color=yellow>⚠</color> You are already affected by <color=#1CAA21>SCP-1853</color>'
   # Friendly Fire Warning:
   enable_ff_warning: true
-  friendly_fire_warning: '<size=25><color=yellow>⚠ Do not hurt your teammate</color></size>'
+  friendly_fire_warning: '<size=27><color=yellow>⚠ Do not hurt your teammate</color></size>'
   damage_taken_warning: '<size=27><color=red>{0}</color> <color=yellow>(teammate) hit you</color></size>'
   class_d_are_teammates: true
   # Kill Counter:
