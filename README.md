@@ -4,10 +4,10 @@
 ![Latest](https://img.shields.io/github/v/release/Vretu-Dev/UsefulHints?style=for-the-badge&label=Latest%20Release&color=%23D91656)
 
 # UsefulHints for EXILED
-<h3>If you like this plugin you can support me!</h3>
-<a href="https://opencollective.com/ucs/projects/usefulhints/donate"><img src="https://github.com/user-attachments/assets/f5aa3e98-d73c-470d-a134-5e9d923ea30b" style="width:205px;height:53px;"></a>
-<h3>UCS Independent Developer</h3>
-<a href='https://discord.gg/5StRGu8EJV'><img src="https://github.com/user-attachments/assets/517f8cae-32ac-4886-8bd6-5e95447073e2" style="width:205px;height:53px;"></a>
+<h4>If you like this plugin you can support me!</h4>
+<a href="https://opencollective.com/ucs/projects/usefulhints/donate"><img src="https://github.com/user-attachments/assets/f5aa3e98-d73c-470d-a134-5e9d923ea30b" style="width:154px;height:40px;"></a>
+<h4>UCS Independent Developer</h4>
+<a href='https://discord.gg/5StRGu8EJV'><img src="https://github.com/user-attachments/assets/517f8cae-32ac-4886-8bd6-5e95447073e2" style="width:154px;height:40px;"></a>
 
 ## Features:
 - Display remaining time after using SCP-268
