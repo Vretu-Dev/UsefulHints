@@ -284,6 +284,5 @@ namespace UsefulHints.EventHandlers.Items
                 }
             }
         }
-
     }
 }

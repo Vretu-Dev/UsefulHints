@@ -19,8 +19,8 @@ namespace UsefulHints
         public string JailbirdUseMessage { get; set; } = "Remaining charges: {0}";
         public string MicroEnergyMessage { get; set; } = "Remaining energy: {0}%";
         public string MicroLowEnergyMessage { get; set; } = "Low Energy";
-        [Description("Show Jailbird and MicroHid Hint on equip (default only when pick it up)")]
-        public bool ShowHintOnEquip { get; set; } = false;
+        [Description("Jailbird and MicroHID hints on equip (default: only on pickup)")]
+        public bool ShowHintOnEquip { get; set; } = true;
         public string Scp207HintMessage { get; set; } = "You have {0} doses of SCP-207";
         public string AntiScp207HintMessage { get; set; } = "You have {0} doses of Anti SCP-207";
         [Description("Item Warnings:")]
@@ -33,8 +33,8 @@ namespace UsefulHints
         public string FriendlyFireWarning { get; set; } = "<size=27><color=yellow>\u26A0 Do not hurt your teammate</color></size>";
         public string DamageTakenWarning { get; set; } = "<size=27><color=red>{0}</color> <color=yellow>(teammate) hit you</color></size>";
         public bool ClassDAreTeammates { get; set; } = true;
-        public bool CuffedPlayerWarning { get; set; } = true;
-        public string CuffedWarning { get; set; } = "<size=27><color=yellow>\u26A0 Player is cuffed</color></size>";
+        public bool EnableCuffedWarning { get; set; } = true;
+        public string CuffedPlayerWarning { get; set; } = "<size=27><color=yellow>\u26A0 Player is cuffed</color></size>";
         [Description("Kill Counter:")]
         public bool EnableKillCounter { get; set; } = true;
         public string KillCountMessage { get; set; } = "{0} kills";
