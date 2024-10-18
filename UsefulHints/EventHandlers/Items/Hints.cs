@@ -48,6 +48,7 @@ namespace UsefulHints.EventHandlers.Items
             Exiled.Events.Handlers.Player.PickingUpItem -= OnPickingUpJailbird;
             Exiled.Events.Handlers.Player.ChangingItem -= OnEquipJailbird;
         }
+        // MicroHid Handler
         private static void OnPickingUpMicroHid(PickingUpItemEventArgs ev)
         {
             if (ev.Pickup.Base is MicroHIDPickup microHidPickup)
