@@ -33,8 +33,11 @@ namespace UsefulHints.EventHandlers.Modules
                         ev.Player.ShowHint(string.Format(UsefulHints.Instance.Config.DamageTakenWarning, ev.Attacker.Nickname), 2);
                     }
                 }
+                if (UsefulHints.Instance.Config.CuffedPlayerWarning && ev.Player.IsCuffed && ev.Attacker != ev.Player)
+                {
+                    ev.Player.ShowHint(string.Format(UsefulHints.Instance.Config.CuffedWarning), 1);
+                }
             }
         }
-
     }
 }
