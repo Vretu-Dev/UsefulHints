@@ -3,11 +3,12 @@ using System.Linq;
 using System.Collections.Generic;
 using Exiled.API.Enums;
 using Exiled.API.Extensions;
-using Exiled.API.Features.Pickups;
+using JailbirdPickup = Exiled.API.Features.Pickups.JailbirdPickup;
 using Player = Exiled.API.Features.Player;
 using Exiled.Events.EventArgs.Map;
 using Exiled.Events.EventArgs.Player;
 using InventorySystem.Items.ThrowableProjectiles;
+using InventorySystem.Items.Jailbird;
 using MEC;
 
 namespace UsefulHints.EventHandlers.Items
@@ -19,6 +20,7 @@ namespace UsefulHints.EventHandlers.Items
         public static void RegisterEvents()
         {
             Exiled.Events.Handlers.Player.PickingUpItem += OnPickingUpMicroHid;
+            Exiled.Events.Handlers.Player.ChangingItem += OnEquipMicroHid;
             Exiled.Events.Handlers.Player.PickingUpItem += OnPickingUpSCP207;
             Exiled.Events.Handlers.Player.UsedItem += OnSCP1576Used;
             Exiled.Events.Handlers.Player.ChangedItem += OnSCP1576ChangedItem;
@@ -28,10 +30,12 @@ namespace UsefulHints.EventHandlers.Items
             Exiled.Events.Handlers.Map.ExplodingGrenade += OnSCP2176Grenade;
             Exiled.Events.Handlers.Server.WaitingForPlayers += OnWaitingForPlayers;
             Exiled.Events.Handlers.Player.PickingUpItem += OnPickingUpJailbird;
+            Exiled.Events.Handlers.Player.ChangingItem += OnEquipJailbird;
         }
         public static void UnregisterEvents()
         {
             Exiled.Events.Handlers.Player.PickingUpItem -= OnPickingUpMicroHid;
+            Exiled.Events.Handlers.Player.ChangingItem -= OnEquipMicroHid;
             Exiled.Events.Handlers.Player.PickingUpItem -= OnPickingUpSCP207;
             Exiled.Events.Handlers.Player.UsedItem -= OnSCP1576Used;
             Exiled.Events.Handlers.Player.ChangedItem -= OnSCP1576ChangedItem;
@@ -41,6 +45,7 @@ namespace UsefulHints.EventHandlers.Items
             Exiled.Events.Handlers.Map.ExplodingGrenade -= OnSCP2176Grenade;
             Exiled.Events.Handlers.Server.WaitingForPlayers -= OnWaitingForPlayers;
             Exiled.Events.Handlers.Player.PickingUpItem -= OnPickingUpJailbird;
+            Exiled.Events.Handlers.Player.ChangingItem -= OnEquipJailbird;
         }
         private static void OnPickingUpMicroHid(PickingUpItemEventArgs ev)
         {
@@ -60,6 +65,31 @@ namespace UsefulHints.EventHandlers.Items
                     else
                     {
                         ev.Player.ShowHint($"<color=#4169E1>{string.Format(UsefulHints.Instance.Config.MicroEnergyMessage, roundedEnergyPercentage)}</color>", 4);
+                    }
+                }
+            }
+        }
+        public static void OnEquipMicroHid(ChangingItemEventArgs ev)
+        {
+            if (UsefulHints.Instance.Config.ShowHintOnEquip)
+            {
+                if (ev.Item.Type == ItemType.MicroHID)
+                {
+                    var microHidItem = ev.Item.Base as InventorySystem.Items.MicroHID.MicroHIDItem;
+
+                    if (microHidItem != null)
+                    {
+                        float energyPercentage = microHidItem.RemainingEnergy * 100;
+                        float roundedEnergyPercentage = (float)Math.Round(energyPercentage, 1);
+
+                        if (roundedEnergyPercentage < 5)
+                        {
+                            ev.Player.ShowHint($"<color=red>{string.Format(UsefulHints.Instance.Config.MicroLowEnergyMessage)}</color>", 4);
+                        }
+                        else
+                        {
+                            ev.Player.ShowHint($"<color=#4169E1>{string.Format(UsefulHints.Instance.Config.MicroEnergyMessage, roundedEnergyPercentage)}</color>", 4);
+                        }
                     }
                 }
             }
@@ -229,5 +259,31 @@ namespace UsefulHints.EventHandlers.Items
                 }
             }
         }
+        private static void OnEquipJailbird(ChangingItemEventArgs ev)
+        {
+            if (UsefulHints.Instance.Config.ShowHintOnEquip)
+            {
+                if (ev.Item.Type == ItemType.Jailbird)
+                {
+                    var jailbirdItem = ev.Item.Base as JailbirdItem;
+
+                    if (jailbirdItem != null)
+                    {
+                        int maxCharges = 5;
+                        int remainingCharges = maxCharges - jailbirdItem.TotalChargesPerformed;
+
+                        if (remainingCharges > 1)
+                        {
+                            ev.Player.ShowHint($"<color=#00B7EB>{string.Format(UsefulHints.Instance.Config.JailbirdUseMessage, remainingCharges)}</color>", 4);
+                        }
+                        else
+                        {
+                            ev.Player.ShowHint($"<color=#C73804>{string.Format(UsefulHints.Instance.Config.JailbirdUseMessage, remainingCharges)}</color>", 4);
+                        }
+                    }
+                }
+            }
+        }
+
     }
 }

@@ -19,6 +19,8 @@ namespace UsefulHints
         public string JailbirdUseMessage { get; set; } = "Remaining charges: {0}";
         public string MicroEnergyMessage { get; set; } = "Remaining energy: {0}%";
         public string MicroLowEnergyMessage { get; set; } = "Low Energy";
+        [Description("Show Jailbird and MicroHid Hint on equip (default only when pick it up)")]
+        public bool ShowHintOnEquip { get; set; } = false;
         public string Scp207HintMessage { get; set; } = "You have {0} doses of SCP-207";
         public string AntiScp207HintMessage { get; set; } = "You have {0} doses of Anti SCP-207";
         [Description("Item Warnings:")]
