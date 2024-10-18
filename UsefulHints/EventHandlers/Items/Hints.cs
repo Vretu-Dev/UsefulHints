@@ -9,6 +9,7 @@ using Exiled.Events.EventArgs.Map;
 using Exiled.Events.EventArgs.Player;
 using InventorySystem.Items.ThrowableProjectiles;
 using InventorySystem.Items.Jailbird;
+using InventorySystem.Items.MicroHID;
 using MEC;
 
 namespace UsefulHints.EventHandlers.Items
@@ -49,23 +50,18 @@ namespace UsefulHints.EventHandlers.Items
         }
         private static void OnPickingUpMicroHid(PickingUpItemEventArgs ev)
         {
-            if (ev.Pickup.Type == ItemType.MicroHID)
+            if (ev.Pickup.Base is MicroHIDPickup microHidPickup)
             {
-                var microHidPickup = ev.Pickup.Base as InventorySystem.Items.MicroHID.MicroHIDPickup;
+                float energyPercentage = microHidPickup.Energy * 100;
+                float roundedEnergyPercentage = (float)Math.Round(energyPercentage, 1);
 
-                if (microHidPickup != null)
+                if (roundedEnergyPercentage < 5)
                 {
-                    float energyPercentage = microHidPickup.Energy * 100;
-                    float roundedEnergyPercentage = (float)Math.Round(energyPercentage, 1);
-
-                    if (roundedEnergyPercentage < 5)
-                    {
-                        ev.Player.ShowHint($"<color=red>{string.Format(UsefulHints.Instance.Config.MicroLowEnergyMessage)}</color>", 4);
-                    }
-                    else
-                    {
-                        ev.Player.ShowHint($"<color=#4169E1>{string.Format(UsefulHints.Instance.Config.MicroEnergyMessage, roundedEnergyPercentage)}</color>", 4);
-                    }
+                    ev.Player.ShowHint($"<color=red>{string.Format(UsefulHints.Instance.Config.MicroLowEnergyMessage)}</color>", 4);
+                }
+                else
+                {
+                    ev.Player.ShowHint($"<color=#4169E1>{string.Format(UsefulHints.Instance.Config.MicroEnergyMessage, roundedEnergyPercentage)}</color>", 4);
                 }
             }
         }
@@ -73,23 +69,23 @@ namespace UsefulHints.EventHandlers.Items
         {
             if (UsefulHints.Instance.Config.ShowHintOnEquip)
             {
-                if (ev.Item.Type == ItemType.MicroHID)
+                if (ev.Item == null)
                 {
-                    var microHidItem = ev.Item.Base as InventorySystem.Items.MicroHID.MicroHIDItem;
+                    return;
+                }
+                if (ev.Item.Base is MicroHIDItem microHidItem)
+                {
 
-                    if (microHidItem != null)
+                    float energyPercentage = microHidItem.RemainingEnergy * 100;
+                    float roundedEnergyPercentage = (float)Math.Round(energyPercentage, 1);
+
+                    if (roundedEnergyPercentage < 5)
                     {
-                        float energyPercentage = microHidItem.RemainingEnergy * 100;
-                        float roundedEnergyPercentage = (float)Math.Round(energyPercentage, 1);
-
-                        if (roundedEnergyPercentage < 5)
-                        {
-                            ev.Player.ShowHint($"<color=red>{string.Format(UsefulHints.Instance.Config.MicroLowEnergyMessage)}</color>", 4);
-                        }
-                        else
-                        {
-                            ev.Player.ShowHint($"<color=#4169E1>{string.Format(UsefulHints.Instance.Config.MicroEnergyMessage, roundedEnergyPercentage)}</color>", 4);
-                        }
+                        ev.Player.ShowHint($"<color=red>{new string('\n', 10)}{string.Format(UsefulHints.Instance.Config.MicroLowEnergyMessage)}</color>", 4);
+                    }
+                    else
+                    {
+                        ev.Player.ShowHint($"<color=#4169E1>{new string('\n', 10)}{string.Format(UsefulHints.Instance.Config.MicroEnergyMessage, roundedEnergyPercentage)}</color>", 4);
                     }
                 }
             }
@@ -259,27 +255,26 @@ namespace UsefulHints.EventHandlers.Items
                 }
             }
         }
-        private static void OnEquipJailbird(ChangingItemEventArgs ev)
+        public static void OnEquipJailbird(ChangingItemEventArgs ev)
         {
             if (UsefulHints.Instance.Config.ShowHintOnEquip)
             {
-                if (ev.Item.Type == ItemType.Jailbird)
+                if (ev.Item == null)
                 {
-                    var jailbirdItem = ev.Item.Base as JailbirdItem;
+                    return;
+                }
+                if (ev.Item.Base is JailbirdItem jailbirdItem)
+                {
+                    int maxCharges = 5;
+                    int remainingCharges = maxCharges - jailbirdItem.TotalChargesPerformed;
 
-                    if (jailbirdItem != null)
+                    if (remainingCharges > 1)
                     {
-                        int maxCharges = 5;
-                        int remainingCharges = maxCharges - jailbirdItem.TotalChargesPerformed;
-
-                        if (remainingCharges > 1)
-                        {
-                            ev.Player.ShowHint($"<color=#00B7EB>{string.Format(UsefulHints.Instance.Config.JailbirdUseMessage, remainingCharges)}</color>", 4);
-                        }
-                        else
-                        {
-                            ev.Player.ShowHint($"<color=#C73804>{string.Format(UsefulHints.Instance.Config.JailbirdUseMessage, remainingCharges)}</color>", 4);
-                        }
+                        ev.Player.ShowHint($"<color=#00B7EB>{new string('\n', 10)}{string.Format(UsefulHints.Instance.Config.JailbirdUseMessage, remainingCharges)}</color>", 4);
+                    }
+                    else
+                    {
+                        ev.Player.ShowHint($"<color=#C73804>{new string('\n', 10)}{string.Format(UsefulHints.Instance.Config.JailbirdUseMessage, remainingCharges)}</color>", 4);
                     }
                 }
             }

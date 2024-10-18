@@ -35,7 +35,8 @@ namespace UsefulHints.EventHandlers.Modules
                 }
                 if (UsefulHints.Instance.Config.EnableCuffedWarning && ev.Player.IsCuffed && ev.Attacker != ev.Player)
                 {
-                    ev.Player.ShowHint(string.Format(UsefulHints.Instance.Config.CuffedPlayerWarning), 1);
+                    ev.Attacker.ShowHint(string.Format(UsefulHints.Instance.Config.CuffedAttackerWarning), 2);
+                    ev.Player.ShowHint(string.Format(UsefulHints.Instance.Config.CuffedPlayerWarning, ev.Attacker.Nickname), 2);
                 }
             }
         }

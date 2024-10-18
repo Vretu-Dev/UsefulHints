@@ -34,7 +34,8 @@ namespace UsefulHints
         public string DamageTakenWarning { get; set; } = "<size=27><color=red>{0}</color> <color=yellow>(teammate) hit you</color></size>";
         public bool ClassDAreTeammates { get; set; } = true;
         public bool EnableCuffedWarning { get; set; } = true;
-        public string CuffedPlayerWarning { get; set; } = "<size=27><color=yellow>\u26A0 Player is cuffed</color></size>";
+        public string CuffedAttackerWarning { get; set; } = "<size=27><color=yellow>\u26A0 Player is cuffed</color></size>";
+        public string CuffedPlayerWarning { get; set; } = "<size=27><color=red>{0}</color> <color=yellow>hit you when you were cuffed</color></size>";
         [Description("Kill Counter:")]
         public bool EnableKillCounter { get; set; } = true;
         public string KillCountMessage { get; set; } = "{0} kills";
