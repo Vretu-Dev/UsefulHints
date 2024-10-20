@@ -54,7 +54,7 @@ UH:
   micro_hid_low_energy_message: 'Low Energy'
   scp207_hint_message: 'You have {0} doses of SCP-207'
   anti_scp207_hint_message: 'You have {0} doses of Anti SCP-207'
-  show_hint_on_equip_item: true
+  show_hint_on_equip_item: false
   # Item Warnings:
   enable_warnings: true
   scp207_warning: '<color=yellow>⚠</color> You are already affected by <color=#A60C0E>SCP-207</color>'
@@ -65,7 +65,7 @@ UH:
   friendly_fire_warning: '<size=27><color=yellow>⚠ Do not hurt your teammate</color></size>'
   damage_taken_warning: '<size=27><color=red>{0}</color> <color=yellow>(teammate) hit you</color></size>'
   class_d_are_teammates: true
-  enable_cuffed_warning: true
+  enable_cuffed_warning: false
   cuffed_attacker_warning: '<size=27><color=yellow>⚠ Player is cuffed</color></size>'
   cuffed_player_warning: '<size=27><color=red>{0}</color> <color=yellow>hit you when you were cuffed</color></size>'
   # Kill Counter:
