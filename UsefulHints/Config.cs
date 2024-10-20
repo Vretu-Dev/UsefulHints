@@ -17,12 +17,11 @@ namespace UsefulHints
         public string Scp2176TimeLeftMessage { get; set; } = "Remaining: {0}s";
         public string Scp1576TimeLeftMessage { get; set; } = "Remaining: {0}s";
         public string JailbirdUseMessage { get; set; } = "Remaining charges: {0}";
-        public string MicroEnergyMessage { get; set; } = "Remaining energy: {0}%";
-        public string MicroLowEnergyMessage { get; set; } = "Low Energy";
-        [Description("Jailbird and MicroHID hints on equip (default: only on pickup)")]
-        public bool ShowHintOnEquip { get; set; } = true;
+        public string MicroHidEnergyMessage { get; set; } = "Remaining energy: {0}%";
+        public string MicroHidLowEnergyMessage { get; set; } = "Low Energy";
         public string Scp207HintMessage { get; set; } = "You have {0} doses of SCP-207";
         public string AntiScp207HintMessage { get; set; } = "You have {0} doses of Anti SCP-207";
+        public bool ShowHintOnEquipItem { get; set; } = false;
         [Description("Item Warnings:")]
         public bool EnableWarnings { get; set; } = true;
         public string Scp207Warning { get; set; } = "<color=yellow>\u26A0</color> You are already affected by <color=#A60C0E>SCP-207</color>";
@@ -33,7 +32,7 @@ namespace UsefulHints
         public string FriendlyFireWarning { get; set; } = "<size=27><color=yellow>\u26A0 Do not hurt your teammate</color></size>";
         public string DamageTakenWarning { get; set; } = "<size=27><color=red>{0}</color> <color=yellow>(teammate) hit you</color></size>";
         public bool ClassDAreTeammates { get; set; } = true;
-        public bool EnableCuffedWarning { get; set; } = true;
+        public bool EnableCuffedWarning { get; set; } = false;
         public string CuffedAttackerWarning { get; set; } = "<size=27><color=yellow>\u26A0 Player is cuffed</color></size>";
         public string CuffedPlayerWarning { get; set; } = "<size=27><color=red>{0}</color> <color=yellow>hit you when you were cuffed</color></size>";
         [Description("Kill Counter:")]
