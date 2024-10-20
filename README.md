@@ -42,7 +42,7 @@ Bug Reporters: iksemdem, 𝒯𝓇𝒾𝓈𝓉𝒶𝓃𝐿𝒾𝓀𝑒𝓈𝒰�
 UH:
   is_enabled: true
   debug: false
-  # Hints Settings:
+  # Hint Settings:
   enable_hints: true
   scp096_look_message: 'You looked at SCP-096!'
   scp268_duration: 15
@@ -50,10 +50,11 @@ UH:
   scp2176_time_left_message: 'Remaining: {0}s'
   scp1576_time_left_message: 'Remaining: {0}s'
   jailbird_use_message: 'Remaining charges: {0}'
-  micro_energy_message: 'Remaining energy: {0}%'
-  micro_low_energy_message: 'Low Energy'
+  micro_hid_energy_message: 'Remaining energy: {0}%'
+  micro_hid_low_energy_message: 'Low Energy'
   scp207_hint_message: 'You have {0} doses of SCP-207'
   anti_scp207_hint_message: 'You have {0} doses of Anti SCP-207'
+  show_hint_on_equip_item: true
   # Item Warnings:
   enable_warnings: true
   scp207_warning: '<color=yellow>⚠</color> You are already affected by <color=#A60C0E>SCP-207</color>'
@@ -64,6 +65,9 @@ UH:
   friendly_fire_warning: '<size=27><color=yellow>⚠ Do not hurt your teammate</color></size>'
   damage_taken_warning: '<size=27><color=red>{0}</color> <color=yellow>(teammate) hit you</color></size>'
   class_d_are_teammates: true
+  enable_cuffed_warning: true
+  cuffed_attacker_warning: '<size=27><color=yellow>⚠ Player is cuffed</color></size>'
+  cuffed_player_warning: '<size=27><color=red>{0}</color> <color=yellow>hit you when you were cuffed</color></size>'
   # Kill Counter:
   enable_kill_counter: true
   kill_count_message: '{0} kills'
