@@ -9,7 +9,7 @@ namespace UsefulHints
     {
         public bool IsEnabled { get; set; } = true;
         public bool Debug { get; set; } = false;
-        [Description("Hints Settings:")]
+        [Description("Hint Settings:")]
         public bool EnableHints { get; set; } = true;
         public string Scp096LookMessage { get; set; } = "You looked at SCP-096!";
         public float Scp268Duration { get; set; } = 15f;
