@@ -15,7 +15,7 @@ namespace UsefulHints.EventHandlers.Modules
         }
         private static void OnHurting(HurtingEventArgs ev)
         {
-            if (ev.Attacker != null && ev.Player != null && ev.Attacker.Role != null && ev.Player.Role != null)
+            if (ev.Attacker != null && ev.Player != null && ev.Attacker.Role != null && ev.Player.Role != null && ev.Attacker.Role.Team != Team.SCPs && ev.Player.Role.Team != Team.SCPs)
             {
                 if (ev.Attacker.Role.Side == ev.Player.Role.Side && ev.Attacker != ev.Player)
                 {
@@ -33,8 +33,12 @@ namespace UsefulHints.EventHandlers.Modules
                         ev.Player.ShowHint(string.Format(UsefulHints.Instance.Config.DamageTakenWarning, ev.Attacker.Nickname), 2);
                     }
                 }
+                if (UsefulHints.Instance.Config.EnableCuffedWarning && ev.Player.IsCuffed && ev.Attacker != ev.Player)
+                {
+                    ev.Attacker.ShowHint(string.Format(UsefulHints.Instance.Config.CuffedAttackerWarning), 2);
+                    ev.Player.ShowHint(string.Format(UsefulHints.Instance.Config.CuffedPlayerWarning, ev.Attacker.Nickname), 2);
+                }
             }
         }
-
     }
 }

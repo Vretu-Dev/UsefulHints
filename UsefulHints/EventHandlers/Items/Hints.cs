@@ -3,11 +3,13 @@ using System.Linq;
 using System.Collections.Generic;
 using Exiled.API.Enums;
 using Exiled.API.Extensions;
-using Exiled.API.Features.Pickups;
+using JailbirdPickup = Exiled.API.Features.Pickups.JailbirdPickup;
 using Player = Exiled.API.Features.Player;
 using Exiled.Events.EventArgs.Map;
 using Exiled.Events.EventArgs.Player;
 using InventorySystem.Items.ThrowableProjectiles;
+using InventorySystem.Items.Jailbird;
+using InventorySystem.Items.MicroHID;
 using MEC;
 
 namespace UsefulHints.EventHandlers.Items
@@ -19,7 +21,9 @@ namespace UsefulHints.EventHandlers.Items
         public static void RegisterEvents()
         {
             Exiled.Events.Handlers.Player.PickingUpItem += OnPickingUpMicroHid;
+            Exiled.Events.Handlers.Player.ChangingItem += OnEquipMicroHid;
             Exiled.Events.Handlers.Player.PickingUpItem += OnPickingUpSCP207;
+            Exiled.Events.Handlers.Player.ChangingItem += OnEquipSCP207;
             Exiled.Events.Handlers.Player.UsedItem += OnSCP1576Used;
             Exiled.Events.Handlers.Player.ChangedItem += OnSCP1576ChangedItem;
             Exiled.Events.Handlers.Player.UsedItem += OnSCP268Used;
@@ -28,11 +32,14 @@ namespace UsefulHints.EventHandlers.Items
             Exiled.Events.Handlers.Map.ExplodingGrenade += OnSCP2176Grenade;
             Exiled.Events.Handlers.Server.WaitingForPlayers += OnWaitingForPlayers;
             Exiled.Events.Handlers.Player.PickingUpItem += OnPickingUpJailbird;
+            Exiled.Events.Handlers.Player.ChangingItem += OnEquipJailbird;
         }
         public static void UnregisterEvents()
         {
             Exiled.Events.Handlers.Player.PickingUpItem -= OnPickingUpMicroHid;
+            Exiled.Events.Handlers.Player.ChangingItem -= OnEquipMicroHid;
             Exiled.Events.Handlers.Player.PickingUpItem -= OnPickingUpSCP207;
+            Exiled.Events.Handlers.Player.ChangingItem -= OnEquipSCP207;
             Exiled.Events.Handlers.Player.UsedItem -= OnSCP1576Used;
             Exiled.Events.Handlers.Player.ChangedItem -= OnSCP1576ChangedItem;
             Exiled.Events.Handlers.Player.UsedItem -= OnSCP268Used;
@@ -41,25 +48,47 @@ namespace UsefulHints.EventHandlers.Items
             Exiled.Events.Handlers.Map.ExplodingGrenade -= OnSCP2176Grenade;
             Exiled.Events.Handlers.Server.WaitingForPlayers -= OnWaitingForPlayers;
             Exiled.Events.Handlers.Player.PickingUpItem -= OnPickingUpJailbird;
+            Exiled.Events.Handlers.Player.ChangingItem -= OnEquipJailbird;
         }
+        // MicroHid Handler
         private static void OnPickingUpMicroHid(PickingUpItemEventArgs ev)
         {
-            if (ev.Pickup.Type == ItemType.MicroHID)
+            if (ev.Pickup.Base is MicroHIDPickup microHidPickup)
             {
-                var microHidPickup = ev.Pickup.Base as InventorySystem.Items.MicroHID.MicroHIDPickup;
+                float energyPercentage = microHidPickup.Energy * 100;
+                float roundedEnergyPercentage = (float)Math.Round(energyPercentage, 1);
 
-                if (microHidPickup != null)
+                if (roundedEnergyPercentage < 5)
                 {
-                    float energyPercentage = microHidPickup.Energy * 100;
+                    ev.Player.ShowHint($"<color=red>{new string('\n', 10)}{string.Format(UsefulHints.Instance.Config.MicroHidLowEnergyMessage)}</color>", 4);
+                }
+                else
+                {
+                    ev.Player.ShowHint($"<color=#4169E1>{new string('\n', 10)}{string.Format(UsefulHints.Instance.Config.MicroHidEnergyMessage, roundedEnergyPercentage)}</color>", 4);
+                }
+            }
+        }
+        public static void OnEquipMicroHid(ChangingItemEventArgs ev)
+        {
+            if (UsefulHints.Instance.Config.ShowHintOnEquipItem)
+            {
+                if (ev.Item == null)
+                {
+                    return;
+                }
+                if (ev.Item.Base is MicroHIDItem microHidItem)
+                {
+
+                    float energyPercentage = microHidItem.RemainingEnergy * 100;
                     float roundedEnergyPercentage = (float)Math.Round(energyPercentage, 1);
 
                     if (roundedEnergyPercentage < 5)
                     {
-                        ev.Player.ShowHint($"<color=red>{string.Format(UsefulHints.Instance.Config.MicroLowEnergyMessage)}</color>", 4);
+                        ev.Player.ShowHint($"<color=red>{new string('\n', 10)}{string.Format(UsefulHints.Instance.Config.MicroHidLowEnergyMessage)}</color>", 2);
                     }
                     else
                     {
-                        ev.Player.ShowHint($"<color=#4169E1>{string.Format(UsefulHints.Instance.Config.MicroEnergyMessage, roundedEnergyPercentage)}</color>", 4);
+                        ev.Player.ShowHint($"<color=#4169E1>{new string('\n', 10)}{string.Format(UsefulHints.Instance.Config.MicroHidEnergyMessage, roundedEnergyPercentage)}</color>", 2);
                     }
                 }
             }
@@ -73,7 +102,7 @@ namespace UsefulHints.EventHandlers.Items
 
                 if (scp207Effect != null)
                 {
-                    ev.Player.ShowHint($"<color=#A60C0E>{string.Format(UsefulHints.Instance.Config.Scp207HintMessage, scp207Effect.Intensity)}</color>", 4);
+                    ev.Player.ShowHint($"<color=#A60C0E>{new string('\n', 10)}{string.Format(UsefulHints.Instance.Config.Scp207HintMessage, scp207Effect.Intensity)}</color>", 4);
                 }
             }
             if (ev.Pickup.Type == ItemType.AntiSCP207)
@@ -82,7 +111,35 @@ namespace UsefulHints.EventHandlers.Items
 
                 if (antiscp207Effect != null)
                 {
-                    ev.Player.ShowHint($"<color=#2969AD>{string.Format(UsefulHints.Instance.Config.AntiScp207HintMessage, antiscp207Effect.Intensity)}</color>", 4);
+                    ev.Player.ShowHint($"<color=#C53892>{new string('\n', 10)}{string.Format(UsefulHints.Instance.Config.AntiScp207HintMessage, antiscp207Effect.Intensity)}</color>", 4);
+                }
+            }
+        }
+        private static void OnEquipSCP207(ChangingItemEventArgs ev)
+        {
+            if (UsefulHints.Instance.Config.ShowHintOnEquipItem)
+            {
+                if (ev.Item == null)
+                {
+                    return;
+                }
+                if (ev.Item.Type == ItemType.SCP207)
+                {
+                    CustomPlayerEffects.StatusEffectBase scp207Effect = ev.Player.ActiveEffects.FirstOrDefault(effect => effect.GetEffectType() == EffectType.Scp207);
+
+                    if (scp207Effect != null)
+                    {
+                        ev.Player.ShowHint($"<color=#A60C0E>{new string('\n', 10)}{string.Format(UsefulHints.Instance.Config.Scp207HintMessage, scp207Effect.Intensity)}</color>", 2);
+                    }
+                }
+                if (ev.Item.Type == ItemType.AntiSCP207)
+                {
+                    CustomPlayerEffects.StatusEffectBase antiscp207Effect = ev.Player.ActiveEffects.FirstOrDefault(effect => effect.GetEffectType() == EffectType.AntiScp207);
+
+                    if (antiscp207Effect != null)
+                    {
+                        ev.Player.ShowHint($"<color=#C53892>{new string('\n', 10)}{string.Format(UsefulHints.Instance.Config.AntiScp207HintMessage, antiscp207Effect.Intensity)}</color>", 2);
+                    }
                 }
             }
         }
@@ -221,11 +278,35 @@ namespace UsefulHints.EventHandlers.Items
                 int remainingCharges = maxCharges - jailbirdPickup.TotalCharges;
                 if (remainingCharges > 1)
                 {
-                    ev.Player.ShowHint($"<color=#00B7EB>{string.Format(UsefulHints.Instance.Config.JailbirdUseMessage, remainingCharges)}</color>", 4);
+                    ev.Player.ShowHint($"<color=#00B7EB>{new string('\n', 10)}{string.Format(UsefulHints.Instance.Config.JailbirdUseMessage, remainingCharges)}</color>", 4);
                 }
                 else
                 {
-                    ev.Player.ShowHint($"<color=#C73804>{string.Format(UsefulHints.Instance.Config.JailbirdUseMessage, remainingCharges)}</color>", 4);
+                    ev.Player.ShowHint($"<color=#C73804>{new string('\n', 10)}{string.Format(UsefulHints.Instance.Config.JailbirdUseMessage, remainingCharges)}</color>", 4);
+                }
+            }
+        }
+        public static void OnEquipJailbird(ChangingItemEventArgs ev)
+        {
+            if (UsefulHints.Instance.Config.ShowHintOnEquipItem)
+            {
+                if (ev.Item == null)
+                {
+                    return;
+                }
+                if (ev.Item.Base is JailbirdItem jailbirdItem)
+                {
+                    int maxCharges = 5;
+                    int remainingCharges = maxCharges - jailbirdItem.TotalChargesPerformed;
+
+                    if (remainingCharges > 1)
+                    {
+                        ev.Player.ShowHint($"<color=#00B7EB>{new string('\n', 10)}{string.Format(UsefulHints.Instance.Config.JailbirdUseMessage, remainingCharges)}</color>", 2);
+                    }
+                    else
+                    {
+                        ev.Player.ShowHint($"<color=#C73804>{new string('\n', 10)}{string.Format(UsefulHints.Instance.Config.JailbirdUseMessage, remainingCharges)}</color>", 2);
+                    }
                 }
             }
         }
