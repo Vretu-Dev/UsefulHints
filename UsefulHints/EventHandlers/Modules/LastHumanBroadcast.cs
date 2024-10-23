@@ -8,6 +8,7 @@ namespace UsefulHints.EventHandlers.Modules
 {
     public static class LastHumanBroadcast
     {
+        private static bool hasBroadcastBeenSent = false;
         public static void RegisterEvents()
         {
             Exiled.Events.Handlers.Player.Died += OnPlayerDied;
@@ -20,7 +21,11 @@ namespace UsefulHints.EventHandlers.Modules
         {
             var aliveHumans = Player.List.Where(p => p.IsAlive && IsHuman(p));
 
-            if (aliveHumans.Count() == 1)
+            if (aliveHumans.Count() > 1)
+            {
+                hasBroadcastBeenSent = false;
+            }
+            if (aliveHumans.Count() == 1 && !hasBroadcastBeenSent)
             {
                 Player lastAlive = aliveHumans.First();
 
@@ -35,6 +40,7 @@ namespace UsefulHints.EventHandlers.Modules
                 {
                     scp.Broadcast(10, message);
                 }
+                hasBroadcastBeenSent = true;
             }
         }
         private static bool IsHuman(Player player)
