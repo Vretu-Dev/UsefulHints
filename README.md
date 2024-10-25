@@ -26,12 +26,10 @@
 - End-of-game summary
 - Show teammates at the start of the round
 - Broadcast the last human alive
-- Custom settings for Jailbird
 
 ### Minimum Exiled Version: 8.9.8
 ### Credits:
 - Thanks [@NamelessSCP](https://github.com/NamelessSCP) for using the [RoundMVP](https://github.com/NamelessSCP/RoundMVP) idea.<br>
-- Thanks [@cherniichernish](https://steamcommunity.com/id/Denis_Ik/) for using Jailbird Patch.<br>
 - Thanks [@XoMiya-WPC](https://github.com/XoMiya-WPC) for using the [WhoAreMyTeammates](https://github.com/XoMiya-WPC/WhoAreMyTeammates) idea.<br>
 - Thank you to these wonderful people for testing and bug reporting:<br>
 Testers: [Cat Potato](https://github.com/Cat-Potato), [Aserciak](https://steamcommunity.com/profiles/76561199053527692), [AVE_SATAN](https://steamcommunity.com/id/AVE_S4TAN/), [N](https://steamcommunity.com/profiles/76561199207670378), [Folia](https://steamcommunity.com/profiles/76561198004167374), [MVP_Faker](https://steamcommunity.com/id/746237524/), [Aime](https://steamcommunity.com/profiles/76561199125886809), [Clown](https://steamcommunity.com/profiles/76561199318901590), [OneManArmy](https://steamcommunity.com/profiles/76561199120200596)<br>
@@ -93,11 +91,6 @@ UH:
   broadcast_for_human: '<color=red>You are the last human alive!</color>'
   broadcast_for_scp: '<color=#70EE9C>{0}</color> is the last human alive, playing as {1} in <color=yellow>{2}</color>'
   ignore_tutorial_role: true
-  # Jailbird Custom Settings:
-  enable_custom_jailbird_settings: false
-  jailbird_effect: Flashed
-  jailbird_effect_duration: 4
-  jailbird_effect_intensity: 1
 ```
 ## Showcase:
 ### Hints:
