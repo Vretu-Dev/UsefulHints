@@ -68,7 +68,7 @@ namespace UsefulHints.EventHandlers.Items
                 }
             }
         }
-        public static void OnEquipMicroHid(ChangingItemEventArgs ev)
+        private static void OnEquipMicroHid(ChangingItemEventArgs ev)
         {
             if (UsefulHints.Instance.Config.ShowHintOnEquipItem)
             {
@@ -286,7 +286,7 @@ namespace UsefulHints.EventHandlers.Items
                 }
             }
         }
-        public static void OnEquipJailbird(ChangingItemEventArgs ev)
+        private static void OnEquipJailbird(ChangingItemEventArgs ev)
         {
             if (UsefulHints.Instance.Config.ShowHintOnEquipItem)
             {

@@ -60,19 +60,17 @@
     <Compile Include="EventHandlers\Entities\SCP096.cs" />
     <Compile Include="EventHandlers\Items\WarningHints.cs" />
     <Compile Include="EventHandlers\Modules\FFWarning.cs" />
-    <Compile Include="EventHandlers\Modules\JailbirdPatchHandler.cs" />
     <Compile Include="EventHandlers\Items\Hints.cs" />
     <Compile Include="EventHandlers\Modules\KillCounter.cs" />
     <Compile Include="EventHandlers\Modules\LastHumanBroadcast.cs" />
     <Compile Include="EventHandlers\Modules\RoundSummary.cs" />
     <Compile Include="EventHandlers\Modules\Teammates.cs" />
-    <Compile Include="Patches\JailbirdPatch.cs" />
     <Compile Include="UsefulHints.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="EXILED-OFFICIAL">
-      <Version>8.12.2</Version>
+    <PackageReference Include="ExMod.Exiled">
+      <Version>8.13.1</Version>
     </PackageReference>
     <PackageReference Include="Lib.Harmony">
       <Version>2.3.3</Version>
