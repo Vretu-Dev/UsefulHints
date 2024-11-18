@@ -47,6 +47,7 @@ UH:
   scp268_time_left_message: 'Remaining: {0}s'
   scp2176_time_left_message: 'Remaining: {0}s'
   scp1576_time_left_message: 'Remaining: {0}s'
+  grenade_damage_hint: '{0} Damage'
   jailbird_use_message: 'Remaining charges: {0}'
   micro_hid_energy_message: 'Remaining energy: {0}%'
   micro_hid_low_energy_message: 'Low Energy'
@@ -91,6 +92,10 @@ UH:
   broadcast_for_human: '<color=red>You are the last human alive!</color>'
   broadcast_for_scp: '<color=#70EE9C>{0}</color> is the last human alive, playing as {1} in <color=yellow>{2}</color>'
   ignore_tutorial_role: true
+  # Map Broadcast:
+  enable_map_broadcast: true
+  broadcast_decontaminated_lcz: '<color=yellow>Light Zone</color> has been decontaminated'
+  broadcast_warning_lcz: '<color=yellow>Light Zone</color> will be decontaminated in 5 minutes!'
 ```
 ## Showcase:
 ### Hints:
