@@ -20,6 +20,7 @@ namespace UsefulHints.EventHandlers.Items
         private static Dictionary<Player, ItemType> activeItems = new Dictionary<Player, ItemType>();
         public static void RegisterEvents()
         {
+            Exiled.Events.Handlers.Player.Hurting += OnGrenadeHurting;
             Exiled.Events.Handlers.Player.PickingUpItem += OnPickingUpMicroHid;
             Exiled.Events.Handlers.Player.ChangingItem += OnEquipMicroHid;
             Exiled.Events.Handlers.Player.PickingUpItem += OnPickingUpSCP207;
@@ -36,6 +37,7 @@ namespace UsefulHints.EventHandlers.Items
         }
         public static void UnregisterEvents()
         {
+            Exiled.Events.Handlers.Player.Hurting -= OnGrenadeHurting;
             Exiled.Events.Handlers.Player.PickingUpItem -= OnPickingUpMicroHid;
             Exiled.Events.Handlers.Player.ChangingItem -= OnEquipMicroHid;
             Exiled.Events.Handlers.Player.PickingUpItem -= OnPickingUpSCP207;
@@ -49,6 +51,21 @@ namespace UsefulHints.EventHandlers.Items
             Exiled.Events.Handlers.Server.WaitingForPlayers -= OnWaitingForPlayers;
             Exiled.Events.Handlers.Player.PickingUpItem -= OnPickingUpJailbird;
             Exiled.Events.Handlers.Player.ChangingItem -= OnEquipJailbird;
+        }
+        // Explosion Damage Handler
+        private static void OnGrenadeHurting(HurtingEventArgs ev)
+        {
+            if (!ev.IsAllowed || ev.Amount <= 0.01f || ev.Attacker == null || ev.Player == null || ev.Player == ev.Attacker)
+                return;
+
+            if (ev.DamageHandler.Type == DamageType.Explosion)
+            {
+                float RemainingHealth = ev.Player.Health - ev.Amount;
+                if (RemainingHealth > 0)
+                {
+                    ev.Attacker.ShowHint($"<color=white>{new string('\n', 5)}{string.Format(UsefulHints.Instance.Config.GrenadeDamageHint, Math.Round(ev.Amount))}</color>", 4);
+                }
+            }
         }
         // MicroHid Handler
         private static void OnPickingUpMicroHid(PickingUpItemEventArgs ev)

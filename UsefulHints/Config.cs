@@ -16,6 +16,7 @@ namespace UsefulHints
         public string Scp268TimeLeftMessage { get; set; } = "Remaining: {0}s";
         public string Scp2176TimeLeftMessage { get; set; } = "Remaining: {0}s";
         public string Scp1576TimeLeftMessage { get; set; } = "Remaining: {0}s";
+        public string GrenadeDamageHint { get; set; } = "{0} Damage";
         public string JailbirdUseMessage { get; set; } = "Remaining charges: {0}";
         public string MicroHidEnergyMessage { get; set; } = "Remaining energy: {0}%";
         public string MicroHidLowEnergyMessage { get; set; } = "Low Energy";
@@ -58,5 +59,9 @@ namespace UsefulHints
         public string BroadcastForHuman { get; set; } = "<color=red>You are the last human alive!</color>";
         public string BroadcastForScp { get; set; } = "<color=#70EE9C>{0}</color> is the last human alive, playing as {1} in <color=yellow>{2}</color>";
         public bool IgnoreTutorialRole { get; set; } = true;
+        [Description("Map Broadcast:")]
+        public bool EnableMapBroadcast { get; set; } = true;
+        public string BroadcastDecontaminatedLcz { get; set; } = "<color=yellow>Light Zone</color> has been decontaminated";
+        public string BroadcastWarningLcz { get; set; } = "<color=yellow>Light Zone</color> will be decontaminated in 5 minutes!";
     }
 }
