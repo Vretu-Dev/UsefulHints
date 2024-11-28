@@ -41,6 +41,9 @@ Bug Reporters: iksemdem, 𝒯𝓇𝒾𝓈𝓉𝒶𝓃𝐿𝒾𝓀𝑒𝓈𝒰�
 UH:
   is_enabled: true
   debug: false
+  # Auto Update Plugin:
+  auto_update: true
+  enable_backup: false
   # Hint Settings:
   enable_hints: true
   scp096_look_message: 'You looked at SCP-096!'
@@ -95,7 +98,6 @@ UH:
   ignore_tutorial_role: true
   # Map Broadcast:
   enable_map_broadcast: true
-  broadcast_decontaminated_lcz: '<color=yellow>Light Zone</color> has been decontaminated'
   broadcast_warning_lcz: '<color=yellow>Light Zone</color> will be decontaminated in 5 minutes!'
 ```
 ## Showcase:
