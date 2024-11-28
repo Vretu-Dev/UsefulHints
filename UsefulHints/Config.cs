@@ -9,10 +9,12 @@ namespace UsefulHints
     {
         public bool IsEnabled { get; set; } = true;
         public bool Debug { get; set; } = false;
+        [Description("Auto Update Plugin:")]
+        public bool AutoUpdate { get; set; } = true;
+        public bool EnableBackup { get; set; } = false;
         [Description("Hint Settings:")]
         public bool EnableHints { get; set; } = true;
         public string Scp096LookMessage { get; set; } = "You looked at SCP-096!";
-        public float Scp268Duration { get; set; } = 15f;
         public string Scp268TimeLeftMessage { get; set; } = "Remaining: {0}s";
         public string Scp2176TimeLeftMessage { get; set; } = "Remaining: {0}s";
         public string Scp1576TimeLeftMessage { get; set; } = "Remaining: {0}s";
@@ -61,7 +63,6 @@ namespace UsefulHints
         public bool IgnoreTutorialRole { get; set; } = true;
         [Description("Map Broadcast:")]
         public bool EnableMapBroadcast { get; set; } = true;
-        public string BroadcastDecontaminatedLcz { get; set; } = "<color=yellow>Light Zone</color> has been decontaminated";
         public string BroadcastWarningLcz { get; set; } = "<color=yellow>Light Zone</color> will be decontaminated in 5 minutes!";
     }
 }

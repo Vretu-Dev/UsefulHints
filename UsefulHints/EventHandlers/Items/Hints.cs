@@ -241,7 +241,7 @@ namespace UsefulHints.EventHandlers.Items
         }
         private static IEnumerator<float> Scp268Timer(Player player)
         {
-            float duration = UsefulHints.Instance.Config.Scp268Duration;
+            float duration = 15f;
 
             while (duration > 0)
             {
