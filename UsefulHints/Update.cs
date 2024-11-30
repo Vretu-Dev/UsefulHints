@@ -13,7 +13,6 @@ namespace UsefulHints
         private static readonly string CurrentVersion = UsefulHints.Instance.Version.ToString();
         public static void RegisterEvents()
         {
-            Task.Run(async () => await CheckForUpdates(true));
             Exiled.Events.Handlers.Server.WaitingForPlayers += WaitingForPlayers;
         }
         public static void UnregisterEvents()
