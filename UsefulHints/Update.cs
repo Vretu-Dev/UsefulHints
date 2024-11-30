@@ -9,8 +9,8 @@ namespace UsefulHints
     public static class UpdateChecker
     {
         private static readonly string RepositoryUrl = "https://api.github.com/repos/Vretu-Dev/UsefulHints/releases/latest";
-        private static readonly string PluginPath = "/home/container/.config/EXILED/Plugins/UsefulHints.dll";
-        private static readonly string CurrentVersion = "1.8.0";
+        private static readonly string PluginPath = UsefulHints.Instance.Config.PluginPath;
+        private static readonly string CurrentVersion = UsefulHints.Instance.Version.ToString();
         public static void RegisterEvents()
         {
             Task.Run(async () => await CheckForUpdates(true));

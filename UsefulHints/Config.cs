@@ -12,6 +12,7 @@ namespace UsefulHints
         [Description("Auto Update Plugin:")]
         public bool AutoUpdate { get; set; } = true;
         public bool EnableBackup { get; set; } = false;
+        public string PluginPath { get; set; } = "/home/container/.config/EXILED/Plugins/UsefulHints.dll";
         [Description("Hint Settings:")]
         public bool EnableHints { get; set; } = true;
         public string Scp096LookMessage { get; set; } = "You looked at SCP-096!";
