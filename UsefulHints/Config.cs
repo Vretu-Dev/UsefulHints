@@ -9,8 +9,9 @@ namespace UsefulHints
     {
         public bool IsEnabled { get; set; } = true;
         public bool Debug { get; set; } = false;
-        [Description("Auto Update Plugin:")]
+        [Description("Auto Update:")]
         public bool AutoUpdate { get; set; } = true;
+        public bool EnableLogging { get; set; } = true;
         public bool EnableBackup { get; set; } = false;
         public string PluginPath { get; set; } = "/home/container/.config/EXILED/Plugins/UsefulHints.dll";
         [Description("Hint Settings:")]
