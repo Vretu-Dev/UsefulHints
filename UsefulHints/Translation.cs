@@ -10,11 +10,11 @@ namespace UsefulHints
 {
     public static class TranslationManager
     {
-        public static void RegisterEvents()
+        public static async Task RegisterEvents()
         {
-            InitializeTranslations().Wait();
+            await InitializeTranslationsAsync();
         }
-        private static async Task InitializeTranslations()
+        private static async Task InitializeTranslationsAsync()
         {
             string language = UsefulHints.Instance.Config.Language;
             await DownloadTranslationsAsync(language);
@@ -59,12 +59,11 @@ namespace UsefulHints
         }
 
         private static readonly HttpClient HttpClient = new HttpClient();
-        public static Dictionary<string, string> Translations = new Dictionary<string, string>();
+        private static Dictionary<string, string> Translations = new Dictionary<string, string>();
 
-        public static async Task DownloadTranslationsAsync(string language)
+        private static async Task DownloadTranslationsAsync(string language)
         {
-            string url = $"https://raw.githubusercontent.com/Vretu-Dev/UsefulHints/refs/heads/main/Translations/{language}.json";
-            string pluginDirectory = Path.Combine(Paths.Configs, "UsefulHints");
+            string pluginDirectory = "/home/container/.config/EXILED/Configs/UsefulHints/Translations";
             string filePath = Path.Combine(pluginDirectory, $"{language}.json");
 
             try
@@ -72,13 +71,15 @@ namespace UsefulHints
                 if (!Directory.Exists(pluginDirectory))
                 {
                     Directory.CreateDirectory(pluginDirectory);
+                    Log.Info($"Utworzono folder: {pluginDirectory}");
                 }
 
+                string url = $"https://raw.githubusercontent.com/Vretu-Dev/UsefulHints/refs/heads/main/Translations/{language}.json";
+                Log.Info($"Pobieranie tłumaczeń z: {url}");
                 string content = await HttpClient.GetStringAsync(url);
                 File.WriteAllText(filePath, content);
+                Log.Info($"Pobrano tłumaczenia dla języka {language} i zapisano w {filePath}");
                 Translations = JsonConvert.DeserializeObject<Dictionary<string, string>>(content);
-
-                Log.Info($"Pobrano tłumaczenia dla języka {language}.");
             }
             catch (HttpRequestException ex)
             {
@@ -93,7 +94,7 @@ namespace UsefulHints
                 Log.Error($"Wystąpił nieoczekiwany błąd: {ex.Message}");
             }
         }
-        public static string GetTranslation(string key)
+        private static string GetTranslation(string key)
         {
             return Translations.TryGetValue(key, out string value) ? value : key;
         }
