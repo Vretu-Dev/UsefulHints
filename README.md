@@ -41,13 +41,19 @@ Bug Reporters: iksemdem, 𝒯𝓇𝒾𝓈𝓉𝒶𝓃𝐿𝒾𝓀𝑒𝓈𝒰�
 UH:
   is_enabled: true
   debug: false
-  # Auto Update Plugin:
+  # Auto Translations:
+  translations: true
+  # Available Languages: pl, en, de
+  language: 'en'
+  translations_path: '/home/container/.config/EXILED/Configs/UsefulHints/Translations'
+  # Auto Update:
   auto_update: true
+  enable_logging: true
   enable_backup: false
+  plugin_path: '/home/container/.config/EXILED/Plugins/UsefulHints.dll'
   # Hint Settings:
   enable_hints: true
   scp096_look_message: 'You looked at SCP-096!'
-  scp268_duration: 15
   scp268_time_left_message: 'Remaining: {0}s'
   scp2176_time_left_message: 'Remaining: {0}s'
   scp1576_time_left_message: 'Remaining: {0}s'
