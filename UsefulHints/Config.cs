@@ -9,8 +9,9 @@ namespace UsefulHints
     {
         public bool IsEnabled { get; set; } = true;
         public bool Debug { get; set; } = false;
-        [Description("Auto Translations: en, pl")]
+        [Description("Auto Translations:")]
         public bool Translations { get; set; } = false;
+        [Description("Available Languages: pl, en, de")]
         public string Language { get; set; } = "en";
         public string TranslationsPath { get; set; } = "/home/container/.config/EXILED/Configs/UsefulHints/Translations";
         [Description("Auto Update:")]
