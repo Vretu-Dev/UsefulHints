@@ -9,6 +9,8 @@ namespace UsefulHints
     {
         public bool IsEnabled { get; set; } = true;
         public bool Debug { get; set; } = false;
+        public bool Translations { get; set; } = false;
+        public string Language { get; set; } = "en";
         [Description("Auto Update:")]
         public bool AutoUpdate { get; set; } = true;
         public bool EnableLogging { get; set; } = true;

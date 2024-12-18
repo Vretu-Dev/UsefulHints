@@ -17,6 +17,7 @@ namespace UsefulHints
         {
             Instance = this;
             if(Config.AutoUpdate){ UpdateChecker.RegisterEvents(); }
+            if(Config.Translations){ TranslationManager.RegisterEvents(); }
             if(Config.EnableHints){ EventHandlers.Entities.SCP096.RegisterEvents(); }
             if(Config.EnableHints){ EventHandlers.Items.Hints.RegisterEvents(); }
             if(Config.EnableWarnings){ EventHandlers.Items.WarningHints.RegisterEvents(); }
