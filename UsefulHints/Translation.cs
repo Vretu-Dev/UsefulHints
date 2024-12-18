@@ -16,7 +16,7 @@ namespace UsefulHints
         }
         private static async Task InitializeTranslationsAsync()
         {
-            string language = UsefulHints.Instance.Config.Language;
+            string language = UsefulHints.Instance.Config.Language.ToLower();
             await DownloadTranslationsAsync(language);
 
             // Hint Settings
@@ -63,7 +63,7 @@ namespace UsefulHints
 
         private static async Task DownloadTranslationsAsync(string language)
         {
-            string pluginDirectory = "/home/container/.config/EXILED/Configs/UsefulHints/Translations";
+            string pluginDirectory = UsefulHints.Instance.Config.TranslationsPath;
             string filePath = Path.Combine(pluginDirectory, $"{language}.json");
 
             try
@@ -71,27 +71,27 @@ namespace UsefulHints
                 if (!Directory.Exists(pluginDirectory))
                 {
                     Directory.CreateDirectory(pluginDirectory);
-                    Log.Info($"Utworzono folder: {pluginDirectory}");
+                    Log.Info($"Folder created: {pluginDirectory}");
                 }
 
                 string url = $"https://raw.githubusercontent.com/Vretu-Dev/UsefulHints/refs/heads/main/Translations/{language}.json";
-                Log.Info($"Pobieranie tłumaczeń z: {url}");
+                Log.Debug($"Downloading translations from: {url}");
                 string content = await HttpClient.GetStringAsync(url);
                 File.WriteAllText(filePath, content);
-                Log.Info($"Pobrano tłumaczenia dla języka {language} i zapisano w {filePath}");
+                Log.Debug($"Translations for language {language} have been downloaded and saved to {filePath}");
                 Translations = JsonConvert.DeserializeObject<Dictionary<string, string>>(content);
             }
             catch (HttpRequestException ex)
             {
-                Log.Error($"Błąd podczas pobierania tłumaczeń: {ex.Message}");
+                Log.Error($"Error during downloading translations: {ex.Message}");
             }
             catch (JsonException ex)
             {
-                Log.Error($"Błąd podczas deserializacji pliku tłumaczeń: {ex.Message}");
+                Log.Error($"Error during translation file deserialization: {ex.Message}");
             }
             catch (Exception ex)
             {
-                Log.Error($"Wystąpił nieoczekiwany błąd: {ex.Message}");
+                Log.Error($"An unexpected error occurred: {ex.Message}");
             }
         }
         private static string GetTranslation(string key)

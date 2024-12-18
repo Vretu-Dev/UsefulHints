@@ -9,7 +9,7 @@ namespace UsefulHints
         public override string Name => "Useful Hints";
         public override string Author => "Vretu";
         public override string Prefix { get; } = "UH";
-        public override Version Version => new Version(1, 8, 4);
+        public override Version Version => new Version(1, 8, 5);
         public override Version RequiredExiledVersion { get; } = new Version(9, 0, 0);
         public override PluginPriority Priority { get; } = PluginPriority.Low;
         public static UsefulHints Instance { get; private set; }
@@ -17,7 +17,7 @@ namespace UsefulHints
         {
             Instance = this;
             if(Config.AutoUpdate){ UpdateChecker.RegisterEvents(); }
-            if(Config.Translations){ TranslationManager.RegisterEvents(); }
+            if(Config.Translations){ _ = TranslationManager.RegisterEvents(); }
             if(Config.EnableHints){ EventHandlers.Entities.SCP096.RegisterEvents(); }
             if(Config.EnableHints){ EventHandlers.Items.Hints.RegisterEvents(); }
             if(Config.EnableWarnings){ EventHandlers.Items.WarningHints.RegisterEvents(); }
