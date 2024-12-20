@@ -47,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Config.cs" />
+    <Compile Include="EventHandlers\Commands\ChangeLanguage.cs" />
     <Compile Include="EventHandlers\Entities\SCP096.cs" />
     <Compile Include="EventHandlers\Items\WarningHints.cs" />
     <Compile Include="EventHandlers\Modules\FFWarning.cs" />
@@ -62,8 +63,17 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Costura.Fody">
+      <Version>6.0.0</Version>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
     <PackageReference Include="ExMod.Exiled">
       <Version>9.0.0-beta.1</Version>
+    </PackageReference>
+    <PackageReference Include="Fody">
+      <Version>6.9.1</Version>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="Lib.Harmony">
       <Version>2.3.3</Version>
