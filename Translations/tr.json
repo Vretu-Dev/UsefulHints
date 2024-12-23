@@ -5,8 +5,6 @@
     "Scp1576TimeLeftMessage": "Kalan süre: {0}s",
     "GrenadeDamageHint": "{0} Hasar",
     "JailbirdUseMessage": "Kalan kullanım: {0}",
-    "MicroHidEnergyMessage": "Kalan enerji: {0}%",
-    "MicroHidLowEnergyMessage": "Düşük Enerji",
     "Scp207HintMessage": "{0} doz SCP-207'iniz var",
     "AntiScp207HintMessage": "{0} doz Anti SCP-207'iniz var",
     "Scp207Warning": "<color=yellow>\u26A0</color> Zaten <color=#A60C0E>SCP-207</color>'nin etkisi altındasınız",

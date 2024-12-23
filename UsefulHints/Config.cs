@@ -27,8 +27,6 @@ namespace UsefulHints
         public string Scp1576TimeLeftMessage { get; set; } = "Remaining: {0}s";
         public string GrenadeDamageHint { get; set; } = "{0} Damage";
         public string JailbirdUseMessage { get; set; } = "Remaining charges: {0}";
-        public string MicroHidEnergyMessage { get; set; } = "Remaining energy: {0}%";
-        public string MicroHidLowEnergyMessage { get; set; } = "Low Energy";
         public string Scp207HintMessage { get; set; } = "You have {0} doses of SCP-207";
         public string AntiScp207HintMessage { get; set; } = "You have {0} doses of Anti SCP-207";
         public bool ShowHintOnEquipItem { get; set; } = false;

@@ -5,8 +5,6 @@
     "Scp1576TimeLeftMessage": "Restante: {0}s",
     "GrenadeDamageHint": "{0} Dano",
     "JailbirdUseMessage": "Cargas restantes: {0}",
-    "MicroHidEnergyMessage": "Energia restante: {0}%",
-    "MicroHidLowEnergyMessage": "Energia baixa",
     "Scp207HintMessage": "Você tem {0} doses de SCP-207",
     "AntiScp207HintMessage": "Você tem {0} doses de Anti SCP-207",
     "Scp207Warning": "<color=yellow>\u26A0</color> Você já está afetado pelo <color=#A60C0E>SCP-207</color>",

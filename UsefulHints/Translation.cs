@@ -26,8 +26,6 @@ namespace UsefulHints
             UsefulHints.Instance.Config.Scp1576TimeLeftMessage = GetTranslation("Scp1576TimeLeftMessage");
             UsefulHints.Instance.Config.GrenadeDamageHint = GetTranslation("GrenadeDamageHint");
             UsefulHints.Instance.Config.JailbirdUseMessage = GetTranslation("JailbirdUseMessage");
-            UsefulHints.Instance.Config.MicroHidEnergyMessage = GetTranslation("MicroHidEnergyMessage");
-            UsefulHints.Instance.Config.MicroHidLowEnergyMessage = GetTranslation("MicroHidLowEnergyMessage");
             UsefulHints.Instance.Config.Scp207HintMessage = GetTranslation("Scp207HintMessage");
             UsefulHints.Instance.Config.AntiScp207HintMessage = GetTranslation("AntiScp207HintMessage");
             // Item Warnings

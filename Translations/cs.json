@@ -5,8 +5,6 @@
     "Scp1576TimeLeftMessage": "Zbývá: {0}s",
     "GrenadeDamageHint": "{0} Poškození",
     "JailbirdUseMessage": "Zbývající nabití: {0}",
-    "MicroHidEnergyMessage": "Zbývající energie: {0}%",
-    "MicroHidLowEnergyMessage": "Nízká energie",
     "Scp207HintMessage": "Máš {0} dávek SCP-207",
     "AntiScp207HintMessage": "Máš {0} dávek Anti SCP-207",
     "Scp207Warning": "<color=yellow>\u26A0</color> Už jsi ovlivněn <color=#A60C0E>SCP-207</color>",

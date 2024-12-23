@@ -5,8 +5,6 @@
     "Scp1576TimeLeftMessage": "Pozostało: {0}s",
     "GrenadeDamageHint": "{0} Damage",
     "JailbirdUseMessage": "Pozostało {0} użyć",
-    "MicroHidEnergyMessage": "Pozostała energia: {0}%",
-    "MicroHidLowEnergyMessage": "Low Energy",
     "Scp207HintMessage": "Jesteś na {0} SCP-207",
     "AntiScp207HintMessage": "Jesteś na {0} Anti SCP-207",
     "Scp207Warning": "<color=yellow>⚠</color> Jesteś już na <color=#A60C0E>SCP-207</color>",

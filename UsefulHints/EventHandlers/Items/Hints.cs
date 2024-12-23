@@ -21,8 +21,6 @@ namespace UsefulHints.EventHandlers.Items
         public static void RegisterEvents()
         {
             Exiled.Events.Handlers.Player.Hurting += OnGrenadeHurting;
-            Exiled.Events.Handlers.Player.PickingUpItem += OnPickingUpMicroHid;
-            Exiled.Events.Handlers.Player.ChangingItem += OnEquipMicroHid;
             Exiled.Events.Handlers.Player.PickingUpItem += OnPickingUpSCP207;
             Exiled.Events.Handlers.Player.ChangingItem += OnEquipSCP207;
             Exiled.Events.Handlers.Player.UsedItem += OnSCP1576Used;
@@ -38,8 +36,6 @@ namespace UsefulHints.EventHandlers.Items
         public static void UnregisterEvents()
         {
             Exiled.Events.Handlers.Player.Hurting -= OnGrenadeHurting;
-            Exiled.Events.Handlers.Player.PickingUpItem -= OnPickingUpMicroHid;
-            Exiled.Events.Handlers.Player.ChangingItem -= OnEquipMicroHid;
             Exiled.Events.Handlers.Player.PickingUpItem -= OnPickingUpSCP207;
             Exiled.Events.Handlers.Player.ChangingItem -= OnEquipSCP207;
             Exiled.Events.Handlers.Player.UsedItem -= OnSCP1576Used;
@@ -64,49 +60,6 @@ namespace UsefulHints.EventHandlers.Items
                 if (RemainingHealth > 0)
                 {
                     ev.Attacker.ShowHint($"<color=white>{new string('\n', 5)}{string.Format(UsefulHints.Instance.Config.GrenadeDamageHint, Math.Round(ev.Amount))}</color>", 4);
-                }
-            }
-        }
-        // MicroHid Handler
-        private static void OnPickingUpMicroHid(PickingUpItemEventArgs ev)
-        {
-            if (ev.Pickup.Base is MicroHIDPickup microHidPickup)
-            {
-                float energyPercentage = microHidPickup.Energy * 100;
-                float roundedEnergyPercentage = (float)Math.Round(energyPercentage, 1);
-
-                if (roundedEnergyPercentage < 5)
-                {
-                    ev.Player.ShowHint($"<color=red>{new string('\n', 10)}{string.Format(UsefulHints.Instance.Config.MicroHidLowEnergyMessage)}</color>", 4);
-                }
-                else
-                {
-                    ev.Player.ShowHint($"<color=#4169E1>{new string('\n', 10)}{string.Format(UsefulHints.Instance.Config.MicroHidEnergyMessage, roundedEnergyPercentage)}</color>", 4);
-                }
-            }
-        }
-        private static void OnEquipMicroHid(ChangingItemEventArgs ev)
-        {
-            if (UsefulHints.Instance.Config.ShowHintOnEquipItem)
-            {
-                if (ev.Item == null)
-                {
-                    return;
-                }
-                if (ev.Item.Base is MicroHIDItem microHidItem)
-                {
-
-                    float energyPercentage = microHidItem.RemainingEnergy * 100;
-                    float roundedEnergyPercentage = (float)Math.Round(energyPercentage, 1);
-
-                    if (roundedEnergyPercentage < 5)
-                    {
-                        ev.Player.ShowHint($"<color=red>{new string('\n', 10)}{string.Format(UsefulHints.Instance.Config.MicroHidLowEnergyMessage)}</color>", 2);
-                    }
-                    else
-                    {
-                        ev.Player.ShowHint($"<color=#4169E1>{new string('\n', 10)}{string.Format(UsefulHints.Instance.Config.MicroHidEnergyMessage, roundedEnergyPercentage)}</color>", 2);
-                    }
                 }
             }
         }

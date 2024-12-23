@@ -5,8 +5,6 @@
     "Scp1576TimeLeftMessage": "剩余时间：{0}秒",
     "GrenadeDamageHint": "{0} 伤害",
     "JailbirdUseMessage": "剩余次数：{0}",
-    "MicroHidEnergyMessage": "剩余能量：{0}%",
-    "MicroHidLowEnergyMessage": "能量不足",
     "Scp207HintMessage": "你有 {0} 剂量的SCP-207",
     "AntiScp207HintMessage": "你有 {0} 剂量的抗SCP-207",
     "Scp207Warning": "<color=yellow>\u26A0</color> 你已经受到了 <color=#A60C0E>SCP-207</color> 的影响",
