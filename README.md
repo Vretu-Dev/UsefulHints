@@ -10,7 +10,7 @@
 <a href='https://opencollective.com/ucs'><img src="https://github.com/user-attachments/assets/517f8cae-32ac-4886-8bd6-5e95447073e2" style="width:154px;height:40px;"></a>
 <a href='https://discord.gg/5StRGu8EJV'><img src="https://github.com/user-attachments/assets/17cc06b8-ced8-4223-93dc-8d3a21c55753" style="width:154px;height:40px;"></a>
 
-
+### Minimum Exiled Version: 9.0.0
 ## Features:
 - Display remaining time after using SCP-268
 - SCP-268 countdown timer
@@ -26,13 +26,26 @@
 - End-of-game summary
 - Show teammates at the start of the round
 - Broadcast the last human alive
-
-### Minimum Exiled Version: 8.9.8
+## Translations
+| Language  | Short Name | Done | Required Verification|
+|-----------|------------|------|----------------------|
+| English   | en         |  ✅  | No                   |
+| Polish    | pl         |  ✅  | No                   |
+| Russian   | ru         |  ✅  | No                   |
+| Czech     | cs         |  ✅  | Yes                  |
+| Slovak    | sk         |  ✅  | Yes                  |
+| French    | fr         |  ✅  | Yes                  |
+| Spanish   | es         |  ✅  | Yes                  |
+| Italian   | it         |  ✅  | Yes                  |
+| German    | de         |  ✅  | Yes                  |
+| Turkish   | tr         |  ✅  | Yes                  |
+| Portuguese| pt         |  ✅  | Yes                  |
+| Chinese   | zh         |  ✅  | Yes                  |
 ### Credits:
 - Thanks [@NamelessSCP](https://github.com/NamelessSCP) for using the [RoundMVP](https://github.com/NamelessSCP/RoundMVP) idea.<br>
 - Thanks [@XoMiya-WPC](https://github.com/XoMiya-WPC) for using the [WhoAreMyTeammates](https://github.com/XoMiya-WPC/WhoAreMyTeammates) idea.<br>
 - Thanks [@Cat Potato](https://github.com/Cat-Potato) for using the [Auto Update](https://github.com/Vretu-Dev/UsefulHints/blob/81b7fde14ef6753ef215c4959c87c1a7abd988ec/UsefulHints/Update.cs) idea.<br>
-- Thank you to these wonderful people for testing and bug reporting:<br>
+- Thank you to these wonderful people for testing, bug reporting and translating:<br>
 Testers: [Cat Potato](https://github.com/Cat-Potato), [Aserciak](https://steamcommunity.com/profiles/76561199053527692), [AVE_SATAN](https://steamcommunity.com/id/AVE_S4TAN/), [N](https://steamcommunity.com/profiles/76561199207670378), [Folia](https://steamcommunity.com/profiles/76561198004167374), [MVP_Faker](https://steamcommunity.com/id/746237524/), [Aime](https://steamcommunity.com/profiles/76561199125886809), [Clown](https://steamcommunity.com/profiles/76561199318901590), [OneManArmy](https://steamcommunity.com/profiles/76561199120200596)<br>
 Bug Reporters: iksemdem, 𝒯𝓇𝒾𝓈𝓉𝒶𝓃𝐿𝒾𝓀𝑒𝓈𝒰𝓇𝒶𝓃 <br>
 Translators: dxstruction [RU], Vretu [PL], Vretu [EN]
@@ -60,8 +73,6 @@ UH:
   scp1576_time_left_message: 'Remaining: {0}s'
   grenade_damage_hint: '{0} Damage'
   jailbird_use_message: 'Remaining charges: {0}'
-  micro_hid_energy_message: 'Remaining energy: {0}%'
-  micro_hid_low_energy_message: 'Low Energy'
   scp207_hint_message: 'You have {0} doses of SCP-207'
   anti_scp207_hint_message: 'You have {0} doses of Anti SCP-207'
   show_hint_on_equip_item: false
