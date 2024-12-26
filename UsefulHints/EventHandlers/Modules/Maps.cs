@@ -1,5 +1,4 @@
 ﻿using Exiled.API.Features;
-using Exiled.Events.EventArgs.Map;
 using MEC;
 
 namespace UsefulHints.EventHandlers.Modules

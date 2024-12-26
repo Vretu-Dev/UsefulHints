@@ -29,7 +29,10 @@ namespace UsefulHints.EventHandlers.Modules
                 {
                     playerKills[killer] = 1;
                 }
-                killer.ShowHint(string.Format(UsefulHints.Instance.Config.KillCountMessage, playerKills[killer]), 4);
+                if (!killer.IsHost)
+                {
+                    killer.ShowHint(string.Format(UsefulHints.Instance.Config.KillCountMessage, playerKills[killer]), 4);
+                }
             }
         }
     }
