@@ -41,7 +41,10 @@
 | Turkish   | tr         |  ✅  | Yes                  |
 | Portuguese| pt         |  ✅  | Yes                  |
 | Chinese   | zh         |  ✅  | No                  |
-### Credits:
+
+#### Remember to set your translation path correctly❗Default: `/home/container/.config/EXILED/Configs/UsefulHints/Translations`
+#### If you want to use your translations in `<port>-config.yml` set `Translations = false;`❗
+## Credits:
 - Thanks [@NamelessSCP](https://github.com/NamelessSCP) for using the [RoundMVP](https://github.com/NamelessSCP/RoundMVP) idea.<br>
 - Thanks [@XoMiya-WPC](https://github.com/XoMiya-WPC) for using the [WhoAreMyTeammates](https://github.com/XoMiya-WPC/WhoAreMyTeammates) idea.<br>
 - Thanks [@Cat Potato](https://github.com/Cat-Potato) for using the [Auto Update](https://github.com/Vretu-Dev/UsefulHints/blob/81b7fde14ef6753ef215c4959c87c1a7abd988ec/UsefulHints/Update.cs) idea.<br>
