@@ -42,7 +42,8 @@
 | Portuguese| pt         |  ✅  | Yes                  |
 | Chinese   | zh         |  ✅  | No                  |
 
-#### Remember to set your translation path correctly❗Default: `/home/container/.config/EXILED/Configs/UsefulHints/Translations`
+#### Remember to set your translation path correctly❗
+#### Default: `/home/container/.config/EXILED/Configs/UsefulHints/Translations`
 #### If you want to use your translations in `<port>-config.yml` set `Translations = false;`❗
 ## Credits:
 - Thanks [@NamelessSCP](https://github.com/NamelessSCP) for using the [RoundMVP](https://github.com/NamelessSCP/RoundMVP) idea.<br>
