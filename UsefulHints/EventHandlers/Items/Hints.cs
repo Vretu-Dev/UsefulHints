@@ -57,7 +57,7 @@ namespace UsefulHints.EventHandlers.Items
             if (ev.DamageHandler.Type == DamageType.Explosion)
             {
                 float RemainingHealth = ev.Player.Health - ev.Amount;
-                if (RemainingHealth > 0)
+                if (RemainingHealth > 0 && !ev.Attacker.IsHost)
                 {
                     ev.Attacker.ShowHint($"<color=white>{new string('\n', 5)}{string.Format(UsefulHints.Instance.Config.GrenadeDamageHint, Math.Round(ev.Amount))}</color>", 4);
                 }
