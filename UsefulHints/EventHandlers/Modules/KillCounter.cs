@@ -1,6 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using HintServiceMeow.Core.Utilities;
+using HintServiceMeow.Core.Models.Hints;
+using System.Collections.Generic;
 using Player = Exiled.API.Features.Player;
 using Exiled.Events.EventArgs.Player;
+using MEC;
+using System;
 
 namespace UsefulHints.EventHandlers.Modules
 {
@@ -31,7 +35,15 @@ namespace UsefulHints.EventHandlers.Modules
                 }
                 if (!killer.IsHost)
                 {
-                    killer.ShowHint(string.Format(UsefulHints.Instance.Config.KillCountMessage, playerKills[killer]), 4);
+                    var dynamicHint = new DynamicHint
+                    {
+                        Text = string.Format(UsefulHints.Instance.Config.KillCountMessage, playerKills[killer]),
+                        FontSize = 32,
+                    };
+
+                    PlayerDisplay playerDisplay = PlayerDisplay.Get(ev.Attacker);
+                    playerDisplay.AddHint(dynamicHint);
+                    Timing.CallDelayed(2f, () => { playerDisplay.RemoveHint(dynamicHint); });
                 }
             }
         }

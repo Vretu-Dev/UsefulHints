@@ -9,8 +9,11 @@ using Exiled.Events.EventArgs.Map;
 using Exiled.Events.EventArgs.Player;
 using InventorySystem.Items.ThrowableProjectiles;
 using InventorySystem.Items.Jailbird;
-using InventorySystem.Items.MicroHID;
 using MEC;
+using HintServiceMeow.Core.Models.Hints;
+using HintServiceMeow.Core.Utilities;
+using HintServiceMeow.Core.Extension;
+using HintServiceMeow.Core.Enum;
 
 namespace UsefulHints.EventHandlers.Items
 {
@@ -18,6 +21,7 @@ namespace UsefulHints.EventHandlers.Items
     {
         private static readonly Dictionary<Player, CoroutineHandle> activeCoroutines = new Dictionary<Player, CoroutineHandle>();
         private static Dictionary<Player, ItemType> activeItems = new Dictionary<Player, ItemType>();
+        
         public static void RegisterEvents()
         {
             Exiled.Events.Handlers.Player.Hurting += OnGrenadeHurting;
@@ -59,20 +63,39 @@ namespace UsefulHints.EventHandlers.Items
                 float RemainingHealth = ev.Player.Health - ev.Amount;
                 if (RemainingHealth > 0 && !ev.Attacker.IsHost)
                 {
-                    ev.Attacker.ShowHint($"<color=white>{new string('\n', 5)}{string.Format(UsefulHints.Instance.Config.GrenadeDamageHint, Math.Round(ev.Amount))}</color>", 4);
+                    Hint hint = new Hint
+                    {
+                        Text = string.Format(UsefulHints.Instance.Config.GrenadeDamageHint, Math.Round(ev.Amount)),
+                        YCoordinate = 700,
+                        FontSize = 32,
+                    };
+
+                    PlayerDisplay playerDisplay = PlayerDisplay.Get(ev.Attacker);
+                    playerDisplay.AddHint(hint);
+                    Timing.CallDelayed(4f, () => { playerDisplay.RemoveHint(hint); });
                 }
             }
         }
         // SCP 207 Handler
         private static void OnPickingUpSCP207(PickingUpItemEventArgs ev)
         {
+            PlayerDisplay playerDisplay = PlayerDisplay.Get(ev.Player);
+
             if (ev.Pickup.Type == ItemType.SCP207)
             {
                 CustomPlayerEffects.StatusEffectBase scp207Effect = ev.Player.ActiveEffects.FirstOrDefault(effect => effect.GetEffectType() == EffectType.Scp207);
 
                 if (scp207Effect != null)
                 {
-                    ev.Player.ShowHint($"<color=#A60C0E>{new string('\n', 10)}{string.Format(UsefulHints.Instance.Config.Scp207HintMessage, scp207Effect.Intensity)}</color>", 4);
+                    Hint hint = new Hint
+                    {
+                        Text = $"<color=#A60C0E>{string.Format(UsefulHints.Instance.Config.Scp207HintMessage, scp207Effect.Intensity)}</color>",
+                        YCoordinate = 800,
+                        FontSize = 32,
+                    };
+
+                    playerDisplay.AddHint(hint);
+                    Timing.CallDelayed(4f, () => { playerDisplay.RemoveHint(hint); });
                 }
             }
             if (ev.Pickup.Type == ItemType.AntiSCP207)
@@ -81,7 +104,15 @@ namespace UsefulHints.EventHandlers.Items
 
                 if (antiscp207Effect != null)
                 {
-                    ev.Player.ShowHint($"<color=#C53892>{new string('\n', 10)}{string.Format(UsefulHints.Instance.Config.AntiScp207HintMessage, antiscp207Effect.Intensity)}</color>", 4);
+                    Hint hint = new Hint
+                    {
+                        Text = $"<color=#C53892>{string.Format(UsefulHints.Instance.Config.AntiScp207HintMessage, antiscp207Effect.Intensity)}</color>",
+                        YCoordinate = 800,
+                        FontSize = 32,
+                    };
+
+                    playerDisplay.AddHint(hint);
+                    Timing.CallDelayed(4f, () => { playerDisplay.RemoveHint(hint); });
                 }
             }
         }
@@ -89,6 +120,8 @@ namespace UsefulHints.EventHandlers.Items
         {
             if (UsefulHints.Instance.Config.ShowHintOnEquipItem)
             {
+                PlayerDisplay playerDisplay = PlayerDisplay.Get(ev.Player);
+
                 if (ev.Item == null)
                 {
                     return;
@@ -99,7 +132,15 @@ namespace UsefulHints.EventHandlers.Items
 
                     if (scp207Effect != null)
                     {
-                        ev.Player.ShowHint($"<color=#A60C0E>{new string('\n', 10)}{string.Format(UsefulHints.Instance.Config.Scp207HintMessage, scp207Effect.Intensity)}</color>", 2);
+                        Hint hint = new Hint
+                        {
+                            Text = $"<color=#A60C0E>{string.Format(UsefulHints.Instance.Config.Scp207HintMessage, scp207Effect.Intensity)}</color>",
+                            YCoordinate = 800,
+                            FontSize = 32,
+                        };
+
+                        playerDisplay.AddHint(hint);
+                        Timing.CallDelayed(2f, () => { playerDisplay.RemoveHint(hint); });
                     }
                 }
                 if (ev.Item.Type == ItemType.AntiSCP207)
@@ -108,12 +149,21 @@ namespace UsefulHints.EventHandlers.Items
 
                     if (antiscp207Effect != null)
                     {
-                        ev.Player.ShowHint($"<color=#C53892>{new string('\n', 10)}{string.Format(UsefulHints.Instance.Config.AntiScp207HintMessage, antiscp207Effect.Intensity)}</color>", 2);
+                        Hint hint = new Hint
+                        {
+                            Text = $"<color=#C53892>{string.Format(UsefulHints.Instance.Config.AntiScp207HintMessage, antiscp207Effect.Intensity)}</color>",
+                            YCoordinate = 800,
+                            FontSize = 32,
+                        };
+
+                        playerDisplay.AddHint(hint);
+                        Timing.CallDelayed(2f, () => { playerDisplay.RemoveHint(hint);  });
                     }
                 }
             }
         }
         // SCP 1576 Handler
+        private static readonly Dictionary<Player, Hint> active1576Hints = new Dictionary<Player, Hint>();
         private static void OnSCP1576Used(UsedItemEventArgs ev)
         {
             if (ev.Item.Type == ItemType.SCP1576)
@@ -126,6 +176,11 @@ namespace UsefulHints.EventHandlers.Items
                 if (activeItems.ContainsKey(ev.Player))
                 {
                     activeItems.Remove(ev.Player);
+                }
+                if (active1576Hints.ContainsKey(ev.Player))
+                {
+                    ev.Player.GetPlayerDisplay().RemoveHint(active1576Hints[ev.Player]);
+                    active1576Hints.Remove(ev.Player);
                 }
 
                 var coroutine = Timing.RunCoroutine(Scp1576Timer(ev.Player));
@@ -140,21 +195,45 @@ namespace UsefulHints.EventHandlers.Items
                 Timing.KillCoroutines(activeCoroutines[ev.Player]);
                 activeCoroutines.Remove(ev.Player);
                 activeItems.Remove(ev.Player);
+
+                if (active1576Hints.ContainsKey(ev.Player))
+                {
+                    ev.Player.GetPlayerDisplay().RemoveHint(active1576Hints[ev.Player]);
+                    active1576Hints.Remove(ev.Player);
+                }
             }
         }
         private static IEnumerator<float> Scp1576Timer(Player player)
         {
             float duration = 30f;
 
+            var SCP1576Hint = new Hint
+            {
+                YCoordinate = 900,
+                FontSize = 28,
+                Alignment = HintAlignment.Center,
+                SyncSpeed = HintSyncSpeed.UnSync
+            };
+
+            if (!active1576Hints.ContainsKey(player))
+            {
+                active1576Hints.Add(player, SCP1576Hint);
+            }
+
             while (duration > 0)
             {
-                player.ShowHint($"<color=#FFA500>{new string('\n', 10)}{string.Format(UsefulHints.Instance.Config.Scp1576TimeLeftMessage, (int)duration)}</color>", 1.15f);
+                SCP1576Hint.Text = $"<color=#FFA500>{string.Format(UsefulHints.Instance.Config.Scp1576TimeLeftMessage, (int)duration)}</color>";
+                player.GetPlayerDisplay().AddHint(SCP1576Hint);
                 yield return Timing.WaitForSeconds(1f);
                 duration -= 1f;
             }
+
+            player.GetPlayerDisplay().RemoveHint(SCP1576Hint);
+            active1576Hints.Remove(player);
             activeCoroutines.Remove(player);
         }
         // SCP 268 Handler
+        private static readonly Dictionary<Player, Hint> active268Hints = new Dictionary<Player, Hint>();
         private static void OnSCP268Used(UsedItemEventArgs ev)
         {
             if (ev.Item.Type == ItemType.SCP268)
@@ -167,6 +246,11 @@ namespace UsefulHints.EventHandlers.Items
                 if (activeItems.ContainsKey(ev.Player))
                 {
                     activeItems.Remove(ev.Player);
+                }
+                if (active268Hints.ContainsKey(ev.Player))
+                {
+                    ev.Player.GetPlayerDisplay().RemoveHint(active268Hints[ev.Player]);
+                    active268Hints.Remove(ev.Player);
                 }
 
                 var coroutine = Timing.RunCoroutine(Scp268Timer(ev.Player));
@@ -181,6 +265,12 @@ namespace UsefulHints.EventHandlers.Items
                 Timing.KillCoroutines(activeCoroutines[ev.Player]);
                 activeCoroutines.Remove(ev.Player);
                 activeItems.Remove(ev.Player);
+
+                if (active268Hints.ContainsKey(ev.Player))
+                {
+                    ev.Player.GetPlayerDisplay().RemoveHint(active268Hints[ev.Player]);
+                    active268Hints.Remove(ev.Player);
+                }
             }
         }
         private static void OnSCP268ChangedItem(ChangedItemEventArgs ev)
@@ -190,21 +280,45 @@ namespace UsefulHints.EventHandlers.Items
                 Timing.KillCoroutines(activeCoroutines[ev.Player]);
                 activeCoroutines.Remove(ev.Player);
                 activeItems.Remove(ev.Player);
+
+                if (active268Hints.ContainsKey(ev.Player))
+                {
+                    ev.Player.GetPlayerDisplay().RemoveHint(active268Hints[ev.Player]);
+                    active268Hints.Remove(ev.Player);
+                }
             }
         }
         private static IEnumerator<float> Scp268Timer(Player player)
         {
             float duration = 15f;
 
+            var SCP268Hint = new Hint()
+            {
+                YCoordinate = 900,
+                FontSize = 28,
+                Alignment = HintAlignment.Center,
+                SyncSpeed = HintSyncSpeed.UnSync
+            };
+
+            if (!active268Hints.ContainsKey(player))
+            {
+                active268Hints.Add(player, SCP268Hint);
+            }
+
             while (duration > 0)
             {
-                player.ShowHint($"<color=purple>{new string('\n', 10)}{string.Format(UsefulHints.Instance.Config.Scp268TimeLeftMessage, (int)duration)}</color>", 1.15f);
+                SCP268Hint.Text = $"<color=purple>{string.Format(UsefulHints.Instance.Config.Scp268TimeLeftMessage, (int)duration)}</color>";
+                player.GetPlayerDisplay().AddHint(SCP268Hint);
                 yield return Timing.WaitForSeconds(1f);
                 duration -= 1f;
             }
+
+            player.GetPlayerDisplay().RemoveHint(SCP268Hint);
+            active268Hints.Remove(player);
             activeCoroutines.Remove(player);
         }
         // SCP 2176 Handler
+        private static readonly Dictionary<Player, Hint> active2176Hints = new Dictionary<Player, Hint>();
         private static void OnSCP2176Grenade(ExplodingGrenadeEventArgs ev)
         {
             if (ev.Projectile.Base is Scp2176Projectile)
@@ -217,6 +331,12 @@ namespace UsefulHints.EventHandlers.Items
                         activeCoroutines.Remove(ev.Player);
                     }
 
+                    if (active2176Hints.ContainsKey(ev.Player))
+                    {
+                        ev.Player.GetPlayerDisplay().RemoveHint(active2176Hints[ev.Player]);
+                        active2176Hints.Remove(ev.Player);
+                    }
+
                     var coroutine = Timing.RunCoroutine(Scp2176Timer(ev.Player));
                     activeCoroutines.Add(ev.Player, coroutine);
                 }
@@ -226,12 +346,29 @@ namespace UsefulHints.EventHandlers.Items
         {
             float duration = 13f;
 
+            var SCP2176Hint = new Hint
+            {
+                YCoordinate = 900,
+                FontSize = 28,
+                Alignment = HintAlignment.Center,
+                SyncSpeed = HintSyncSpeed.UnSync
+            };
+
+            if (!active2176Hints.ContainsKey(player))
+            {
+                active2176Hints.Add(player, SCP2176Hint);
+            }
+
             while (duration > 0)
             {
-                player.ShowHint($"<color=#1CAA21>{new string('\n', 10)}{string.Format(UsefulHints.Instance.Config.Scp2176TimeLeftMessage, (int)duration)}</color>", 1.15f);
+                SCP2176Hint.Text = $"<color=#1CAA21>{string.Format(UsefulHints.Instance.Config.Scp2176TimeLeftMessage, (int)duration)}</color>";
+                player.GetPlayerDisplay().AddHint(SCP2176Hint);
                 yield return Timing.WaitForSeconds(1f);
                 duration -= 1f;
             }
+
+            player.GetPlayerDisplay().RemoveHint(SCP2176Hint);
+            active2176Hints.Remove(player);
             activeCoroutines.Remove(player);
         }
         // Reset Coroutines
@@ -244,15 +381,33 @@ namespace UsefulHints.EventHandlers.Items
         {
             if (ev.Pickup is JailbirdPickup jailbirdPickup)
             {
+                PlayerDisplay playerDisplay = PlayerDisplay.Get(ev.Player);
+
                 int maxCharges = 5;
                 int remainingCharges = maxCharges - jailbirdPickup.TotalCharges;
                 if (remainingCharges > 1)
                 {
-                    ev.Player.ShowHint($"<color=#00B7EB>{new string('\n', 10)}{string.Format(UsefulHints.Instance.Config.JailbirdUseMessage, remainingCharges)}</color>", 4);
+                    Hint hint = new Hint
+                    {
+                        Text = $"<color=#00B7EB>{string.Format(UsefulHints.Instance.Config.JailbirdUseMessage, remainingCharges)}</color>",
+                        YCoordinate = 800,
+                        FontSize = 32,
+                    };
+
+                    playerDisplay.AddHint(hint);
+                    Timing.CallDelayed(4f, () => { playerDisplay.RemoveHint(hint); });
                 }
                 else
                 {
-                    ev.Player.ShowHint($"<color=#C73804>{new string('\n', 10)}{string.Format(UsefulHints.Instance.Config.JailbirdUseMessage, remainingCharges)}</color>", 4);
+                    Hint hint = new Hint
+                    {
+                        Text = $"<color=#C73804>{string.Format(UsefulHints.Instance.Config.JailbirdUseMessage, remainingCharges)}</color>",
+                        YCoordinate = 800,
+                        FontSize = 32,
+                    };
+
+                    playerDisplay.AddHint(hint);
+                    Timing.CallDelayed(4f, () => { playerDisplay.RemoveHint(hint); });
                 }
             }
         }
@@ -271,11 +426,35 @@ namespace UsefulHints.EventHandlers.Items
 
                     if (remainingCharges > 1)
                     {
-                        ev.Player.ShowHint($"<color=#00B7EB>{new string('\n', 10)}{string.Format(UsefulHints.Instance.Config.JailbirdUseMessage, remainingCharges)}</color>", 2);
+                        Hint hint = new Hint
+                        {
+                            Text = $"<color=#00B7EB>{string.Format(UsefulHints.Instance.Config.JailbirdUseMessage, remainingCharges)}</color>",
+                            YCoordinate = 800,
+                            FontSize = 32,
+                        };
+
+                        PlayerDisplay playerDisplay = PlayerDisplay.Get(ev.Player);
+                        playerDisplay.AddHint(hint);
+
+                        Timing.CallDelayed(2f, () => {
+                            playerDisplay.RemoveHint(hint);
+                        });
                     }
                     else
                     {
-                        ev.Player.ShowHint($"<color=#C73804>{new string('\n', 10)}{string.Format(UsefulHints.Instance.Config.JailbirdUseMessage, remainingCharges)}</color>", 2);
+                        Hint hint = new Hint
+                        {
+                            Text = $"<color=#C73804>{string.Format(UsefulHints.Instance.Config.JailbirdUseMessage, remainingCharges)}</color>",
+                            YCoordinate = 800,
+                            FontSize = 32,
+                        };
+
+                        PlayerDisplay playerDisplay = PlayerDisplay.Get(ev.Player);
+                        playerDisplay.AddHint(hint);
+
+                        Timing.CallDelayed(2f, () => {
+                            playerDisplay.RemoveHint(hint);
+                        });
                     }
                 }
             }

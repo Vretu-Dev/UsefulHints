@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using Player = Exiled.API.Features.Player;
 using MEC;
+using HintServiceMeow.Core.Utilities;
+using HintServiceMeow.Core.Models.Hints;
 
 namespace UsefulHints.EventHandlers.Modules
 {
@@ -33,13 +35,26 @@ namespace UsefulHints.EventHandlers.Modules
                     .Select(p => p.Nickname)
                     .ToList();
 
+                PlayerDisplay playerDisplay = PlayerDisplay.Get(player);
+
+                var TeammatesHint = new Hint
+                {
+                    Text = string.Format(UsefulHints.Instance.Config.TeammateHintMessage, string.Join("\n", teammates)),
+                };
+                var AloneHint = new Hint
+                {
+                    Text = string.Format(UsefulHints.Instance.Config.AloneHintMessage),
+                };
+
                 if (teammates.Count > 0)
                 {
-                    player.ShowHint(string.Format(UsefulHints.Instance.Config.TeammateHintMessage, string.Join("\n", teammates)), UsefulHints.Instance.Config.TeammateMessageDuration);
+                    playerDisplay.AddHint(TeammatesHint);
+                    Timing.CallDelayed(UsefulHints.Instance.Config.TeammateMessageDuration, () => { playerDisplay.RemoveHint(TeammatesHint); });
                 }
                 else
                 {
-                    player.ShowHint(string.Format(UsefulHints.Instance.Config.AloneHintMessage), UsefulHints.Instance.Config.AloneMessageDuration);
+                    playerDisplay.AddHint(AloneHint);
+                    Timing.CallDelayed(UsefulHints.Instance.Config.TeammateMessageDuration, () => { playerDisplay.RemoveHint(AloneHint); });
                 }
             }
         }

@@ -1,4 +1,8 @@
 ﻿using Exiled.Events.EventArgs.Scp096;
+using HintServiceMeow.Core.Utilities;
+using HintServiceMeow.Core.Models.Hints;
+using MEC;
+using System;
 
 namespace UsefulHints.EventHandlers.Entities
 {
@@ -14,7 +18,16 @@ namespace UsefulHints.EventHandlers.Entities
         }
         private static void OnScp096AddingTarget(AddingTargetEventArgs ev)
         {
-            ev.Target.ShowHint(UsefulHints.Instance.Config.Scp096LookMessage, 5);
+            Hint hint = new Hint
+            {
+                Text = UsefulHints.Instance.Config.Scp096LookMessage,
+                YCoordinate = 600,
+                FontSize = 32,
+            };
+
+            PlayerDisplay playerDisplay = PlayerDisplay.Get(ev.Target);
+            playerDisplay.AddHint(hint);
+            Timing.CallDelayed(5f, () => { playerDisplay.RemoveHint(hint); });
         }
     }
 }

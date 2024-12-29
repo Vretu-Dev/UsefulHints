@@ -1,5 +1,8 @@
-﻿using Exiled.Events.EventArgs.Player;
+﻿using HintServiceMeow.Core.Utilities;
+using HintServiceMeow.Core.Models.Hints;
+using Exiled.Events.EventArgs.Player;
 using PlayerRoles;
+using MEC;
 
 namespace UsefulHints.EventHandlers.Modules
 {
@@ -17,26 +20,63 @@ namespace UsefulHints.EventHandlers.Modules
         {
             if (ev.Attacker != null && ev.Player != null && ev.Attacker.Role != null && ev.Player.Role != null && ev.Attacker.Role.Team != Team.SCPs && ev.Player.Role.Team != Team.SCPs)
             {
+                PlayerDisplay playerDisplay = PlayerDisplay.Get(ev.Player);
+                PlayerDisplay attackerDisplay = PlayerDisplay.Get(ev.Attacker);
+
+                var AttackerHint = new Hint
+                {
+                    Text = string.Format(UsefulHints.Instance.Config.FriendlyFireWarning),
+                    YCoordinate = 700,
+                    FontSize = 30,
+                };
+                var PlayerHint = new Hint
+                {
+                    Text = string.Format(UsefulHints.Instance.Config.DamageTakenWarning, ev.Attacker.Nickname),
+                    YCoordinate = 700,
+                    FontSize = 30,
+                };
+                var CuffedAttackerHint = new Hint
+                {
+                    Text = string.Format(UsefulHints.Instance.Config.CuffedAttackerWarning),
+                    YCoordinate = 700,
+                    FontSize = 30,
+                };
+                var CuffedPlayerHint = new Hint
+                {
+                    Text = string.Format(UsefulHints.Instance.Config.CuffedPlayerWarning, ev.Attacker.Nickname),
+                    YCoordinate = 700,
+                    FontSize = 30,
+                };
+
                 if (ev.Attacker.Role.Side == ev.Player.Role.Side && ev.Attacker != ev.Player)
                 {
                     if (ev.Attacker.Role.Team == Team.ClassD && ev.Player.Role.Team == Team.ClassD)
                     {
                         if (UsefulHints.Instance.Config.ClassDAreTeammates)
                         {
-                            ev.Attacker.ShowHint(string.Format(UsefulHints.Instance.Config.FriendlyFireWarning), 1);
-                            ev.Player.ShowHint(string.Format(UsefulHints.Instance.Config.DamageTakenWarning, ev.Attacker.Nickname), 2);
+                            playerDisplay.AddHint(AttackerHint);
+                            Timing.CallDelayed(2f, () => { playerDisplay.RemoveHint(AttackerHint); });
+
+                            playerDisplay.AddHint(PlayerHint);
+                            Timing.CallDelayed(2f, () => { playerDisplay.RemoveHint(PlayerHint); });
                         }
                     }
                     else
                     {
-                        ev.Attacker.ShowHint(string.Format(UsefulHints.Instance.Config.FriendlyFireWarning), 1);
-                        ev.Player.ShowHint(string.Format(UsefulHints.Instance.Config.DamageTakenWarning, ev.Attacker.Nickname), 2);
+                        playerDisplay.AddHint(AttackerHint);
+                        Timing.CallDelayed(2f, () => { playerDisplay.RemoveHint(AttackerHint); });
+
+                        playerDisplay.AddHint(PlayerHint);
+                        Timing.CallDelayed(2f, () => { playerDisplay.RemoveHint(PlayerHint); });
                     }
                 }
                 if (UsefulHints.Instance.Config.EnableCuffedWarning && ev.Player.IsCuffed && ev.Attacker != ev.Player)
                 {
-                    ev.Attacker.ShowHint(string.Format(UsefulHints.Instance.Config.CuffedAttackerWarning), 2);
-                    ev.Player.ShowHint(string.Format(UsefulHints.Instance.Config.CuffedPlayerWarning, ev.Attacker.Nickname), 2);
+                    playerDisplay.AddHint(CuffedAttackerHint);
+                    Timing.CallDelayed(2f, () => { playerDisplay.RemoveHint(CuffedAttackerHint); });
+
+                    playerDisplay.AddHint(CuffedPlayerHint);
+                    Timing.CallDelayed(2f, () => { playerDisplay.RemoveHint(CuffedPlayerHint); });
                 }
             }
         }
