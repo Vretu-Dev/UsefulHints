@@ -4,6 +4,7 @@ using Player = Exiled.API.Features.Player;
 using MEC;
 using HintServiceMeow.Core.Utilities;
 using HintServiceMeow.Core.Models.Hints;
+using HintServiceMeow.Core.Enum;
 
 namespace UsefulHints.EventHandlers.Modules
 {
@@ -40,10 +41,14 @@ namespace UsefulHints.EventHandlers.Modules
                 var TeammatesHint = new Hint
                 {
                     Text = string.Format(UsefulHints.Instance.Config.TeammateHintMessage, string.Join("\n", teammates)),
+                    FontSize = 30,
+                    YCoordinate = 600
                 };
                 var AloneHint = new Hint
                 {
                     Text = string.Format(UsefulHints.Instance.Config.AloneHintMessage),
+                    FontSize = 30,
+                    YCoordinate = 600
                 };
 
                 if (teammates.Count > 0)

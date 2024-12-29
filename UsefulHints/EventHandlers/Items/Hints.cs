@@ -63,10 +63,10 @@ namespace UsefulHints.EventHandlers.Items
                 float RemainingHealth = ev.Player.Health - ev.Amount;
                 if (RemainingHealth > 0 && !ev.Attacker.IsHost)
                 {
-                    Hint hint = new Hint
+                    var hint = new DynamicHint
                     {
                         Text = string.Format(UsefulHints.Instance.Config.GrenadeDamageHint, Math.Round(ev.Amount)),
-                        YCoordinate = 700,
+                        TargetY = 700,
                         FontSize = 32,
                     };
 
@@ -87,10 +87,10 @@ namespace UsefulHints.EventHandlers.Items
 
                 if (scp207Effect != null)
                 {
-                    Hint hint = new Hint
+                    var hint = new DynamicHint
                     {
                         Text = $"<color=#A60C0E>{string.Format(UsefulHints.Instance.Config.Scp207HintMessage, scp207Effect.Intensity)}</color>",
-                        YCoordinate = 800,
+                        TargetY = 800,
                         FontSize = 32,
                     };
 
@@ -104,10 +104,10 @@ namespace UsefulHints.EventHandlers.Items
 
                 if (antiscp207Effect != null)
                 {
-                    Hint hint = new Hint
+                    var hint = new DynamicHint
                     {
                         Text = $"<color=#C53892>{string.Format(UsefulHints.Instance.Config.AntiScp207HintMessage, antiscp207Effect.Intensity)}</color>",
-                        YCoordinate = 800,
+                        TargetY = 800,
                         FontSize = 32,
                     };
 
@@ -132,10 +132,10 @@ namespace UsefulHints.EventHandlers.Items
 
                     if (scp207Effect != null)
                     {
-                        Hint hint = new Hint
+                        var hint = new DynamicHint
                         {
                             Text = $"<color=#A60C0E>{string.Format(UsefulHints.Instance.Config.Scp207HintMessage, scp207Effect.Intensity)}</color>",
-                            YCoordinate = 800,
+                            TargetY = 800,
                             FontSize = 32,
                         };
 
@@ -149,10 +149,10 @@ namespace UsefulHints.EventHandlers.Items
 
                     if (antiscp207Effect != null)
                     {
-                        Hint hint = new Hint
+                        var hint = new DynamicHint
                         {
                             Text = $"<color=#C53892>{string.Format(UsefulHints.Instance.Config.AntiScp207HintMessage, antiscp207Effect.Intensity)}</color>",
-                            YCoordinate = 800,
+                            TargetY = 800,
                             FontSize = 32,
                         };
 
@@ -163,7 +163,7 @@ namespace UsefulHints.EventHandlers.Items
             }
         }
         // SCP 1576 Handler
-        private static readonly Dictionary<Player, Hint> active1576Hints = new Dictionary<Player, Hint>();
+        private static readonly Dictionary<Player, DynamicHint> active1576Hints = new Dictionary<Player, DynamicHint>();
         private static void OnSCP1576Used(UsedItemEventArgs ev)
         {
             if (ev.Item.Type == ItemType.SCP1576)
@@ -207,11 +207,10 @@ namespace UsefulHints.EventHandlers.Items
         {
             float duration = 30f;
 
-            var SCP1576Hint = new Hint
+            var SCP1576Hint = new DynamicHint()
             {
-                YCoordinate = 900,
+                TargetY = 900,
                 FontSize = 28,
-                Alignment = HintAlignment.Center,
                 SyncSpeed = HintSyncSpeed.UnSync
             };
 
@@ -233,7 +232,7 @@ namespace UsefulHints.EventHandlers.Items
             activeCoroutines.Remove(player);
         }
         // SCP 268 Handler
-        private static readonly Dictionary<Player, Hint> active268Hints = new Dictionary<Player, Hint>();
+        private static readonly Dictionary<Player, DynamicHint> active268Hints = new Dictionary<Player, DynamicHint>();
         private static void OnSCP268Used(UsedItemEventArgs ev)
         {
             if (ev.Item.Type == ItemType.SCP268)
@@ -292,11 +291,10 @@ namespace UsefulHints.EventHandlers.Items
         {
             float duration = 15f;
 
-            var SCP268Hint = new Hint()
+            var SCP268Hint = new DynamicHint()
             {
-                YCoordinate = 900,
+                TargetY = 900,
                 FontSize = 28,
-                Alignment = HintAlignment.Center,
                 SyncSpeed = HintSyncSpeed.UnSync
             };
 
@@ -318,7 +316,7 @@ namespace UsefulHints.EventHandlers.Items
             activeCoroutines.Remove(player);
         }
         // SCP 2176 Handler
-        private static readonly Dictionary<Player, Hint> active2176Hints = new Dictionary<Player, Hint>();
+        private static readonly Dictionary<Player, DynamicHint> active2176Hints = new Dictionary<Player, DynamicHint>();
         private static void OnSCP2176Grenade(ExplodingGrenadeEventArgs ev)
         {
             if (ev.Projectile.Base is Scp2176Projectile)
@@ -346,11 +344,10 @@ namespace UsefulHints.EventHandlers.Items
         {
             float duration = 13f;
 
-            var SCP2176Hint = new Hint
+            var SCP2176Hint = new DynamicHint()
             {
-                YCoordinate = 900,
+                TargetY = 900,
                 FontSize = 28,
-                Alignment = HintAlignment.Center,
                 SyncSpeed = HintSyncSpeed.UnSync
             };
 
@@ -387,10 +384,10 @@ namespace UsefulHints.EventHandlers.Items
                 int remainingCharges = maxCharges - jailbirdPickup.TotalCharges;
                 if (remainingCharges > 1)
                 {
-                    Hint hint = new Hint
+                    var hint = new DynamicHint
                     {
                         Text = $"<color=#00B7EB>{string.Format(UsefulHints.Instance.Config.JailbirdUseMessage, remainingCharges)}</color>",
-                        YCoordinate = 800,
+                        TargetY = 800,
                         FontSize = 32,
                     };
 
@@ -399,10 +396,10 @@ namespace UsefulHints.EventHandlers.Items
                 }
                 else
                 {
-                    Hint hint = new Hint
+                    var hint = new DynamicHint
                     {
                         Text = $"<color=#C73804>{string.Format(UsefulHints.Instance.Config.JailbirdUseMessage, remainingCharges)}</color>",
-                        YCoordinate = 800,
+                        TargetY = 800,
                         FontSize = 32,
                     };
 
@@ -426,10 +423,10 @@ namespace UsefulHints.EventHandlers.Items
 
                     if (remainingCharges > 1)
                     {
-                        Hint hint = new Hint
+                        var hint = new DynamicHint
                         {
                             Text = $"<color=#00B7EB>{string.Format(UsefulHints.Instance.Config.JailbirdUseMessage, remainingCharges)}</color>",
-                            YCoordinate = 800,
+                            TargetY = 800,
                             FontSize = 32,
                         };
 
@@ -442,10 +439,10 @@ namespace UsefulHints.EventHandlers.Items
                     }
                     else
                     {
-                        Hint hint = new Hint
+                        var hint = new DynamicHint
                         {
                             Text = $"<color=#C73804>{string.Format(UsefulHints.Instance.Config.JailbirdUseMessage, remainingCharges)}</color>",
-                            YCoordinate = 800,
+                            TargetY = 800,
                             FontSize = 32,
                         };
 

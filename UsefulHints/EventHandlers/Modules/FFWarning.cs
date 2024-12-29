@@ -23,28 +23,28 @@ namespace UsefulHints.EventHandlers.Modules
                 PlayerDisplay playerDisplay = PlayerDisplay.Get(ev.Player);
                 PlayerDisplay attackerDisplay = PlayerDisplay.Get(ev.Attacker);
 
-                var AttackerHint = new Hint
+                var AttackerHint = new DynamicHint
                 {
                     Text = string.Format(UsefulHints.Instance.Config.FriendlyFireWarning),
-                    YCoordinate = 700,
+                    TargetY = 700,
                     FontSize = 30,
                 };
-                var PlayerHint = new Hint
+                var PlayerHint = new DynamicHint
                 {
                     Text = string.Format(UsefulHints.Instance.Config.DamageTakenWarning, ev.Attacker.Nickname),
-                    YCoordinate = 700,
+                    TargetY = 700,
                     FontSize = 30,
                 };
-                var CuffedAttackerHint = new Hint
+                var CuffedAttackerHint = new DynamicHint
                 {
                     Text = string.Format(UsefulHints.Instance.Config.CuffedAttackerWarning),
-                    YCoordinate = 700,
+                    TargetY = 700,
                     FontSize = 30,
                 };
-                var CuffedPlayerHint = new Hint
+                var CuffedPlayerHint = new DynamicHint
                 {
                     Text = string.Format(UsefulHints.Instance.Config.CuffedPlayerWarning, ev.Attacker.Nickname),
-                    YCoordinate = 700,
+                    TargetY = 700,
                     FontSize = 30,
                 };
 

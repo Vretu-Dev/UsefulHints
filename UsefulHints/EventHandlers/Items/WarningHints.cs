@@ -20,22 +20,22 @@ namespace UsefulHints.EventHandlers.Items
         {
             PlayerDisplay playerDisplay = PlayerDisplay.Get(ev.Player);
 
-            var SCP207Hint = new Hint
+            var SCP207Hint = new DynamicHint
             {
-                Text = string.Format(UsefulHints.Instance.Config.AntiScp207Warning),
-                YCoordinate = 700,
+                Text = string.Format(UsefulHints.Instance.Config.Scp207Warning),
+                TargetY = 700,
                 FontSize = 32,
             };
-            var SCP1853Hint = new Hint
+            var SCP1853Hint = new DynamicHint
             {
                 Text = string.Format(UsefulHints.Instance.Config.Scp1853Warning),
-                YCoordinate = 700,
+                TargetY = 700,
                 FontSize = 32,
             };
-            var AntiSCP207Hint = new Hint
+            var AntiSCP207Hint = new DynamicHint
             {
                 Text = string.Format(UsefulHints.Instance.Config.AntiScp207Warning),
-                YCoordinate = 700,
+                TargetY = 700,
                 FontSize = 32,
             };
 

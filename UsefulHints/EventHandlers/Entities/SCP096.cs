@@ -18,10 +18,10 @@ namespace UsefulHints.EventHandlers.Entities
         }
         private static void OnScp096AddingTarget(AddingTargetEventArgs ev)
         {
-            Hint hint = new Hint
+            var hint = new DynamicHint
             {
                 Text = UsefulHints.Instance.Config.Scp096LookMessage,
-                YCoordinate = 600,
+                TargetY = 600,
                 FontSize = 32,
             };
 

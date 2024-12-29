@@ -35,15 +35,16 @@ namespace UsefulHints.EventHandlers.Modules
                 }
                 if (!killer.IsHost)
                 {
-                    var dynamicHint = new DynamicHint
+                    var KillHint = new DynamicHint
                     {
                         Text = string.Format(UsefulHints.Instance.Config.KillCountMessage, playerKills[killer]),
-                        FontSize = 32,
+                        TargetY = 600,
+                        FontSize = 32
                     };
 
                     PlayerDisplay playerDisplay = PlayerDisplay.Get(ev.Attacker);
-                    playerDisplay.AddHint(dynamicHint);
-                    Timing.CallDelayed(2f, () => { playerDisplay.RemoveHint(dynamicHint); });
+                    playerDisplay.AddHint(KillHint);
+                    Timing.CallDelayed(2f, () => { playerDisplay.RemoveHint(KillHint); });
                 }
             }
         }
