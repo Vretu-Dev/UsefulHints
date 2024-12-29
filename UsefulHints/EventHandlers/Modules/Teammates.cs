@@ -41,14 +41,16 @@ namespace UsefulHints.EventHandlers.Modules
                 var TeammatesHint = new Hint
                 {
                     Text = string.Format(UsefulHints.Instance.Config.TeammateHintMessage, string.Join("\n", teammates)),
-                    FontSize = 30,
-                    YCoordinate = 600
+                    FontSize = 28,
+                    YCoordinate = 600,
+                    Alignment = HintAlignment.Left
                 };
                 var AloneHint = new Hint
                 {
                     Text = string.Format(UsefulHints.Instance.Config.AloneHintMessage),
                     FontSize = 30,
-                    YCoordinate = 600
+                    YCoordinate = 600,
+                    Alignment = HintAlignment.Left
                 };
 
                 if (teammates.Count > 0)

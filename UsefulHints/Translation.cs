@@ -72,7 +72,7 @@ namespace UsefulHints
                     Log.Info($"Folder created: {pluginDirectory}");
                 }
 
-                string url = $"https://raw.githubusercontent.com/Vretu-Dev/UsefulHints/refs/heads/main/Translations/{language}.json";
+                string url = $"https://raw.githubusercontent.com/Vretu-Dev/UsefulHints/refs/heads/hsm-version/Translations/{language}.json";
                 Log.Debug($"Downloading translations from: {url}");
                 string content = await HttpClient.GetStringAsync(url);
                 File.WriteAllText(filePath, content);
