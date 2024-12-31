@@ -57,6 +57,7 @@
     <Compile Include="EventHandlers\Modules\Maps.cs" />
     <Compile Include="EventHandlers\Modules\RoundSummary.cs" />
     <Compile Include="EventHandlers\Modules\Teammates.cs" />
+    <Compile Include="Settings.cs" />
     <Compile Include="Translation.cs" />
     <Compile Include="Update.cs" />
     <Compile Include="UsefulHints.cs" />
@@ -68,7 +69,7 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="ExMod.Exiled">
-      <Version>9.1.0</Version>
+      <Version>9.1.1</Version>
     </PackageReference>
     <PackageReference Include="Fody">
       <Version>6.9.1</Version>

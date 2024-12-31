@@ -16,6 +16,7 @@ namespace UsefulHints
         public override void OnEnabled()
         {
             Instance = this;
+            ServerSettings.RegisterSettings();
             if(Config.AutoUpdate){ UpdateChecker.RegisterEvents(); }
             if(Config.Translations){ _ = TranslationManager.RegisterEvents(); }
             if(Config.EnableHints){ EventHandlers.Entities.SCP096.RegisterEvents(); }
