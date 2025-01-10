@@ -15,38 +15,16 @@ namespace UsefulHints.EventHandlers.Items
         }
         private static void OnPickingUpWarning(PickingUpItemEventArgs ev)
         {
-            if (ev.Pickup.Type == ItemType.SCP207)
+            if (ev.Pickup.Type == ItemType.SCP207 || ev.Pickup.Type == ItemType.AntiSCP207 || ev.Pickup.Type == ItemType.SCP1853)
             {
-                if (ev.Player.IsEffectActive<AntiScp207>())
-                {
-                    ev.Player.ShowHint(string.Format(UsefulHints.Instance.Config.AntiScp207Warning), 4);
-                }
-                if (ev.Player.IsEffectActive<Scp1853>())
-                {
-                    ev.Player.ShowHint(string.Format(UsefulHints.Instance.Config.Scp1853Warning), 4);
-                }
-            }
-            if (ev.Pickup.Type == ItemType.AntiSCP207)
-            {
-                if (ev.Player.IsEffectActive<Scp207>())
-                {
+                if (ev.Player.IsEffectActive<Scp207>() && ev.Pickup.Type != ItemType.SCP207)
                     ev.Player.ShowHint(string.Format(UsefulHints.Instance.Config.Scp207Warning), 4);
-                }
-                if (ev.Player.IsEffectActive<Scp1853>())
-                {
-                    ev.Player.ShowHint(string.Format(UsefulHints.Instance.Config.Scp1853Warning), 4);
-                }
-            }
-            if (ev.Pickup.Type == ItemType.SCP1853)
-            {
-                if (ev.Player.IsEffectActive<Scp207>())
-                {
-                    ev.Player.ShowHint(string.Format(UsefulHints.Instance.Config.Scp207Warning), 4);
-                }
-                if (ev.Player.IsEffectActive<AntiScp207>())
-                {
+
+                if (ev.Player.IsEffectActive<AntiScp207>() && ev.Pickup.Type != ItemType.AntiSCP207)
                     ev.Player.ShowHint(string.Format(UsefulHints.Instance.Config.AntiScp207Warning), 4);
-                }
+
+                if (ev.Player.IsEffectActive<Scp1853>() && ev.Pickup.Type != ItemType.SCP1853)
+                    ev.Player.ShowHint(string.Format(UsefulHints.Instance.Config.Scp1853Warning), 4);
             }
         }
     }

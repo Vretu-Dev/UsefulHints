@@ -1,15 +1,13 @@
 ﻿using System;
-using System.Linq;
 using System.Collections.Generic;
 using Exiled.API.Enums;
-using Exiled.API.Extensions;
 using JailbirdPickup = Exiled.API.Features.Pickups.JailbirdPickup;
 using Player = Exiled.API.Features.Player;
 using Exiled.Events.EventArgs.Map;
 using Exiled.Events.EventArgs.Player;
 using InventorySystem.Items.ThrowableProjectiles;
 using InventorySystem.Items.Jailbird;
-using InventorySystem.Items.MicroHID;
+using CustomPlayerEffects;
 using MEC;
 
 namespace UsefulHints.EventHandlers.Items
@@ -57,59 +55,34 @@ namespace UsefulHints.EventHandlers.Items
             if (ev.DamageHandler.Type == DamageType.Explosion)
             {
                 float RemainingHealth = ev.Player.Health - ev.Amount;
+
                 if (RemainingHealth > 0 && !ev.Attacker.IsHost)
-                {
                     ev.Attacker.ShowHint($"<color=white>{new string('\n', 5)}{string.Format(UsefulHints.Instance.Config.GrenadeDamageHint, Math.Round(ev.Amount))}</color>", 4);
-                }
             }
         }
         // SCP 207 Handler
         private static void OnPickingUpSCP207(PickingUpItemEventArgs ev)
         {
-            if (ev.Pickup.Type == ItemType.SCP207)
-            {
-                CustomPlayerEffects.StatusEffectBase scp207Effect = ev.Player.ActiveEffects.FirstOrDefault(effect => effect.GetEffectType() == EffectType.Scp207);
+            if (ev.Player.IsEffectActive<Scp207>() && ev.Pickup.Type != ItemType.AntiSCP207)
+                ev.Player.ShowHint($"<color=#A60C0E>{new string('\n', 10)}{string.Format(UsefulHints.Instance.Config.Scp207HintMessage, ev.Player.GetEffect(EffectType.Scp207).Intensity)}</color>", 4);
 
-                if (scp207Effect != null)
-                {
-                    ev.Player.ShowHint($"<color=#A60C0E>{new string('\n', 10)}{string.Format(UsefulHints.Instance.Config.Scp207HintMessage, scp207Effect.Intensity)}</color>", 4);
-                }
-            }
-            if (ev.Pickup.Type == ItemType.AntiSCP207)
-            {
-                CustomPlayerEffects.StatusEffectBase antiscp207Effect = ev.Player.ActiveEffects.FirstOrDefault(effect => effect.GetEffectType() == EffectType.AntiScp207);
-
-                if (antiscp207Effect != null)
-                {
-                    ev.Player.ShowHint($"<color=#C53892>{new string('\n', 10)}{string.Format(UsefulHints.Instance.Config.AntiScp207HintMessage, antiscp207Effect.Intensity)}</color>", 4);
-                }
-            }
+            if (ev.Player.IsEffectActive<AntiScp207>() && ev.Pickup.Type != ItemType.SCP207)
+                ev.Player.ShowHint($"<color=#C53892>{new string('\n', 10)}{string.Format(UsefulHints.Instance.Config.AntiScp207HintMessage, ev.Player.GetEffect(EffectType.AntiScp207).Intensity)}</color>", 4);
         }
         private static void OnEquipSCP207(ChangingItemEventArgs ev)
         {
             if (UsefulHints.Instance.Config.ShowHintOnEquipItem)
             {
                 if (ev.Item == null)
-                {
                     return;
-                }
-                if (ev.Item.Type == ItemType.SCP207)
-                {
-                    CustomPlayerEffects.StatusEffectBase scp207Effect = ev.Player.ActiveEffects.FirstOrDefault(effect => effect.GetEffectType() == EffectType.Scp207);
 
-                    if (scp207Effect != null)
-                    {
-                        ev.Player.ShowHint($"<color=#A60C0E>{new string('\n', 10)}{string.Format(UsefulHints.Instance.Config.Scp207HintMessage, scp207Effect.Intensity)}</color>", 2);
-                    }
-                }
-                if (ev.Item.Type == ItemType.AntiSCP207)
+                if (ev.Item.Type == ItemType.SCP207 || ev.Item.Type == ItemType.AntiSCP207)
                 {
-                    CustomPlayerEffects.StatusEffectBase antiscp207Effect = ev.Player.ActiveEffects.FirstOrDefault(effect => effect.GetEffectType() == EffectType.AntiScp207);
+                    if (ev.Player.IsEffectActive<Scp207>() && ev.Item.Type != ItemType.AntiSCP207)
+                        ev.Player.ShowHint($"<color=#A60C0E>{new string('\n', 10)}{string.Format(UsefulHints.Instance.Config.Scp207HintMessage, ev.Player.GetEffect(EffectType.Scp207).Intensity)}</color>", 4);
 
-                    if (antiscp207Effect != null)
-                    {
-                        ev.Player.ShowHint($"<color=#C53892>{new string('\n', 10)}{string.Format(UsefulHints.Instance.Config.AntiScp207HintMessage, antiscp207Effect.Intensity)}</color>", 2);
-                    }
+                    if (ev.Player.IsEffectActive<AntiScp207>() && ev.Item.Type != ItemType.SCP207)
+                        ev.Player.ShowHint($"<color=#C53892>{new string('\n', 10)}{string.Format(UsefulHints.Instance.Config.AntiScp207HintMessage, ev.Player.GetEffect(EffectType.AntiScp207).Intensity)}</color>", 4);
                 }
             }
         }
@@ -129,8 +102,8 @@ namespace UsefulHints.EventHandlers.Items
                 }
 
                 var coroutine = Timing.RunCoroutine(Scp1576Timer(ev.Player));
-                activeCoroutines[ev.Player] = coroutine;
-                activeItems[ev.Player] = ev.Item.Type;
+                activeCoroutines.Add(ev.Player, coroutine);
+                activeItems.Add(ev.Player, ev.Item.Type);
             }
         }
         private static void OnSCP1576ChangedItem(ChangedItemEventArgs ev)
@@ -246,14 +219,11 @@ namespace UsefulHints.EventHandlers.Items
             {
                 int maxCharges = 5;
                 int remainingCharges = maxCharges - jailbirdPickup.TotalCharges;
+
                 if (remainingCharges > 1)
-                {
                     ev.Player.ShowHint($"<color=#00B7EB>{new string('\n', 10)}{string.Format(UsefulHints.Instance.Config.JailbirdUseMessage, remainingCharges)}</color>", 4);
-                }
                 else
-                {
                     ev.Player.ShowHint($"<color=#C73804>{new string('\n', 10)}{string.Format(UsefulHints.Instance.Config.JailbirdUseMessage, remainingCharges)}</color>", 4);
-                }
             }
         }
         private static void OnEquipJailbird(ChangingItemEventArgs ev)
@@ -261,22 +231,17 @@ namespace UsefulHints.EventHandlers.Items
             if (UsefulHints.Instance.Config.ShowHintOnEquipItem)
             {
                 if (ev.Item == null)
-                {
                     return;
-                }
+
                 if (ev.Item.Base is JailbirdItem jailbirdItem)
                 {
                     int maxCharges = 5;
                     int remainingCharges = maxCharges - jailbirdItem.TotalChargesPerformed;
 
                     if (remainingCharges > 1)
-                    {
                         ev.Player.ShowHint($"<color=#00B7EB>{new string('\n', 10)}{string.Format(UsefulHints.Instance.Config.JailbirdUseMessage, remainingCharges)}</color>", 2);
-                    }
                     else
-                    {
                         ev.Player.ShowHint($"<color=#C73804>{new string('\n', 10)}{string.Format(UsefulHints.Instance.Config.JailbirdUseMessage, remainingCharges)}</color>", 2);
-                    }
                 }
             }
         }
