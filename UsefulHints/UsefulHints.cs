@@ -16,8 +16,6 @@ namespace UsefulHints
         public override void OnEnabled()
         {
             Instance = this;
-            if(Config.AutoUpdate){ UpdateChecker.RegisterEvents(); }
-            if(Config.Translations){ _ = TranslationManager.RegisterEvents(); }
             if(Config.EnableHints){ EventHandlers.Entities.SCP096.RegisterEvents(); }
             if(Config.EnableHints){ EventHandlers.Items.Hints.RegisterEvents(); }
             if(Config.EnableWarnings){ EventHandlers.Items.WarningHints.RegisterEvents(); }
@@ -32,7 +30,6 @@ namespace UsefulHints
         public override void OnDisabled()
         {
             Instance = null;
-            if(Config.AutoUpdate){ UpdateChecker.UnregisterEvents(); }
             if(Config.EnableHints){ EventHandlers.Entities.SCP096.UnregisterEvents(); }
             if(Config.EnableHints){ EventHandlers.Items.Hints.UnregisterEvents(); }
             if(Config.EnableWarnings){ EventHandlers.Items.WarningHints.UnregisterEvents(); }
