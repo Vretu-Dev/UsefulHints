@@ -63,11 +63,14 @@ namespace UsefulHints.EventHandlers.Items
         // SCP 207 Handler
         private static void OnPickingUpSCP207(PickingUpItemEventArgs ev)
         {
-            if (ev.Player.IsEffectActive<Scp207>() && ev.Pickup.Type != ItemType.AntiSCP207)
-                ev.Player.ShowHint($"<color=#A60C0E>{new string('\n', 10)}{string.Format(UsefulHints.Instance.Config.Scp207HintMessage, ev.Player.GetEffect(EffectType.Scp207).Intensity)}</color>", 4);
+            if (ev.Pickup.Type == ItemType.SCP207 || ev.Pickup.Type == ItemType.AntiSCP207)
+            {
+                if (ev.Player.IsEffectActive<Scp207>() && ev.Pickup.Type != ItemType.AntiSCP207)
+                    ev.Player.ShowHint($"<color=#A60C0E>{new string('\n', 10)}{string.Format(UsefulHints.Instance.Config.Scp207HintMessage, ev.Player.GetEffect(EffectType.Scp207).Intensity)}</color>", 4);
 
-            if (ev.Player.IsEffectActive<AntiScp207>() && ev.Pickup.Type != ItemType.SCP207)
-                ev.Player.ShowHint($"<color=#C53892>{new string('\n', 10)}{string.Format(UsefulHints.Instance.Config.AntiScp207HintMessage, ev.Player.GetEffect(EffectType.AntiScp207).Intensity)}</color>", 4);
+                if (ev.Player.IsEffectActive<AntiScp207>() && ev.Pickup.Type != ItemType.SCP207)
+                    ev.Player.ShowHint($"<color=#C53892>{new string('\n', 10)}{string.Format(UsefulHints.Instance.Config.AntiScp207HintMessage, ev.Player.GetEffect(EffectType.AntiScp207).Intensity)}</color>", 4);
+            }
         }
         private static void OnEquipSCP207(ChangingItemEventArgs ev)
         {
