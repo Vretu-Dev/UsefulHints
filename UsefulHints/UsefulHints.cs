@@ -6,7 +6,7 @@ namespace UsefulHints
 {
     public class UsefulHints : Plugin<Config>
     {
-        public override string Name => "Useful Hints";
+        public override string Name => "UsefulHints Lite";
         public override string Author => "Vretu";
         public override string Prefix { get; } = "UH";
         public override Version Version => new Version(2, 0, 0);
