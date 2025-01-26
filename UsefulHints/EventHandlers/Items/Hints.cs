@@ -14,6 +14,7 @@ using HintServiceMeow.Core.Models.Hints;
 using HintServiceMeow.Core.Utilities;
 using HintServiceMeow.Core.Extension;
 using HintServiceMeow.Core.Enum;
+using CustomPlayerEffects;
 
 namespace UsefulHints.EventHandlers.Items
 {
@@ -61,6 +62,7 @@ namespace UsefulHints.EventHandlers.Items
             if (ev.DamageHandler.Type == DamageType.Explosion)
             {
                 float RemainingHealth = ev.Player.Health - ev.Amount;
+
                 if (RemainingHealth > 0 && !ev.Attacker.IsHost)
                 {
                     var hint = new DynamicHint
@@ -81,39 +83,29 @@ namespace UsefulHints.EventHandlers.Items
         {
             PlayerDisplay playerDisplay = PlayerDisplay.Get(ev.Player);
 
-            if (ev.Pickup.Type == ItemType.SCP207)
+            if (ev.Player.IsEffectActive<Scp207>() && ev.Pickup.Type == ItemType.SCP207)
             {
-                CustomPlayerEffects.StatusEffectBase scp207Effect = ev.Player.ActiveEffects.FirstOrDefault(effect => effect.GetEffectType() == EffectType.Scp207);
-
-                if (scp207Effect != null)
+                var hint = new DynamicHint
                 {
-                    var hint = new DynamicHint
-                    {
-                        Text = $"<color=#A60C0E>{string.Format(UsefulHints.Instance.Config.Scp207HintMessage, scp207Effect.Intensity)}</color>",
-                        TargetY = 800,
-                        FontSize = 32,
-                    };
+                    Text = $"<color=#A60C0E>{string.Format(UsefulHints.Instance.Config.Scp207HintMessage, ev.Player.GetEffect(EffectType.Scp207).Intensity)}</color>",
+                    TargetY = 800,
+                    FontSize = 32,
+                };
 
-                    playerDisplay.AddHint(hint);
-                    Timing.CallDelayed(4f, () => { playerDisplay.RemoveHint(hint); });
-                }
+                playerDisplay.AddHint(hint);
+                Timing.CallDelayed(4f, () => { playerDisplay.RemoveHint(hint); });
             }
-            if (ev.Pickup.Type == ItemType.AntiSCP207)
+            if (ev.Player.IsEffectActive<AntiScp207>() && ev.Pickup.Type == ItemType.AntiSCP207)
             {
-                CustomPlayerEffects.StatusEffectBase antiscp207Effect = ev.Player.ActiveEffects.FirstOrDefault(effect => effect.GetEffectType() == EffectType.AntiScp207);
-
-                if (antiscp207Effect != null)
+                var hint = new DynamicHint
                 {
-                    var hint = new DynamicHint
-                    {
-                        Text = $"<color=#C53892>{string.Format(UsefulHints.Instance.Config.AntiScp207HintMessage, antiscp207Effect.Intensity)}</color>",
-                        TargetY = 800,
-                        FontSize = 32,
-                    };
+                    Text = $"<color=#C53892>{string.Format(UsefulHints.Instance.Config.AntiScp207HintMessage, ev.Player.GetEffect(EffectType.AntiScp207).Intensity)}</color>",
+                    TargetY = 800,
+                    FontSize = 32,
+                };
 
-                    playerDisplay.AddHint(hint);
-                    Timing.CallDelayed(4f, () => { playerDisplay.RemoveHint(hint); });
-                }
+                playerDisplay.AddHint(hint);
+                Timing.CallDelayed(4f, () => { playerDisplay.RemoveHint(hint); });
             }
         }
         private static void OnEquipSCP207(ChangingItemEventArgs ev)
@@ -123,42 +115,31 @@ namespace UsefulHints.EventHandlers.Items
                 PlayerDisplay playerDisplay = PlayerDisplay.Get(ev.Player);
 
                 if (ev.Item == null)
-                {
                     return;
-                }
-                if (ev.Item.Type == ItemType.SCP207)
+
+                if (ev.Player.IsEffectActive<Scp207>() && ev.Item.Type == ItemType.SCP207)
                 {
-                    CustomPlayerEffects.StatusEffectBase scp207Effect = ev.Player.ActiveEffects.FirstOrDefault(effect => effect.GetEffectType() == EffectType.Scp207);
-
-                    if (scp207Effect != null)
+                    var hint = new DynamicHint
                     {
-                        var hint = new DynamicHint
-                        {
-                            Text = $"<color=#A60C0E>{string.Format(UsefulHints.Instance.Config.Scp207HintMessage, scp207Effect.Intensity)}</color>",
-                            TargetY = 800,
-                            FontSize = 32,
-                        };
+                        Text = $"<color=#A60C0E>{string.Format(UsefulHints.Instance.Config.Scp207HintMessage, ev.Player.GetEffect(EffectType.Scp207).Intensity)}</color>",
+                        TargetY = 800,
+                        FontSize = 32,
+                    };
 
-                        playerDisplay.AddHint(hint);
-                        Timing.CallDelayed(2f, () => { playerDisplay.RemoveHint(hint); });
-                    }
+                    playerDisplay.AddHint(hint);
+                    Timing.CallDelayed(2f, () => { playerDisplay.RemoveHint(hint); });
                 }
-                if (ev.Item.Type == ItemType.AntiSCP207)
+                if (ev.Player.IsEffectActive<AntiScp207>() && ev.Item.Type == ItemType.AntiSCP207)
                 {
-                    CustomPlayerEffects.StatusEffectBase antiscp207Effect = ev.Player.ActiveEffects.FirstOrDefault(effect => effect.GetEffectType() == EffectType.AntiScp207);
-
-                    if (antiscp207Effect != null)
+                    var hint = new DynamicHint
                     {
-                        var hint = new DynamicHint
-                        {
-                            Text = $"<color=#C53892>{string.Format(UsefulHints.Instance.Config.AntiScp207HintMessage, antiscp207Effect.Intensity)}</color>",
-                            TargetY = 800,
-                            FontSize = 32,
-                        };
+                        Text = $"<color=#C53892>{string.Format(UsefulHints.Instance.Config.AntiScp207HintMessage, ev.Player.GetEffect(EffectType.AntiScp207).Intensity)}</color>",
+                        TargetY = 800,
+                        FontSize = 32,
+                    };
 
-                        playerDisplay.AddHint(hint);
-                        Timing.CallDelayed(2f, () => { playerDisplay.RemoveHint(hint);  });
-                    }
+                    playerDisplay.AddHint(hint);
+                    Timing.CallDelayed(2f, () => { playerDisplay.RemoveHint(hint); });
                 }
             }
         }
@@ -382,6 +363,7 @@ namespace UsefulHints.EventHandlers.Items
 
                 int maxCharges = 5;
                 int remainingCharges = maxCharges - jailbirdPickup.TotalCharges;
+
                 if (remainingCharges > 1)
                 {
                     var hint = new DynamicHint
@@ -413,9 +395,8 @@ namespace UsefulHints.EventHandlers.Items
             if (UsefulHints.Instance.Config.ShowHintOnEquipItem)
             {
                 if (ev.Item == null)
-                {
                     return;
-                }
+
                 if (ev.Item.Base is JailbirdItem jailbirdItem)
                 {
                     int maxCharges = 5;

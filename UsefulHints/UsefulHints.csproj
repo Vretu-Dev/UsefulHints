@@ -59,7 +59,6 @@
     <Compile Include="EventHandlers\Modules\RoundSummary.cs" />
     <Compile Include="EventHandlers\Modules\Teammates.cs" />
     <Compile Include="Translation.cs" />
-    <Compile Include="Update.cs" />
     <Compile Include="UsefulHints.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -39,46 +39,24 @@ namespace UsefulHints.EventHandlers.Items
                 FontSize = 32,
             };
 
-            if (ev.Pickup.Type == ItemType.SCP207)
+            if (ev.Pickup.Type == ItemType.SCP207 || ev.Pickup.Type == ItemType.AntiSCP207 || ev.Pickup.Type == ItemType.SCP1853)
             {
-                if (ev.Player.IsEffectActive<AntiScp207>())
+                if (ev.Player.IsEffectActive<Scp207>() && ev.Pickup.Type != ItemType.SCP207)
+                {
+                    playerDisplay.AddHint(SCP207Hint);
+                    Timing.CallDelayed(4f, () => { playerDisplay.RemoveHint(SCP207Hint); });
+                }
+
+                if (ev.Player.IsEffectActive<AntiScp207>() && ev.Pickup.Type != ItemType.AntiSCP207)
                 {
                     playerDisplay.AddHint(AntiSCP207Hint);
                     Timing.CallDelayed(4f, () => { playerDisplay.RemoveHint(AntiSCP207Hint); });
                 }
-                if (ev.Player.IsEffectActive<Scp1853>())
+
+                if (ev.Player.IsEffectActive<Scp1853>() && ev.Pickup.Type != ItemType.SCP1853)
                 {
                     playerDisplay.AddHint(SCP1853Hint);
                     Timing.CallDelayed(4f, () => { playerDisplay.RemoveHint(SCP1853Hint); });
-                }
-            }
-            if (ev.Pickup.Type == ItemType.AntiSCP207)
-            {
-                if (ev.Player.IsEffectActive<Scp207>())
-                {
-                    playerDisplay.AddHint(SCP207Hint);
-                    Timing.CallDelayed(4f, () => { playerDisplay.RemoveHint(SCP207Hint); });
-                }
-                if (ev.Player.IsEffectActive<Scp1853>())
-                {
-                    playerDisplay.AddHint(SCP1853Hint);
-
-                    Timing.CallDelayed(4f, () => {
-                        playerDisplay.RemoveHint(SCP1853Hint);
-                    });
-                }
-            }
-            if (ev.Pickup.Type == ItemType.SCP1853)
-            {
-                if (ev.Player.IsEffectActive<Scp207>())
-                {
-                    playerDisplay.AddHint(SCP207Hint);
-                    Timing.CallDelayed(4f, () => { playerDisplay.RemoveHint(SCP207Hint); });
-                }
-                if (ev.Player.IsEffectActive<AntiScp207>())
-                {
-                    playerDisplay.AddHint(AntiSCP207Hint);
-                    Timing.CallDelayed(4f, () => { playerDisplay.RemoveHint(AntiSCP207Hint); });
                 }
             }
         }
