@@ -10,7 +10,7 @@
 <a href='https://opencollective.com/ucs'><img src="https://github.com/user-attachments/assets/517f8cae-32ac-4886-8bd6-5e95447073e2" style="width:154px;height:40px;"></a>
 <a href='https://discord.gg/5StRGu8EJV'><img src="https://github.com/user-attachments/assets/17cc06b8-ced8-4223-93dc-8d3a21c55753" style="width:154px;height:40px;"></a>
 
-### Minimum Exiled Version: 9.0.0
+### Minimum Exiled Version: 9.4.0
 ## Features:
 - Display remaining time after using SCP-268
 - SCP-268 countdown timer
