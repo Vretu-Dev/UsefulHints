@@ -9,6 +9,7 @@ using InventorySystem.Items.ThrowableProjectiles;
 using InventorySystem.Items.Jailbird;
 using CustomPlayerEffects;
 using MEC;
+using Exiled.API.Features.Core.UserSettings;
 
 namespace UsefulHints.EventHandlers.Items
 {
@@ -16,6 +17,9 @@ namespace UsefulHints.EventHandlers.Items
     {
         private static readonly Dictionary<Player, CoroutineHandle> activeCoroutines = new Dictionary<Player, CoroutineHandle>();
         private static Dictionary<Player, ItemType> activeItems = new Dictionary<Player, ItemType>();
+        public static TwoButtonsSetting ShowHintSetting { get; private set; }
+        public static TwoButtonsSetting ShowTimersSetting { get; private set; }
+
         public static void RegisterEvents()
         {
             Exiled.Events.Handlers.Player.Hurting += OnGrenadeHurting;
@@ -30,6 +34,34 @@ namespace UsefulHints.EventHandlers.Items
             Exiled.Events.Handlers.Server.WaitingForPlayers += OnWaitingForPlayers;
             Exiled.Events.Handlers.Player.PickingUpItem += OnPickingUpJailbird;
             Exiled.Events.Handlers.Player.ChangingItem += OnEquipJailbird;
+
+            ShowHintSetting = new TwoButtonsSetting(
+            id: 777,
+            label: "Show Hints",
+            firstOption: "ON",
+            secondOption: "OFF",
+            defaultIsSecond: false,
+            hintDescription: "Enable or disable hints display.",
+            onChanged: (player, setting) =>
+            {
+                var showHints = (setting as TwoButtonsSetting)?.IsFirst ?? true;
+                player.SessionVariables["ShowHints"] = showHints;
+            });
+
+            ShowTimersSetting = new TwoButtonsSetting(
+            id: 776,
+            label: "Show Timers",
+            firstOption: "ON",
+            secondOption: "OFF",
+            defaultIsSecond: false,
+            hintDescription: "SCP-268, SCP-2176 and SCP-1576.",
+            onChanged: (player, setting) =>
+            {
+                var showTimers = (setting as TwoButtonsSetting)?.IsFirst ?? true;
+                player.SessionVariables["ShowTimers"] = showTimers;
+            });
+            SettingBase.Register(new[] { ShowHintSetting });
+            SettingBase.Register(new[] { ShowTimersSetting });
         }
         public static void UnregisterEvents()
         {
@@ -45,11 +77,13 @@ namespace UsefulHints.EventHandlers.Items
             Exiled.Events.Handlers.Server.WaitingForPlayers -= OnWaitingForPlayers;
             Exiled.Events.Handlers.Player.PickingUpItem -= OnPickingUpJailbird;
             Exiled.Events.Handlers.Player.ChangingItem -= OnEquipJailbird;
+            SettingBase.Unregister(settings: new[] { ShowHintSetting });
+            SettingBase.Unregister(settings: new[] { ShowTimersSetting });
         }
         // Explosion Damage Handler
         private static void OnGrenadeHurting(HurtingEventArgs ev)
         {
-            if (!ev.IsAllowed || ev.Amount <= 0.01f || ev.Attacker == null || ev.Player == null || ev.Player == ev.Attacker)
+            if (!ev.IsAllowed || ev.Amount <= 0.01f || ev.Attacker == null || ev.Player == null || ev.Player == ev.Attacker || ev.Player.SessionVariables.TryGetValue("ShowHints", out var showHints) && !(bool)showHints)
                 return;
 
             if (ev.DamageHandler.Type == DamageType.Explosion)
@@ -63,6 +97,9 @@ namespace UsefulHints.EventHandlers.Items
         // SCP 207 Handler
         private static void OnPickingUpSCP207(PickingUpItemEventArgs ev)
         {
+            if (ev.Player.SessionVariables.TryGetValue("ShowHints", out var showHints) && !(bool)showHints)
+                return;
+
             if (ev.Player.IsEffectActive<Scp207>() && ev.Pickup.Type == ItemType.SCP207)
                 ev.Player.ShowHint($"<color=#A60C0E>{new string('\n', 10)}{string.Format(UsefulHints.Instance.Config.Scp207HintMessage, ev.Player.GetEffect(EffectType.Scp207).Intensity)}</color>", 4);
 
@@ -73,7 +110,7 @@ namespace UsefulHints.EventHandlers.Items
         {
             if (UsefulHints.Instance.Config.ShowHintOnEquipItem)
             {
-                if (ev.Item == null)
+                if (ev.Item == null || ev.Player.SessionVariables.TryGetValue("ShowHints", out var showHints) && !(bool)showHints)
                     return;
 
                 if (ev.Player.IsEffectActive<Scp207>() && ev.Item.Type == ItemType.SCP207)
@@ -86,6 +123,9 @@ namespace UsefulHints.EventHandlers.Items
         // SCP 1576 Handler
         private static void OnSCP1576Used(UsedItemEventArgs ev)
         {
+            if (ev.Player.SessionVariables.TryGetValue("ShowTimers", out var showTimers) && !(bool)showTimers)
+                return;
+
             if (ev.Item.Type == ItemType.SCP1576)
             {
                 if (activeCoroutines.ContainsKey(ev.Player))
@@ -127,6 +167,9 @@ namespace UsefulHints.EventHandlers.Items
         // SCP 268 Handler
         private static void OnSCP268Used(UsedItemEventArgs ev)
         {
+            if (ev.Player.SessionVariables.TryGetValue("ShowTimers", out var showTimers) && !(bool)showTimers)
+                return;
+
             if (ev.Item.Type == ItemType.SCP268)
             {
                 if (activeCoroutines.ContainsKey(ev.Player))
@@ -177,6 +220,9 @@ namespace UsefulHints.EventHandlers.Items
         // SCP 2176 Handler
         private static void OnSCP2176Grenade(ExplodingGrenadeEventArgs ev)
         {
+            if (ev.Player.SessionVariables.TryGetValue("ShowTimers", out var showTimers) && !(bool)showTimers)
+                return;
+
             if (ev.Projectile.Base is Scp2176Projectile)
             {
                 if (ev.Player != null)
@@ -212,6 +258,9 @@ namespace UsefulHints.EventHandlers.Items
         // Jailbird Handler
         private static void OnPickingUpJailbird(PickingUpItemEventArgs ev)
         {
+            if (ev.Player.SessionVariables.TryGetValue("ShowHints", out var showHints) && !(bool)showHints)
+                return;
+
             if (ev.Pickup is JailbirdPickup jailbirdPickup)
             {
                 int maxCharges = 5;
@@ -227,7 +276,7 @@ namespace UsefulHints.EventHandlers.Items
         {
             if (UsefulHints.Instance.Config.ShowHintOnEquipItem)
             {
-                if (ev.Item == null)
+                if (ev.Item == null || ev.Player.SessionVariables.TryGetValue("ShowHints", out var showHints) && !(bool)showHints)
                     return;
 
                 if (ev.Item.Base is JailbirdItem jailbirdItem)

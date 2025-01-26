@@ -1,4 +1,5 @@
-﻿using Exiled.Events.EventArgs.Scp096;
+﻿using Exiled.API.Features.Core.UserSettings;
+using Exiled.Events.EventArgs.Scp096;
 
 namespace UsefulHints.EventHandlers.Entities
 {
@@ -14,6 +15,9 @@ namespace UsefulHints.EventHandlers.Entities
         }
         private static void OnScp096AddingTarget(AddingTargetEventArgs ev)
         {
+            if (ev.Target.SessionVariables.TryGetValue("ShowHints", out var showHints) && !(bool)showHints)
+                return;
+
             ev.Target.ShowHint(UsefulHints.Instance.Config.Scp096LookMessage, 5);
         }
     }

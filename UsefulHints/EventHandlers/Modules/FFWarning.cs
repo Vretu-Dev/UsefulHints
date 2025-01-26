@@ -1,17 +1,34 @@
-﻿using Exiled.Events.EventArgs.Player;
+﻿using Exiled.API.Features.Core.UserSettings;
+using Exiled.Events.EventArgs.Player;
 using PlayerRoles;
 
 namespace UsefulHints.EventHandlers.Modules
 {
     public static class FFWarning
     {
+        public static TwoButtonsSetting ShowFFWarningSetting { get; private set; }
         public static void RegisterEvents()
         {
             Exiled.Events.Handlers.Player.Hurting += OnHurting;
+
+            ShowFFWarningSetting = new TwoButtonsSetting(
+            id: 774,
+            label: "Friendly Fire Warning",
+            firstOption: "ON",
+            secondOption: "OFF",
+            defaultIsSecond: false,
+            hintDescription: "Warnings when you deal or receive damage to/from your teammates.",
+            onChanged: (player, setting) =>
+            {
+                var showFFWarning = (setting as TwoButtonsSetting)?.IsFirst ?? true;
+                player.SessionVariables["ShowFFWarning"] = showFFWarning;
+            });
+            SettingBase.Register(new[] { ShowFFWarningSetting });
         }
         public static void UnregisterEvents()
         {
             Exiled.Events.Handlers.Player.Hurting -= OnHurting;
+            SettingBase.Unregister(settings: new[] { ShowFFWarningSetting });
         }
         private static void OnHurting(HurtingEventArgs ev)
         {
@@ -23,18 +40,27 @@ namespace UsefulHints.EventHandlers.Modules
                     {
                         if (UsefulHints.Instance.Config.ClassDAreTeammates)
                         {
+                            if (ev.Player.SessionVariables.TryGetValue("showFFWarning", out var showFFWarning) && !(bool)showFFWarning || ev.Attacker.SessionVariables.TryGetValue("showFFWarning", out showFFWarning) && !(bool)showFFWarning)
+                                return;
+
                             ev.Attacker.ShowHint(string.Format(UsefulHints.Instance.Config.FriendlyFireWarning), 1);
                             ev.Player.ShowHint(string.Format(UsefulHints.Instance.Config.DamageTakenWarning, ev.Attacker.Nickname), 2);
                         }
                     }
                     else
                     {
+                        if (ev.Player.SessionVariables.TryGetValue("showFFWarning", out var showFFWarning) && !(bool)showFFWarning || ev.Attacker.SessionVariables.TryGetValue("showFFWarning", out showFFWarning) && !(bool)showFFWarning)
+                            return;
+
                         ev.Attacker.ShowHint(string.Format(UsefulHints.Instance.Config.FriendlyFireWarning), 1);
                         ev.Player.ShowHint(string.Format(UsefulHints.Instance.Config.DamageTakenWarning, ev.Attacker.Nickname), 2);
                     }
                 }
                 if (UsefulHints.Instance.Config.EnableCuffedWarning && ev.Player.IsCuffed && ev.Attacker != ev.Player)
                 {
+                    if (ev.Player.SessionVariables.TryGetValue("showFFWarning", out var showFFWarning) && !(bool)showFFWarning || ev.Attacker.SessionVariables.TryGetValue("showFFWarning", out showFFWarning) && !(bool)showFFWarning)
+                        return;
+
                     ev.Attacker.ShowHint(string.Format(UsefulHints.Instance.Config.CuffedAttackerWarning), 2);
                     ev.Player.ShowHint(string.Format(UsefulHints.Instance.Config.CuffedPlayerWarning, ev.Attacker.Nickname), 2);
                 }
