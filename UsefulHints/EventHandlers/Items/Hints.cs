@@ -123,11 +123,11 @@ namespace UsefulHints.EventHandlers.Items
         // SCP 1576 Handler
         private static void OnSCP1576Used(UsedItemEventArgs ev)
         {
-            if (ev.Player.SessionVariables.TryGetValue("ShowTimers", out var showTimers) && !(bool)showTimers)
-                return;
-
             if (ev.Item.Type == ItemType.SCP1576)
             {
+                if (ev.Player.SessionVariables.TryGetValue("ShowTimers", out var showTimers) && !(bool)showTimers)
+                    return;
+
                 if (activeCoroutines.ContainsKey(ev.Player))
                 {
                     Timing.KillCoroutines(activeCoroutines[ev.Player]);
@@ -167,11 +167,11 @@ namespace UsefulHints.EventHandlers.Items
         // SCP 268 Handler
         private static void OnSCP268Used(UsedItemEventArgs ev)
         {
-            if (ev.Player.SessionVariables.TryGetValue("ShowTimers", out var showTimers) && !(bool)showTimers)
-                return;
-
             if (ev.Item.Type == ItemType.SCP268)
             {
+                if (ev.Player.SessionVariables.TryGetValue("ShowTimers", out var showTimers) && !(bool)showTimers)
+                    return;
+
                 if (activeCoroutines.ContainsKey(ev.Player))
                 {
                     Timing.KillCoroutines(activeCoroutines[ev.Player]);
@@ -220,11 +220,11 @@ namespace UsefulHints.EventHandlers.Items
         // SCP 2176 Handler
         private static void OnSCP2176Grenade(ExplodingGrenadeEventArgs ev)
         {
-            if (ev.Player.SessionVariables.TryGetValue("ShowTimers", out var showTimers) && !(bool)showTimers)
-                return;
-
             if (ev.Projectile.Base is Scp2176Projectile)
             {
+                if (ev.Player != null && ev.Player.SessionVariables.TryGetValue("ShowTimers", out var showTimers) && !(bool)showTimers)
+                    return;
+
                 if (ev.Player != null)
                 {
                     if (activeCoroutines.ContainsKey(ev.Player))
