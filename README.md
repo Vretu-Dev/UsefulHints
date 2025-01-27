@@ -126,7 +126,7 @@ UH:
 ## Command
 | Command              | Alias | Usage          | Permission           | Description                  |
 |----------------------|-------|----------------|----------------------|------------------------------|
-| usefulhints_language | uhl   | uhl <language> | uh.changelanguage    | Dynamically switches language|
+| usefulhints_language | uhl   | uhl [language] | uh.changelanguage    | Dynamically switches language|
 ## Showcase:
 ### Hints:
 https://github.com/user-attachments/assets/f2125ab2-4ee3-4c71-a697-88949c00ddc2
