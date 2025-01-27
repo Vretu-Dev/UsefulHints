@@ -10,7 +10,7 @@ namespace UsefulHints.EventHandlers.Commands
         public string Command => "usefulhints_language";
         public string[] Aliases => new string[] { "uhl" };
         public string Description => "Changes the language of UsefulHints.";
-        private static readonly string[] SupportedLanguages = { "pl", "en", "de", "fr", "cs", "sk", "es", "it", "pt", "ru", "tr", "zh" };
+        private static readonly string[] SupportedLanguages = { "pl", "en", "de", "fr", "cs", "sk", "es", "it", "pt", "ru", "tr", "zh", "ko" };
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
             if (!sender.CheckPermission("uh.changelanguage"))

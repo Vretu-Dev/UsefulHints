@@ -12,13 +12,11 @@
 
 ### Minimum Exiled Version: 9.4.0
 ## Features:
-- Display remaining time after using SCP-268
 - SCP-268 countdown timer
 - SCP-1576 countdown timer
 - SCP-2176 lockdown timer
 - Hint displayed when looking at SCP-096's face
 - Track remaining Jailbird charges
-- Track remaining MicroHid energy
 - Display SCP-207 & Anti SCP-207 doses when picked up
 - Warning hints when affected by SCP-207, Anti SCP-207, or SCP-1853
 - Friendly fire warnings when damaging teammates
@@ -26,22 +24,25 @@
 - End-of-game summary
 - Show teammates at the start of the round
 - Broadcast the last human alive
+- Customize functions to your needs with Server-Specific
 ## Translations
 | Language  | Short Name | Done | Required Verification|
 |-----------|------------|------|----------------------|
 | English   | en         |  ✅  | No                   |
 | Polish    | pl         |  ✅  | No                   |
 | Russian   | ru         |  ✅  | No                   |
-| Czech     | cs         |  ✅  | Yes                  |
-| Slovak    | sk         |  ✅  | Yes                  |
-| French    | fr         |  ✅  | Yes                  |
-| Spanish   | es         |  ✅  | Yes                  |
-| Italian   | it         |  ✅  | Yes                  |
-| German    | de         |  ✅  | Yes                  |
-| Turkish   | tr         |  ✅  | Yes                  |
-| Portuguese| pt         |  ✅  | Yes                  |
-| Chinese   | zh         |  ✅  | No                  |
+| Czech     | cs         |  ❓  | Yes                  |
+| Slovak    | sk         |  ❓  | Yes                  |
+| French    | fr         |  ❓  | Yes                  |
+| Spanish   | es         |  ❓  | Yes                  |
+| Italian   | it         |  ❓  | Yes                  |
+| German    | de         |  ❓  | Yes                  |
+| Turkish   | tr         |  ❓  | Yes                  |
+| Portuguese| pt         |  ❓  | Yes                  |
+| Chinese   | zh         |  ✅  | No                   |
+| Korean   | ko          |  ✅  | No                   |
 
+✅ - Verified, ❓- From Chat GPT
 #### Remember to set your translation path correctly❗
 #### Default: `/home/container/.config/EXILED/Configs/UsefulHints/Translations`
 #### If you want to use your translations in `<port>-config.yml` set `translations: false`❗
@@ -52,7 +53,7 @@
 - Thank you to these wonderful people for testing, bug reporting and translating:<br>
 Testers: [Cat Potato](https://github.com/Cat-Potato), [Aserciak](https://steamcommunity.com/profiles/76561199053527692), [AVE_SATAN](https://steamcommunity.com/id/AVE_S4TAN/), [N](https://steamcommunity.com/profiles/76561199207670378), [Folia](https://steamcommunity.com/profiles/76561198004167374), [MVP_Faker](https://steamcommunity.com/id/746237524/), [Aime](https://steamcommunity.com/profiles/76561199125886809), [Clown](https://steamcommunity.com/profiles/76561199318901590), [OneManArmy](https://steamcommunity.com/profiles/76561199120200596)<br>
 Bug Reporters: iksemdem, 𝒯𝓇𝒾𝓈𝓉𝒶𝓃𝐿𝒾𝓀𝑒𝓈𝒰𝓇𝒶𝓃 <br>
-Translators: dxstruction [RU], Vretu [PL], Vretu [EN], [kldhsh123](https://github.com/kldhsh123) [ZH]
+Translators: dxstruction [RU], Vretu [PL], Vretu [EN], [kldhsh123](https://github.com/kldhsh123) [ZH], baek_sol_ha [KO]
 ## Config:
 
 ```yaml
@@ -61,7 +62,7 @@ UH:
   debug: false
   # Auto Translations:
   translations: true
-  # Available Languages: pl, en, de, fr, cs, sk, es, it, pt, ru, tr, zh
+  # Available Languages: pl, en, de, fr, cs, sk, es, it, pt, ru, tr, zh, ko
   language: 'en'
   translations_path: '/home/container/.config/EXILED/Configs/UsefulHints/Translations'
   # Auto Update:
@@ -122,6 +123,10 @@ UH:
   enable_map_broadcast: true
   broadcast_warning_lcz: '<color=yellow>Light Zone</color> will be decontaminated in 5 minutes!'
 ```
+## Command
+| Command              | Alias | Usage          | Permission           | Description                  |
+|----------------------|-------|----------------|----------------------|------------------------------|
+| usefulhints_language | uhl   | uhl <language> | uh.changelanguage    | Dynamically switches language|
 ## Showcase:
 ### Hints:
 https://github.com/user-attachments/assets/f2125ab2-4ee3-4c71-a697-88949c00ddc2

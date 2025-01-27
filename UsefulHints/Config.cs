@@ -11,7 +11,7 @@ namespace UsefulHints
         public bool Debug { get; set; } = false;
         [Description("Auto Translations:")]
         public bool Translations { get; set; } = true;
-        [Description("Available Languages: pl, en, de, fr, cs, sk, es, it, pt, ru, tr, zh")]
+        [Description("Available Languages: pl, en, de, fr, cs, sk, es, it, pt, ru, tr, zh, ko")]
         public string Language { get; set; } = "en";
         public string TranslationsPath { get; set; } = "/home/container/.config/EXILED/Configs/UsefulHints/Translations";
         [Description("Auto Update:")]
