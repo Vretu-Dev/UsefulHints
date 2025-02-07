@@ -1,10 +1,10 @@
-﻿using System.Net.Http;
+﻿using System;
 using System.IO;
-using Newtonsoft.Json;
+using System.Net.Http;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 using System.Collections.Generic;
 using Exiled.API.Features;
-using System;
 
 namespace UsefulHints
 {
@@ -61,7 +61,7 @@ namespace UsefulHints
 
         private static async Task DownloadTranslationsAsync(string language)
         {
-            string pluginDirectory = UsefulHints.Instance.Config.TranslationsPath;
+            string pluginDirectory = Path.Combine(Paths.IndividualTranslations, "UsefulHints");
             string filePath = Path.Combine(pluginDirectory, $"{language}.json");
 
             try

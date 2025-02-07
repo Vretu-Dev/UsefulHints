@@ -13,12 +13,10 @@ namespace UsefulHints
         public bool Translations { get; set; } = true;
         [Description("Available Languages: pl, en, de, fr, cs, sk, es, it, pt, ru, tr, zh, ko")]
         public string Language { get; set; } = "en";
-        public string TranslationsPath { get; set; } = "/home/container/.config/EXILED/Configs/UsefulHints/Translations";
         [Description("Auto Update:")]
         public bool AutoUpdate { get; set; } = true;
         public bool EnableLogging { get; set; } = true;
         public bool EnableBackup { get; set; } = false;
-        public string PluginPath { get; set; } = "/home/container/.config/EXILED/Plugins/UsefulHints.dll";
         [Description("Hint Settings:")]
         public bool EnableHints { get; set; } = true;
         public string Scp096LookMessage { get; set; } = "You looked at SCP-096!";
