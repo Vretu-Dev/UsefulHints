@@ -43,8 +43,6 @@
 | Korean   | ko          |  ✅  | No                   |
 
 ✅ - Verified, ❓- From Chat GPT
-#### Remember to set your translation path correctly❗
-#### Default: `/home/container/.config/EXILED/Configs/UsefulHints/Translations`
 #### If you want to use your translations in `<port>-config.yml` set `translations: false`❗
 ## Credits:
 - Thanks [@NamelessSCP](https://github.com/NamelessSCP) for using the [RoundMVP](https://github.com/NamelessSCP/RoundMVP) idea.<br>
@@ -64,12 +62,10 @@ UH:
   translations: true
   # Available Languages: pl, en, de, fr, cs, sk, es, it, pt, ru, tr, zh, ko
   language: 'en'
-  translations_path: '/home/container/.config/EXILED/Configs/UsefulHints/Translations'
   # Auto Update:
   auto_update: true
   enable_logging: true
   enable_backup: false
-  plugin_path: '/home/container/.config/EXILED/Plugins/UsefulHints.dll'
   # Hint Settings:
   enable_hints: true
   scp096_look_message: 'You looked at SCP-096!'
