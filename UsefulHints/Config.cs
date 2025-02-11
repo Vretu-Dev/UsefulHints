@@ -1,11 +1,8 @@
-﻿using CustomPlayerEffects;
-using Exiled.API.Enums;
-using Exiled.API.Interfaces;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 
 namespace UsefulHints
 {
-    public class Config : IConfig
+    public class Config
     {
         public bool IsEnabled { get; set; } = true;
         public bool Debug { get; set; } = false;

@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
-using Player = Exiled.API.Features.Player;
-using Exiled.Events.EventArgs.Player;
+﻿using LabApi.Events.Arguments.PlayerEvents;
+using System.Collections.Generic;
+using Player = LabApi.Features.Wrappers.Player;
 
 namespace UsefulHints.EventHandlers.Modules
 {
@@ -9,13 +9,13 @@ namespace UsefulHints.EventHandlers.Modules
         private static readonly Dictionary<Player, int> playerKills = new Dictionary<Player, int>();
         public static void RegisterEvents()
         {
-            Exiled.Events.Handlers.Player.Died += OnPlayerDied;
+            LabApi.Events.Handlers.PlayerEvents.Death += OnPlayerDied;
         }
         public static void UnregisterEvents()
         {
-            Exiled.Events.Handlers.Player.Died -= OnPlayerDied;
+            LabApi.Events.Handlers.PlayerEvents.Death -= OnPlayerDied;
         }
-        private static void OnPlayerDied(DiedEventArgs ev)
+        private static void OnPlayerDied(PlayerDeathEventArgs ev)
         {
             if (ev.Attacker != null && ev.Attacker != ev.Player)
             {
@@ -31,7 +31,7 @@ namespace UsefulHints.EventHandlers.Modules
                 }
                 if (!killer.IsHost)
                 {
-                    killer.ShowHint(string.Format(UsefulHints.Instance.Config.KillCountMessage, playerKills[killer]), 4);
+                    killer.SendHint(string.Format(UsefulHints.Instance.Config.KillCountMessage, playerKills[killer]), 4);
                 }
             }
         }

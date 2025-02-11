@@ -1,7 +1,6 @@
 ﻿using System.Linq;
-using Exiled.API.Enums;
-using Exiled.API.Features;
-using Exiled.Events.EventArgs.Player;
+using LabApi.Events.Arguments.PlayerEvents;
+using LabApi.Features.Wrappers;
 using PlayerRoles;
 
 namespace UsefulHints.EventHandlers.Modules
@@ -11,13 +10,13 @@ namespace UsefulHints.EventHandlers.Modules
         private static bool hasBroadcastBeenSent = false;
         public static void RegisterEvents()
         {
-            Exiled.Events.Handlers.Player.Died += OnPlayerDied;
+            LabApi.Events.Handlers.PlayerEvents.Death += OnPlayerDied;
         }
         public static void UnregisterEvents()
         {
-            Exiled.Events.Handlers.Player.Died -= OnPlayerDied;
+            LabApi.Events.Handlers.PlayerEvents.Death -= OnPlayerDied;
         }
-        private static void OnPlayerDied(DiedEventArgs ev)
+        private static void OnPlayerDied(PlayerDeathEventArgs ev)
         {
             var aliveHumans = Player.List.Where(p => p.IsAlive && IsHuman(p));
 
@@ -29,7 +28,7 @@ namespace UsefulHints.EventHandlers.Modules
             {
                 Player lastAlive = aliveHumans.First();
 
-                lastAlive.Broadcast(10, UsefulHints.Instance.Config.BroadcastForHuman);
+                lastAlive.SendBroadcast(UsefulHints.Instance.Config.BroadcastForHuman, 10);
 
                 var zone = GetZoneName(lastAlive);
                 var teamName = GetRoleTeamName(lastAlive);

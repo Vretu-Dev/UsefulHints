@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using Exiled.API.Features;
-using Player = Exiled.API.Features.Player;
-using Exiled.Events.EventArgs.Player;
-using Exiled.Events.EventArgs.Server;
+using Player = LabApi.Features.Wrappers.Player;
 using PlayerRoles;
 using static Broadcast;
+using LabApi.Events.Arguments.PlayerEvents;
+using LabApi.Events.Arguments.ServerEvents;
+using LabApi.Features.Wrappers;
 
 namespace UsefulHints.EventHandlers.Modules
 {
@@ -22,33 +22,33 @@ namespace UsefulHints.EventHandlers.Modules
 
         public static void RegisterEvents()
         {
-            Exiled.Events.Handlers.Player.Died += OnPlayerDied;
-            Exiled.Events.Handlers.Player.Dying += OnPlayerDying;
-            Exiled.Events.Handlers.Player.Escaping += OnPlayerEscaping;
-            Exiled.Events.Handlers.Player.Hurting += OnPlayerHurting;
-            Exiled.Events.Handlers.Server.RoundEnded += OnRoundEnded;
-            Exiled.Events.Handlers.Server.RestartingRound += OnRestartingRound;
-            Exiled.Events.Handlers.Server.RoundStarted += OnRoundStarted;
+            LabApi.Events.Handlers.PlayerEvents.Death += OnPlayerDied;
+            LabApi.Events.Handlers.PlayerEvents.Dying += OnPlayerDying;
+            LabApi.Events.Handlers.PlayerEvents.Escaping += OnPlayerEscaping;
+            LabApi.Events.Handlers.PlayerEvents.Hurting += OnPlayerHurting;
+            LabApi.Events.Handlers.ServerEvents.RoundEnded += OnRoundEnded;
+            LabApi.Events.Handlers.ServerEvents.RoundRestarted += OnRestartingRound;
+            LabApi.Events.Handlers.ServerEvents.RoundStarted += OnRoundStarted;
         }
         public static void UnregisterEvents()
         {
-            Exiled.Events.Handlers.Player.Died -= OnPlayerDied;
-            Exiled.Events.Handlers.Player.Dying -= OnPlayerDying;
-            Exiled.Events.Handlers.Player.Escaping -= OnPlayerEscaping;
-            Exiled.Events.Handlers.Player.Hurting -= OnPlayerHurting;
-            Exiled.Events.Handlers.Server.RoundEnded -= OnRoundEnded;
-            Exiled.Events.Handlers.Server.RestartingRound -= OnRestartingRound;
-            Exiled.Events.Handlers.Server.RoundStarted -= OnRoundStarted;
+            LabApi.Events.Handlers.PlayerEvents.Death -= OnPlayerDied;
+            LabApi.Events.Handlers.PlayerEvents.Dying -= OnPlayerDying;
+            LabApi.Events.Handlers.PlayerEvents.Escaping -= OnPlayerEscaping;
+            LabApi.Events.Handlers.PlayerEvents.Hurting -= OnPlayerHurting;
+            LabApi.Events.Handlers.ServerEvents.RoundEnded -= OnRoundEnded;
+            LabApi.Events.Handlers.ServerEvents.RoundRestarted -= OnRestartingRound;
+            LabApi.Events.Handlers.ServerEvents.RoundStarted -= OnRoundStarted;
         }
         private static void OnRoundStarted()
         {
             roundStartTime = DateTime.Now;
         }
         // Handler for player hurting another player
-        private static void OnPlayerHurting(HurtingEventArgs ev)
+        private static void OnPlayerHurting(PlayerHurtingEventArgs ev)
         {
-            Player attacker = ev.Attacker;
-            Player victim = ev.Player;
+            Player attacker = ev.Player;
+            Player victim = ev.Target;
 
             if (attacker != null && attacker != victim && attacker.Role.Team != Team.SCPs && victim.Role.Team == Team.SCPs)
             {
@@ -59,7 +59,7 @@ namespace UsefulHints.EventHandlers.Modules
             }
         }
         // Handler for "When Player dying" (FirstScpKiller)
-        private static void OnPlayerDying(DyingEventArgs ev)
+        private static void OnPlayerDying(PlayerDyingEventArgs ev)
         {
             Player attacker = ev.Attacker;
             Player victim = ev.Player;
@@ -73,7 +73,7 @@ namespace UsefulHints.EventHandlers.Modules
             }
         }
         // Handler for "When Player died" (SCP and Human kill count)
-        private static void OnPlayerDied(DiedEventArgs ev)
+        private static void OnPlayerDied(PlayerDeathEventArgs ev)
         {
             Player attacker = ev.Attacker;
 
@@ -96,7 +96,7 @@ namespace UsefulHints.EventHandlers.Modules
             }
         }
         // Handler for Escaped Player
-        private static void OnPlayerEscaping(EscapingEventArgs ev)
+        private static void OnPlayerEscaping(PlayerEscapingEventArgs ev)
         {
             if (firstEscaper == null && ev.IsAllowed)
             {
@@ -124,7 +124,7 @@ namespace UsefulHints.EventHandlers.Modules
             if (firstScpKiller != null)
                 text += string.Format(UsefulHints.Instance.Config.FirstScpKillerMessage, firstScpKiller.Nickname) + "\n";
             if (!string.IsNullOrEmpty(text))
-                Map.Broadcast(UsefulHints.Instance.Config.RoundSummaryMessageDuration, text, BroadcastFlags.Normal, true);
+                Map.SendBroadcast(UsefulHints.Instance.Config.RoundSummaryMessageDuration, text, BroadcastFlags.Normal, true);
         }
         // Reset Handlers
         private static void OnRestartingRound()

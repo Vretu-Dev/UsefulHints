@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 using System.Collections.Generic;
-using Player = Exiled.API.Features.Player;
+using Player = LabApi.Features.Wrappers.Player;
 using MEC;
 
 namespace UsefulHints.EventHandlers.Modules
@@ -9,11 +9,11 @@ namespace UsefulHints.EventHandlers.Modules
     {
         public static void RegisterEvents()
         {
-            Exiled.Events.Handlers.Server.RoundStarted += OnRoundStartedTeammates;
+            LabApi.Events.Handlers.ServerEvents.RoundStarted += OnRoundStartedTeammates;
         }
         public static void UnregisterEvents()
         {
-            Exiled.Events.Handlers.Server.RoundStarted -= OnRoundStartedTeammates;
+            LabApi.Events.Handlers.ServerEvents.RoundStarted -= OnRoundStartedTeammates;
         }
         private static IEnumerator<float> DelayedDisplayTeammates()
         {
@@ -35,11 +35,11 @@ namespace UsefulHints.EventHandlers.Modules
 
                 if (teammates.Count > 0)
                 {
-                    player.ShowHint(string.Format(UsefulHints.Instance.Config.TeammateHintMessage, string.Join("\n", teammates)), UsefulHints.Instance.Config.TeammateMessageDuration);
+                    player.SendHint(string.Format(UsefulHints.Instance.Config.TeammateHintMessage, string.Join("\n", teammates)), UsefulHints.Instance.Config.TeammateMessageDuration);
                 }
                 else
                 {
-                    player.ShowHint(string.Format(UsefulHints.Instance.Config.AloneHintMessage), UsefulHints.Instance.Config.AloneMessageDuration);
+                    player.SendHint(string.Format(UsefulHints.Instance.Config.AloneHintMessage), UsefulHints.Instance.Config.AloneMessageDuration);
                 }
             }
         }

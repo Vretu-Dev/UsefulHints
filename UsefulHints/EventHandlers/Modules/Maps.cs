@@ -1,5 +1,4 @@
-﻿using Exiled.API.Features;
-using Exiled.Events.EventArgs.Server;
+﻿using LabApi.Features.Wrappers;
 using MEC;
 using System.Collections.Generic;
 
@@ -11,14 +10,14 @@ namespace UsefulHints.EventHandlers.Modules
 
         public static void RegisterEvents()
         {
-            Exiled.Events.Handlers.Server.RoundStarted += OnRoundStarted;
-            Exiled.Events.Handlers.Server.WaitingForPlayers += OnWaitingForPlayers;
+            LabApi.Events.Handlers.ServerEvents.RoundStarted += OnRoundStarted;
+            LabApi.Events.Handlers.ServerEvents.WaitingForPlayers += OnWaitingForPlayers;
         }
 
         public static void UnregisterEvents()
         {
-            Exiled.Events.Handlers.Server.RoundStarted -= OnRoundStarted;
-            Exiled.Events.Handlers.Server.WaitingForPlayers -= OnWaitingForPlayers;
+            LabApi.Events.Handlers.ServerEvents.RoundStarted -= OnRoundStarted;
+            LabApi.Events.Handlers.ServerEvents.WaitingForPlayers -= OnWaitingForPlayers;
         }
 
         private static void OnRoundStarted()
@@ -35,7 +34,7 @@ namespace UsefulHints.EventHandlers.Modules
         {
             yield return Timing.WaitForSeconds(445f);
 
-            if (Round.IsEnded)
+            if (Round.IsRoundEnded)
                 yield break;
 
             string message = UsefulHints.Instance.Config.BroadcastWarningLcz;
@@ -44,7 +43,7 @@ namespace UsefulHints.EventHandlers.Modules
             {
                 if (player.IsAlive)
                 {
-                    player.Broadcast(7, message);
+                    player.SendBroadcast(message,7);
                 }
             }
         }

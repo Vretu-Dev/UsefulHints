@@ -1,8 +1,5 @@
 ﻿using System;
-using JailbirdPickup = InventorySystem.Items.Jailbird.JailbirdPickup;
 using Player = LabApi.Features.Wrappers.Player;
-//using Exiled.Events.EventArgs.Map;
-//using Exiled.Events.EventArgs.Player;
 using InventorySystem.Items.ThrowableProjectiles;
 using InventorySystem.Items.Jailbird;
 using CustomPlayerEffects;
