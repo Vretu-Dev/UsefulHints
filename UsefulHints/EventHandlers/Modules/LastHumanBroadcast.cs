@@ -35,16 +35,16 @@ namespace UsefulHints.EventHandlers.Modules
 
                 string message = string.Format(UsefulHints.Instance.Config.BroadcastForScp, lastAlive.Nickname, teamName, zone);
 
-                foreach (var scp in Player.List.Where(p => p.Role.Team == Team.SCPs))
+                foreach (var scp in Player.List.Where(p => p.RoleBase.Team == Team.SCPs))
                 {
-                    scp.Broadcast(10, message);
+                    scp.SendBroadcast(message, 10);
                 }
                 hasBroadcastBeenSent = true;
             }
         }
         private static bool IsHuman(Player player)
         {
-            return (player.Role.Team == Team.FoundationForces || player.Role.Team == Team.ClassD || player.Role.Team == Team.Scientists || player.Role.Team == Team.ChaosInsurgency) && (!UsefulHints.Instance.Config.IgnoreTutorialRole || player.Role.Type != RoleTypeId.Tutorial);
+            return (player.RoleBase.Team == Team.FoundationForces || player.RoleBase.Team == Team.ClassD || player.RoleBase.Team == Team.Scientists || player.RoleBase.Team == Team.ChaosInsurgency) && (!UsefulHints.Instance.Config.IgnoreTutorialRole || player.RoleBase.RoleTypeId != RoleTypeId.Tutorial);
         }
         private static string GetZoneName(Player player)
         {
@@ -66,7 +66,7 @@ namespace UsefulHints.EventHandlers.Modules
         }
         private static string GetRoleTeamName(Player player)
         {
-            Team team = player.Role.Team;
+            Team team = player.RoleBase.Team;
 
             switch (team)
             {

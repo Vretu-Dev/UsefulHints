@@ -15,11 +15,11 @@ namespace UsefulHints.EventHandlers.Modules
         }
         private static void OnHurting(PlayerHurtingEventArgs ev)
         {
-            if (ev.Player != null && ev.Target != null && ev.Player.Role.Team != Team.SCPs && ev.Target.Role.Team != Team.SCPs)
+            if (ev.Player != null && ev.Target != null && ev.Player.RoleBase.Team != Team.SCPs && ev.Target.RoleBase.Team != Team.SCPs)
             {
-                if (ev.Player.Role.Side == ev.Target.Role.Side && ev.Player != ev.Target)
+                if (ev.Player.Team == ev.Target.Team && ev.Player != ev.Target)
                 {
-                    if (ev.Player.Role.Team == Team.ClassD && ev.Target.Role.Team == Team.ClassD)
+                    if (ev.Player.RoleBase.Team == Team.ClassD && ev.Target.RoleBase.Team == Team.ClassD)
                     {
                         if (UsefulHints.Instance.Config.ClassDAreTeammates)
                         {
