@@ -1,19 +1,18 @@
-﻿using System;
-using Exiled.API.Enums;
-using Exiled.API.Features;
+﻿using LabApi.Features;
+using LabApi.Loader.Features.Plugins;
+using System;
 
 namespace UsefulHints
 {
     public class UsefulHints : Plugin<Config>
     {
-        public override string Name => "UsefulHints Lite";
+        public override string Name => "UsefulHints LabApi";
+        public override string Description => "Display extra hint like a timers and notifications."; 
         public override string Author => "Vretu";
-        public override string Prefix { get; } = "UH";
-        public override Version Version => new Version(2, 0, 0);
-        public override Version RequiredExiledVersion { get; } = new Version(9, 4, 0);
-        public override PluginPriority Priority { get; } = PluginPriority.Low;
+        public override Version Version => new Version(1, 0, 0);
+        public override Version RequiredApiVersion { get; } = new Version(LabApiProperties.CompiledVersion);
         public static UsefulHints Instance { get; private set; }
-        public override void OnEnabled()
+        public override void Enable()
         {
             Instance = this;
             if(Config.EnableHints){ EventHandlers.Entities.SCP096.RegisterEvents(); }
@@ -25,9 +24,8 @@ namespace UsefulHints
             if(Config.EnableMapBroadcast) {EventHandlers.Modules.Maps.RegisterEvents(); }
             if(Config.EnableRoundSummary){ EventHandlers.Modules.RoundSummary.RegisterEvents(); }
             if(Config.EnableTeammates){ EventHandlers.Modules.Teammates.RegisterEvents(); }
-            base.OnEnabled();
         }
-        public override void OnDisabled()
+        public override void Disable()
         {
             Instance = null;
             if(Config.EnableHints){ EventHandlers.Entities.SCP096.UnregisterEvents(); }
@@ -39,7 +37,6 @@ namespace UsefulHints
             if(Config.EnableMapBroadcast) { EventHandlers.Modules.Maps.UnregisterEvents(); }
             if(Config.EnableRoundSummary){ EventHandlers.Modules.RoundSummary.UnregisterEvents(); }
             if(Config.EnableTeammates){ EventHandlers.Modules.Teammates.UnregisterEvents(); }
-            base.OnDisabled();
         }
     }
 }

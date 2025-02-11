@@ -18,17 +18,16 @@ namespace UsefulHints.EventHandlers.Items
         private static Dictionary<Player, ItemType> activeItems = new Dictionary<Player, ItemType>();
         public static void RegisterEvents()
         {
-            Exiled.Events.Handlers.Player.Hurting += OnGrenadeHurting;
-            Exiled.Events.Handlers.Player.PickingUpItem += OnPickingUpSCP207;
-            Exiled.Events.Handlers.Player.ChangingItem += OnEquipSCP207;
-            Exiled.Events.Handlers.Player.UsedItem += OnSCP1576Used;
-            Exiled.Events.Handlers.Player.ChangedItem += OnSCP1576ChangedItem;
-            Exiled.Events.Handlers.Player.UsedItem += OnSCP268Used;
-            Exiled.Events.Handlers.Player.InteractingDoor += OnSCP268Interacting;
-            Exiled.Events.Handlers.Player.ChangedItem += OnSCP268ChangedItem;
-            Exiled.Events.Handlers.Map.ExplodingGrenade += OnSCP2176Grenade;
-            Exiled.Events.Handlers.Server.WaitingForPlayers += OnWaitingForPlayers;
-            Exiled.Events.Handlers.Player.PickingUpItem += OnPickingUpJailbird;
+            LabApi.Events.Handlers.Player.Hurting += OnGrenadeHurting;
+            LabApi.Events.Handlers.Player.PickingUpItem += OnPickingUpSCP207;
+            LabApi.Events.Handlers.Player.ChangingItem += OnEquipSCP207;
+            LabApi.Events.Handlers.Player.UsedItem += OnSCP1576Used;
+            LabApi.Events.Handlers.Player.UsedItem += OnSCP268Used;
+            LabApi.Events.Handlers.Player.InteractingDoor += OnSCP268Interacting;
+            LabApi.Events.Handlers.Player.ChangedItem += OnSCP268ChangedItem;
+            LabApi.Events.Handlers.Map.ExplodingGrenade += OnSCP2176Grenade;
+            LabApi.Events.Handlers.Server.WaitingForPlayers += OnWaitingForPlayers;
+            LabApi.Events.Handlers.Player.PickingUpItem += OnPickingUpJailbird;
             Exiled.Events.Handlers.Player.ChangingItem += OnEquipJailbird;
         }
         public static void UnregisterEvents()
