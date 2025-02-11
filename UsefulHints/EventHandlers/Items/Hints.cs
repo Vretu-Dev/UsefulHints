@@ -1,14 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
-using Exiled.API.Enums;
-using JailbirdPickup = Exiled.API.Features.Pickups.JailbirdPickup;
-using Player = Exiled.API.Features.Player;
-using Exiled.Events.EventArgs.Map;
-using Exiled.Events.EventArgs.Player;
+using JailbirdPickup = InventorySystem.Items.Jailbird.JailbirdPickup;
+using Player = LabApi.Features.Wrappers.Player;
+//using Exiled.Events.EventArgs.Map;
+//using Exiled.Events.EventArgs.Player;
 using InventorySystem.Items.ThrowableProjectiles;
 using InventorySystem.Items.Jailbird;
 using CustomPlayerEffects;
 using MEC;
+using LabApi.Events.Arguments.PlayerEvents;
+using System.Collections.Generic;
+using LabApi.Events.Arguments.ServerEvents;
 
 namespace UsefulHints.EventHandlers.Items
 {
@@ -18,72 +19,73 @@ namespace UsefulHints.EventHandlers.Items
         private static Dictionary<Player, ItemType> activeItems = new Dictionary<Player, ItemType>();
         public static void RegisterEvents()
         {
-            LabApi.Events.Handlers.Player.Hurting += OnGrenadeHurting;
-            LabApi.Events.Handlers.Player.PickingUpItem += OnPickingUpSCP207;
-            LabApi.Events.Handlers.Player.ChangingItem += OnEquipSCP207;
-            LabApi.Events.Handlers.Player.UsedItem += OnSCP1576Used;
-            LabApi.Events.Handlers.Player.UsedItem += OnSCP268Used;
-            LabApi.Events.Handlers.Player.InteractingDoor += OnSCP268Interacting;
-            LabApi.Events.Handlers.Player.ChangedItem += OnSCP268ChangedItem;
-            LabApi.Events.Handlers.Map.ExplodingGrenade += OnSCP2176Grenade;
-            LabApi.Events.Handlers.Server.WaitingForPlayers += OnWaitingForPlayers;
-            LabApi.Events.Handlers.Player.PickingUpItem += OnPickingUpJailbird;
-            Exiled.Events.Handlers.Player.ChangingItem += OnEquipJailbird;
+            LabApi.Events.Handlers.PlayerEvents.Hurting += OnGrenadeHurting;
+            LabApi.Events.Handlers.PlayerEvents.PickingUpItem += OnPickingUpSCP207;
+            LabApi.Events.Handlers.PlayerEvents.ChangingItem += OnEquipSCP207;
+            LabApi.Events.Handlers.PlayerEvents.UsedItem += OnSCP1576Used;
+            LabApi.Events.Handlers.PlayerEvents.ChangedItem += OnSCP1576ChangedItem;
+            LabApi.Events.Handlers.PlayerEvents.UsedItem += OnSCP268Used;
+            LabApi.Events.Handlers.PlayerEvents.InteractingDoor += OnSCP268Interacting;
+            LabApi.Events.Handlers.PlayerEvents.ChangedItem += OnSCP268ChangedItem;
+            LabApi.Events.Handlers.ServerEvents.GrenadeExploding += OnSCP2176Grenade;
+            LabApi.Events.Handlers.ServerEvents.WaitingForPlayers += OnWaitingForPlayers;
+            LabApi.Events.Handlers.PlayerEvents.PickingUpItem += OnPickingUpJailbird;
+            LabApi.Events.Handlers.PlayerEvents.ChangingItem += OnEquipJailbird;
         }
         public static void UnregisterEvents()
         {
-            Exiled.Events.Handlers.Player.Hurting -= OnGrenadeHurting;
-            Exiled.Events.Handlers.Player.PickingUpItem -= OnPickingUpSCP207;
-            Exiled.Events.Handlers.Player.ChangingItem -= OnEquipSCP207;
-            Exiled.Events.Handlers.Player.UsedItem -= OnSCP1576Used;
-            Exiled.Events.Handlers.Player.ChangedItem -= OnSCP1576ChangedItem;
-            Exiled.Events.Handlers.Player.UsedItem -= OnSCP268Used;
-            Exiled.Events.Handlers.Player.InteractingDoor -= OnSCP268Interacting;
-            Exiled.Events.Handlers.Player.ChangedItem -= OnSCP268ChangedItem;
-            Exiled.Events.Handlers.Map.ExplodingGrenade -= OnSCP2176Grenade;
-            Exiled.Events.Handlers.Server.WaitingForPlayers -= OnWaitingForPlayers;
-            Exiled.Events.Handlers.Player.PickingUpItem -= OnPickingUpJailbird;
-            Exiled.Events.Handlers.Player.ChangingItem -= OnEquipJailbird;
+            LabApi.Events.Handlers.PlayerEvents.Hurting -= OnGrenadeHurting;
+            LabApi.Events.Handlers.PlayerEvents.PickingUpItem -= OnPickingUpSCP207;
+            LabApi.Events.Handlers.PlayerEvents.ChangingItem -= OnEquipSCP207;
+            LabApi.Events.Handlers.PlayerEvents.UsedItem -= OnSCP1576Used;
+            LabApi.Events.Handlers.PlayerEvents.ChangedItem -= OnSCP1576ChangedItem;
+            LabApi.Events.Handlers.PlayerEvents.UsedItem -= OnSCP268Used;
+            LabApi.Events.Handlers.PlayerEvents.InteractingDoor -= OnSCP268Interacting;
+            LabApi.Events.Handlers.PlayerEvents.ChangedItem -= OnSCP268ChangedItem;
+            LabApi.Events.Handlers.ServerEvents.GrenadeExploding -= OnSCP2176Grenade;
+            LabApi.Events.Handlers.ServerEvents.WaitingForPlayers -= OnWaitingForPlayers;
+            LabApi.Events.Handlers.PlayerEvents.PickingUpItem -= OnPickingUpJailbird;
+            LabApi.Events.Handlers.PlayerEvents.ChangingItem -= OnEquipJailbird;
         }
         // Explosion Damage Handler
-        private static void OnGrenadeHurting(HurtingEventArgs ev)
+        private static void OnGrenadeHurting(PlayerHurtingEventArgs ev)
         {
-            if (!ev.IsAllowed || ev.Amount <= 0.01f || ev.Attacker == null || ev.Player == null || ev.Player == ev.Attacker)
+            if (!ev.IsAllowed || ev.Amount <= 0.01f || ev.Target == null || ev.Player == null || ev.Player == ev.Target)
                 return;
 
             if (ev.DamageHandler.Type == DamageType.Explosion)
             {
                 float RemainingHealth = ev.Player.Health - ev.Amount;
 
-                if (RemainingHealth > 0 && !ev.Attacker.IsHost)
-                    ev.Attacker.ShowHint($"<color=white>{new string('\n', 5)}{string.Format(UsefulHints.Instance.Config.GrenadeDamageHint, Math.Round(ev.Amount))}</color>", 4);
+                if (RemainingHealth > 0)
+                    ev.Player.SendHint($"<color=white>{new string('\n', 5)}{string.Format(UsefulHints.Instance.Config.GrenadeDamageHint, Math.Round(ev.Amount))}</color>", 4);
             }
         }
         // SCP 207 Handler
-        private static void OnPickingUpSCP207(PickingUpItemEventArgs ev)
+        private static void OnPickingUpSCP207(PlayerPickingUpItemEventArgs ev)
         {
-            if (ev.Player.IsEffectActive<Scp207>() && ev.Pickup.Type == ItemType.SCP207)
-                ev.Player.ShowHint($"<color=#A60C0E>{new string('\n', 10)}{string.Format(UsefulHints.Instance.Config.Scp207HintMessage, ev.Player.GetEffect(EffectType.Scp207).Intensity)}</color>", 4);
+            if (ev.Player.HasEffect<Scp207>() && ev.Pickup.Type == ItemType.SCP207)
+                ev.Player.SendHint($"<color=#A60C0E>{new string('\n', 10)}{string.Format(UsefulHints.Instance.Config.Scp207HintMessage, ev.Player.GetEffect(EffectType.Scp207).Intensity)}</color>", 4);
 
-            if (ev.Player.IsEffectActive<AntiScp207>() && ev.Pickup.Type == ItemType.AntiSCP207)
-                ev.Player.ShowHint($"<color=#C53892>{new string('\n', 10)}{string.Format(UsefulHints.Instance.Config.AntiScp207HintMessage, ev.Player.GetEffect(EffectType.AntiScp207).Intensity)}</color>", 4);
+            if (ev.Player.HasEffect<AntiScp207>() && ev.Pickup.Type == ItemType.AntiSCP207)
+                ev.Player.SendHint($"<color=#C53892>{new string('\n', 10)}{string.Format(UsefulHints.Instance.Config.AntiScp207HintMessage, ev.Player.GetEffect(EffectType.AntiScp207).Intensity)}</color>", 4);
         }
-        private static void OnEquipSCP207(ChangingItemEventArgs ev)
+        private static void OnEquipSCP207(PlayerChangingItemEventArgs ev)
         {
             if (UsefulHints.Instance.Config.ShowHintOnEquipItem)
             {
-                if (ev.Item == null)
+                if (ev.NewItem == null)
                     return;
 
-                if (ev.Player.IsEffectActive<Scp207>() && ev.Item.Type == ItemType.SCP207)
-                    ev.Player.ShowHint($"<color=#A60C0E>{new string('\n', 10)}{string.Format(UsefulHints.Instance.Config.Scp207HintMessage, ev.Player.GetEffect(EffectType.Scp207).Intensity)}</color>", 4);
+                if (ev.Player.HasEffect<Scp207>() && ev.NewItem.Type == ItemType.SCP207)
+                    ev.Player.SendHint($"<color=#A60C0E>{new string('\n', 10)}{string.Format(UsefulHints.Instance.Config.Scp207HintMessage, ev.Player.GetEffect(EffectType.Scp207).Intensity)}</color>", 4);
 
-                if (ev.Player.IsEffectActive<AntiScp207>() && ev.Item.Type == ItemType.AntiSCP207)
-                    ev.Player.ShowHint($"<color=#C53892>{new string('\n', 10)}{string.Format(UsefulHints.Instance.Config.AntiScp207HintMessage, ev.Player.GetEffect(EffectType.AntiScp207).Intensity)}</color>", 4);
+                if (ev.Player.HasEffect<AntiScp207>() && ev.NewItem.Type == ItemType.AntiSCP207)
+                    ev.Player.SendHint($"<color=#C53892>{new string('\n', 10)}{string.Format(UsefulHints.Instance.Config.AntiScp207HintMessage, ev.Player.GetEffect(EffectType.AntiScp207).Intensity)}</color>", 4);
             }
         }
         // SCP 1576 Handler
-        private static void OnSCP1576Used(UsedItemEventArgs ev)
+        private static void OnSCP1576Used(PlayerUsedItemEventArgs ev)
         {
             if (ev.Item.Type == ItemType.SCP1576)
             {
@@ -102,7 +104,7 @@ namespace UsefulHints.EventHandlers.Items
                 activeItems.Add(ev.Player, ev.Item.Type);
             }
         }
-        private static void OnSCP1576ChangedItem(ChangedItemEventArgs ev)
+        private static void OnSCP1576ChangedItem(PlayerChangedItemEventArgs ev)
         {
             if (activeCoroutines.ContainsKey(ev.Player) && activeItems.ContainsKey(ev.Player) && activeItems[ev.Player] == ItemType.SCP1576)
             {
@@ -117,14 +119,14 @@ namespace UsefulHints.EventHandlers.Items
 
             while (duration > 0)
             {
-                player.ShowHint($"<color=#FFA500>{new string('\n', 10)}{string.Format(UsefulHints.Instance.Config.Scp1576TimeLeftMessage, (int)duration)}</color>", 1.15f);
+                player.SendHint($"<color=#FFA500>{new string('\n', 10)}{string.Format(UsefulHints.Instance.Config.Scp1576TimeLeftMessage, (int)duration)}</color>", 1.15f);
                 yield return Timing.WaitForSeconds(1f);
                 duration -= 1f;
             }
             activeCoroutines.Remove(player);
         }
         // SCP 268 Handler
-        private static void OnSCP268Used(UsedItemEventArgs ev)
+        private static void OnSCP268Used(PlayerUsedItemEventArgs ev)
         {
             if (ev.Item.Type == ItemType.SCP268)
             {
@@ -143,7 +145,7 @@ namespace UsefulHints.EventHandlers.Items
                 activeItems.Add(ev.Player, ev.Item.Type);
             }
         }
-        private static void OnSCP268Interacting(InteractingDoorEventArgs ev)
+        private static void OnSCP268Interacting(PlayerInteractingDoorEventArgs ev)
         {
             if (activeCoroutines.ContainsKey(ev.Player) && activeItems.ContainsKey(ev.Player) && activeItems[ev.Player] == ItemType.SCP268)
             {
@@ -152,7 +154,7 @@ namespace UsefulHints.EventHandlers.Items
                 activeItems.Remove(ev.Player);
             }
         }
-        private static void OnSCP268ChangedItem(ChangedItemEventArgs ev)
+        private static void OnSCP268ChangedItem(PlayerChangedItemEventArgs ev)
         {
             if (activeCoroutines.ContainsKey(ev.Player) && activeItems.ContainsKey(ev.Player) && activeItems[ev.Player] == ItemType.SCP268)
             {
@@ -167,16 +169,16 @@ namespace UsefulHints.EventHandlers.Items
 
             while (duration > 0)
             {
-                player.ShowHint($"<color=purple>{new string('\n', 10)}{string.Format(UsefulHints.Instance.Config.Scp268TimeLeftMessage, (int)duration)}</color>", 1.15f);
+                player.SendHint($"<color=purple>{new string('\n', 10)}{string.Format(UsefulHints.Instance.Config.Scp268TimeLeftMessage, (int)duration)}</color>", 1.15f);
                 yield return Timing.WaitForSeconds(1f);
                 duration -= 1f;
             }
             activeCoroutines.Remove(player);
         }
         // SCP 2176 Handler
-        private static void OnSCP2176Grenade(ExplodingGrenadeEventArgs ev)
+        private static void OnSCP2176Grenade(GrenadeExplodingEventArgs ev)
         {
-            if (ev.Projectile.Base is Scp2176Projectile)
+            if (ev.Grenade is Scp2176Projectile)
             {
                 if (ev.Player != null)
                 {
@@ -197,7 +199,7 @@ namespace UsefulHints.EventHandlers.Items
 
             while (duration > 0)
             {
-                player.ShowHint($"<color=#1CAA21>{new string('\n', 10)}{string.Format(UsefulHints.Instance.Config.Scp2176TimeLeftMessage, (int)duration)}</color>", 1.15f);
+                player.SendHint($"<color=#1CAA21>{new string('\n', 10)}{string.Format(UsefulHints.Instance.Config.Scp2176TimeLeftMessage, (int)duration)}</color>", 1.15f);
                 yield return Timing.WaitForSeconds(1f);
                 duration -= 1f;
             }
@@ -209,7 +211,7 @@ namespace UsefulHints.EventHandlers.Items
             activeCoroutines.Clear();
         }
         // Jailbird Handler
-        private static void OnPickingUpJailbird(PickingUpItemEventArgs ev)
+        private static void OnPickingUpJailbird(PlayerPickingUpItemEventArgs ev)
         {
             if (ev.Pickup is JailbirdPickup jailbirdPickup)
             {
@@ -217,27 +219,27 @@ namespace UsefulHints.EventHandlers.Items
                 int remainingCharges = maxCharges - jailbirdPickup.TotalCharges;
 
                 if (remainingCharges > 1)
-                    ev.Player.ShowHint($"<color=#00B7EB>{new string('\n', 10)}{string.Format(UsefulHints.Instance.Config.JailbirdUseMessage, remainingCharges)}</color>", 4);
+                    ev.Player.SendHint($"<color=#00B7EB>{new string('\n', 10)}{string.Format(UsefulHints.Instance.Config.JailbirdUseMessage, remainingCharges)}</color>", 4);
                 else
-                    ev.Player.ShowHint($"<color=#C73804>{new string('\n', 10)}{string.Format(UsefulHints.Instance.Config.JailbirdUseMessage, remainingCharges)}</color>", 4);
+                    ev.Player.SendHint($"<color=#C73804>{new string('\n', 10)}{string.Format(UsefulHints.Instance.Config.JailbirdUseMessage, remainingCharges)}</color>", 4);
             }
         }
-        private static void OnEquipJailbird(ChangingItemEventArgs ev)
+        private static void OnEquipJailbird(PlayerChangingItemEventArgs ev)
         {
             if (UsefulHints.Instance.Config.ShowHintOnEquipItem)
             {
-                if (ev.Item == null)
+                if (ev.NewItem == null)
                     return;
 
-                if (ev.Item.Base is JailbirdItem jailbirdItem)
+                if (ev.NewItem.Base is JailbirdItem jailbirdItem)
                 {
                     int maxCharges = 5;
                     int remainingCharges = maxCharges - jailbirdItem.TotalChargesPerformed;
 
                     if (remainingCharges > 1)
-                        ev.Player.ShowHint($"<color=#00B7EB>{new string('\n', 10)}{string.Format(UsefulHints.Instance.Config.JailbirdUseMessage, remainingCharges)}</color>", 2);
+                        ev.Player.SendHint($"<color=#00B7EB>{new string('\n', 10)}{string.Format(UsefulHints.Instance.Config.JailbirdUseMessage, remainingCharges)}</color>", 2);
                     else
-                        ev.Player.ShowHint($"<color=#C73804>{new string('\n', 10)}{string.Format(UsefulHints.Instance.Config.JailbirdUseMessage, remainingCharges)}</color>", 2);
+                        ev.Player.SendHint($"<color=#C73804>{new string('\n', 10)}{string.Format(UsefulHints.Instance.Config.JailbirdUseMessage, remainingCharges)}</color>", 2);
                 }
             }
         }
