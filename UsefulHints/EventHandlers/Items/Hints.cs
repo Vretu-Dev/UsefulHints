@@ -212,7 +212,7 @@ namespace UsefulHints.EventHandlers.Items
         // Jailbird Handler
         private static void OnPickingUpJailbird(PlayerPickingUpItemEventArgs ev)
         {
-            if (ev.Pickup is JailbirdPickup jailbirdPickup)
+            if (ev.Pickup.Base is JailbirdPickup jailbirdPickup)
             {
                 int maxCharges = 5;
                 int remainingCharges = maxCharges - jailbirdPickup.TotalCharges;
