@@ -1,6 +1,6 @@
 ﻿using LabApi.Features.Wrappers;
-using MEC;
 using System.Collections.Generic;
+using MEC;
 
 namespace UsefulHints.EventHandlers.Modules
 {

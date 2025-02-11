@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using Player = LabApi.Features.Wrappers.Player;
-using PlayerRoles;
-using static Broadcast;
 using LabApi.Events.Arguments.PlayerEvents;
 using LabApi.Events.Arguments.ServerEvents;
 using LabApi.Features.Wrappers;
+using PlayerRoles;
 using PlayerStatsSystem;
+using static Broadcast;
 
 namespace UsefulHints.EventHandlers.Modules
 {
@@ -130,7 +130,7 @@ namespace UsefulHints.EventHandlers.Modules
             if (firstScpKiller != null)
                 text += string.Format(UsefulHints.Instance.Config.FirstScpKillerMessage, firstScpKiller.Nickname) + "\n";
             if (!string.IsNullOrEmpty(text))
-                Map.SendBroadcast(UsefulHints.Instance.Config.RoundSummaryMessageDuration, text, BroadcastFlags.Normal, true);
+                Server.SendBroadcast(text, UsefulHints.Instance.Config.RoundSummaryMessageDuration, BroadcastFlags.Normal, true);
         }
         // Reset Handlers
         private static void OnRestartingRound()

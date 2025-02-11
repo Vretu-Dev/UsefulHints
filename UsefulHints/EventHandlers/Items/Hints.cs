@@ -2,12 +2,12 @@
 using Player = LabApi.Features.Wrappers.Player;
 using InventorySystem.Items.ThrowableProjectiles;
 using InventorySystem.Items.Jailbird;
-using CustomPlayerEffects;
-using MEC;
 using LabApi.Events.Arguments.PlayerEvents;
-using System.Collections.Generic;
 using LabApi.Events.Arguments.ServerEvents;
+using System.Collections.Generic;
+using CustomPlayerEffects;
 using PlayerStatsSystem;
+using MEC;
 
 namespace UsefulHints.EventHandlers.Items
 {
