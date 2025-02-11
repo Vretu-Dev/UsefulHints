@@ -6,7 +6,7 @@ using static Broadcast;
 using LabApi.Events.Arguments.PlayerEvents;
 using LabApi.Events.Arguments.ServerEvents;
 using LabApi.Features.Wrappers;
-//
+
 namespace UsefulHints.EventHandlers.Modules
 {
     public static class RoundSummary
