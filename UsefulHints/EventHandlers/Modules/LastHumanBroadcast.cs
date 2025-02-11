@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using LabApi.Events.Arguments.PlayerEvents;
 using LabApi.Features.Wrappers;
+using MapGeneration;
 using PlayerRoles;
 
 namespace UsefulHints.EventHandlers.Modules
@@ -48,17 +49,17 @@ namespace UsefulHints.EventHandlers.Modules
         }
         private static string GetZoneName(Player player)
         {
-            ZoneType zone = player.CurrentRoom.Zone;
+            FacilityZone zone = player.Room.Zone;
 
             switch (zone)
             {
-                case ZoneType.LightContainment:
+                case FacilityZone.LightContainment:
                     return "Light Containment";
-                case ZoneType.HeavyContainment:
+                case FacilityZone.HeavyContainment:
                     return "Heavy Containment";
-                case ZoneType.Entrance:
+                case FacilityZone.Entrance:
                     return "Entrance Zone";
-                case ZoneType.Surface:
+                case FacilityZone.Surface:
                     return "Surface";
                 default:
                     return "Unknown Zone";

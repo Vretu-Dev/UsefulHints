@@ -7,6 +7,7 @@ using MEC;
 using LabApi.Events.Arguments.PlayerEvents;
 using System.Collections.Generic;
 using LabApi.Events.Arguments.ServerEvents;
+using PlayerStatsSystem;
 
 namespace UsefulHints.EventHandlers.Items
 {
@@ -47,25 +48,26 @@ namespace UsefulHints.EventHandlers.Items
         // Explosion Damage Handler
         private static void OnGrenadeHurting(PlayerHurtingEventArgs ev)
         {
-            if (!ev.IsAllowed || ev.Amount <= 0.01f || ev.Target == null || ev.Player == null || ev.Player == ev.Target)
+            if (!ev.IsAllowed || ev.Target == null || ev.Player == null || ev.Player == ev.Target)
                 return;
 
-            if (ev.DamageHandler.Type == DamageType.Explosion)
+            if (ev.DamageHandler is ExplosionDamageHandler explosionDamageHandler)
             {
-                float RemainingHealth = ev.Player.Health - ev.Amount;
+                float amount = explosionDamageHandler.Damage;
+                float RemainingHealth = ev.Player.Health - amount;
 
                 if (RemainingHealth > 0)
-                    ev.Player.SendHint($"<color=white>{new string('\n', 5)}{string.Format(UsefulHints.Instance.Config.GrenadeDamageHint, Math.Round(ev.Amount))}</color>", 4);
+                    ev.Player.SendHint($"<color=white>{new string('\n', 5)}{string.Format(UsefulHints.Instance.Config.GrenadeDamageHint, Math.Round(amount))}</color>", 4);
             }
         }
         // SCP 207 Handler
         private static void OnPickingUpSCP207(PlayerPickingUpItemEventArgs ev)
         {
             if (ev.Player.HasEffect<Scp207>() && ev.Pickup.Type == ItemType.SCP207)
-                ev.Player.SendHint($"<color=#A60C0E>{new string('\n', 10)}{string.Format(UsefulHints.Instance.Config.Scp207HintMessage, ev.Player.GetEffect(EffectType.Scp207).Intensity)}</color>", 4);
+                ev.Player.SendHint($"<color=#A60C0E>{new string('\n', 10)}{string.Format(UsefulHints.Instance.Config.Scp207HintMessage, ev.Player.GetEffect<Scp207>().Intensity)}</color>", 4);
 
             if (ev.Player.HasEffect<AntiScp207>() && ev.Pickup.Type == ItemType.AntiSCP207)
-                ev.Player.SendHint($"<color=#C53892>{new string('\n', 10)}{string.Format(UsefulHints.Instance.Config.AntiScp207HintMessage, ev.Player.GetEffect(EffectType.AntiScp207).Intensity)}</color>", 4);
+                ev.Player.SendHint($"<color=#C53892>{new string('\n', 10)}{string.Format(UsefulHints.Instance.Config.AntiScp207HintMessage, ev.Player.GetEffect<AntiScp207>().Intensity)}</color>", 4);
         }
         private static void OnEquipSCP207(PlayerChangingItemEventArgs ev)
         {
@@ -75,10 +77,10 @@ namespace UsefulHints.EventHandlers.Items
                     return;
 
                 if (ev.Player.HasEffect<Scp207>() && ev.NewItem.Type == ItemType.SCP207)
-                    ev.Player.SendHint($"<color=#A60C0E>{new string('\n', 10)}{string.Format(UsefulHints.Instance.Config.Scp207HintMessage, ev.Player.GetEffect(EffectType.Scp207).Intensity)}</color>", 4);
+                    ev.Player.SendHint($"<color=#A60C0E>{new string('\n', 10)}{string.Format(UsefulHints.Instance.Config.Scp207HintMessage, ev.Player.GetEffect<Scp207>().Intensity)}</color>", 4);
 
                 if (ev.Player.HasEffect<AntiScp207>() && ev.NewItem.Type == ItemType.AntiSCP207)
-                    ev.Player.SendHint($"<color=#C53892>{new string('\n', 10)}{string.Format(UsefulHints.Instance.Config.AntiScp207HintMessage, ev.Player.GetEffect(EffectType.AntiScp207).Intensity)}</color>", 4);
+                    ev.Player.SendHint($"<color=#C53892>{new string('\n', 10)}{string.Format(UsefulHints.Instance.Config.AntiScp207HintMessage, ev.Player.GetEffect<AntiScp207>().Intensity)}</color>", 4);
             }
         }
         // SCP 1576 Handler

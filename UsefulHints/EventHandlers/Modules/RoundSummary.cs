@@ -6,6 +6,7 @@ using static Broadcast;
 using LabApi.Events.Arguments.PlayerEvents;
 using LabApi.Events.Arguments.ServerEvents;
 using LabApi.Features.Wrappers;
+using PlayerStatsSystem;
 
 namespace UsefulHints.EventHandlers.Modules
 {
@@ -52,10 +53,15 @@ namespace UsefulHints.EventHandlers.Modules
 
             if (attacker != null && attacker != victim && attacker.RoleBase.Team != Team.SCPs && victim.RoleBase.Team == Team.SCPs)
             {
-                if (!humanDamage.ContainsKey(attacker))
-                    humanDamage[attacker] = 0;
+                if (ev.DamageHandler is StandardDamageHandler standardDamageHandler)
+                {
+                    float amount = standardDamageHandler.Damage;
 
-                humanDamage[attacker] += (int)Math.Round(ev.Amount);
+                    if (!humanDamage.ContainsKey(attacker))
+                        humanDamage[attacker] = 0;
+
+                    humanDamage[attacker] += (int)Math.Round(amount);
+                }
             }
         }
         // Handler for "When Player dying" (FirstScpKiller)
