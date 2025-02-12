@@ -31,7 +31,7 @@
 | English   | en         |  ✅  | No                   |
 | Polish    | pl         |  ✅  | No                   |
 | Russian   | ru         |  ✅  | No                   |
-| Czech     | cs         |  ❓  | Yes                  |
+| Czech     | cs         |  ✅  | No                  |
 | Slovak    | sk         |  ❓  | Yes                  |
 | French    | fr         |  ❓  | Yes                  |
 | Spanish   | es         |  ❓  | Yes                  |
@@ -51,7 +51,7 @@
 - Thank you to these wonderful people for testing, bug reporting and translating:<br>
 Testers: [Cat Potato](https://github.com/Cat-Potato), [Aserciak](https://steamcommunity.com/profiles/76561199053527692), [AVE_SATAN](https://steamcommunity.com/id/AVE_S4TAN/), [N](https://steamcommunity.com/profiles/76561199207670378), [Folia](https://steamcommunity.com/profiles/76561198004167374), [MVP_Faker](https://steamcommunity.com/id/746237524/), [Aime](https://steamcommunity.com/profiles/76561199125886809), [Clown](https://steamcommunity.com/profiles/76561199318901590), [OneManArmy](https://steamcommunity.com/profiles/76561199120200596)<br>
 Bug Reporters: iksemdem, 𝒯𝓇𝒾𝓈𝓉𝒶𝓃𝐿𝒾𝓀𝑒𝓈𝒰𝓇𝒶𝓃 <br>
-Translators: dxstruction [RU], Vretu [PL], Vretu [EN], [kldhsh123](https://github.com/kldhsh123) [ZH], baek_sol_ha [KO]
+Translators: dxstruction [RU], Vretu [PL], Vretu [EN], [kldhsh123](https://github.com/kldhsh123) [ZH], baek_sol_ha [KO], Lukaol-is(https://github.com/Lukaol-is) [CS]
 ## Config:
 
 ```yaml
