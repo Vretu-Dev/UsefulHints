@@ -15,11 +15,11 @@ namespace UsefulHints.EventHandlers.Modules
 
             ShowKillCounterSetting = new TwoButtonsSetting(
             id: 773,
-            label: "Kill Counter",
-            firstOption: "ON",
-            secondOption: "OFF",
+            label: UsefulHints.Instance.Translation.KillCounter,
+            firstOption: UsefulHints.Instance.Translation.ButtonOn,
+            secondOption: UsefulHints.Instance.Translation.ButtonOff,
             defaultIsSecond: false,
-            hintDescription: "Enable or disable kill count display.",
+            hintDescription: UsefulHints.Instance.Translation.KillCounterDescription,
             onChanged: (player, setting) =>
             {
                 var showKillCount = (setting as TwoButtonsSetting)?.IsFirst ?? true;

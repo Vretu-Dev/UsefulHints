@@ -13,11 +13,11 @@ namespace UsefulHints.EventHandlers.Modules
 
             ShowFFWarningSetting = new TwoButtonsSetting(
             id: 774,
-            label: "Friendly Fire Warning",
-            firstOption: "ON",
-            secondOption: "OFF",
+            label: UsefulHints.Instance.Translation.FriendlyFireWarning,
+            firstOption: UsefulHints.Instance.Translation.ButtonOn,
+            secondOption: UsefulHints.Instance.Translation.ButtonOff,
             defaultIsSecond: false,
-            hintDescription: "Warnings when you deal or receive damage to/from your teammates.",
+            hintDescription: UsefulHints.Instance.Translation.FriendlyFireWarningDescription,
             onChanged: (player, setting) =>
             {
                 var showFFWarning = (setting as TwoButtonsSetting)?.IsFirst ?? true;

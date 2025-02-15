@@ -6,7 +6,7 @@ using Newtonsoft.Json;
 using System.Collections.Generic;
 using Exiled.API.Features;
 
-namespace UsefulHints
+namespace UsefulHints.Extensions
 {
     public static class TranslationManager
     {

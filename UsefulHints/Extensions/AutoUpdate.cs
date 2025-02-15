@@ -4,7 +4,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Exiled.API.Features;
 
-namespace UsefulHints
+namespace UsefulHints.Extensions
 {
     public static class UpdateChecker
     {

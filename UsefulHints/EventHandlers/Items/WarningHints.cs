@@ -13,11 +13,11 @@ namespace UsefulHints.EventHandlers.Items
 
             ShowWarningHintSetting = new TwoButtonsSetting(
             id: 775,
-            label: "Item Warning Hints",
-            firstOption: "ON",
-            secondOption: "OFF",
+            label: UsefulHints.Instance.Translation.ItemWarningHints,
+            firstOption: UsefulHints.Instance.Translation.ButtonOn,
+            secondOption: UsefulHints.Instance.Translation.ButtonOff,
             defaultIsSecond: false,
-            hintDescription: "Prevent use SCP-207, Anti SCP-207 and SCP-1853 together.",
+            hintDescription: UsefulHints.Instance.Translation.ItemWarningHintsDescription,
             onChanged: (player, setting) =>
             {
                 var showWarningHintSetting = (setting as TwoButtonsSetting)?.IsFirst ?? true;

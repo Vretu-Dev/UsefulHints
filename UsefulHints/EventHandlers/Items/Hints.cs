@@ -37,11 +37,11 @@ namespace UsefulHints.EventHandlers.Items
 
             ShowHintSetting = new TwoButtonsSetting(
             id: 777,
-            label: "Show Hints",
-            firstOption: "ON",
-            secondOption: "OFF",
+            label: UsefulHints.Instance.Translation.ShowHints,
+            firstOption: UsefulHints.Instance.Translation.ButtonOn,
+            secondOption: UsefulHints.Instance.Translation.ButtonOff,
             defaultIsSecond: false,
-            hintDescription: "Enable or disable hints display.",
+            hintDescription: UsefulHints.Instance.Translation.ShowHintsDescription,
             onChanged: (player, setting) =>
             {
                 var showHints = (setting as TwoButtonsSetting)?.IsFirst ?? true;
@@ -50,11 +50,11 @@ namespace UsefulHints.EventHandlers.Items
 
             ShowTimersSetting = new TwoButtonsSetting(
             id: 776,
-            label: "Show Timers",
-            firstOption: "ON",
-            secondOption: "OFF",
+            label: UsefulHints.Instance.Translation.ShowTimers,
+            firstOption: UsefulHints.Instance.Translation.ButtonOn,
+            secondOption: UsefulHints.Instance.Translation.ButtonOff,
             defaultIsSecond: false,
-            hintDescription: "SCP-268, SCP-2176 and SCP-1576.",
+            hintDescription: UsefulHints.Instance.Translation.ShowTimersDescription,
             onChanged: (player, setting) =>
             {
                 var showTimers = (setting as TwoButtonsSetting)?.IsFirst ?? true;
