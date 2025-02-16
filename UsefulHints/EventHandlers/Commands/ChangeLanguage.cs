@@ -33,7 +33,7 @@ namespace UsefulHints.EventHandlers.Commands
             }
 
             UsefulHints.Instance.Config.Language = newLanguage;
-            _ = TranslationManager.RegisterEvents();
+            _ = Extensions.TranslationManager.RegisterEvents();
 
             response = $"The language has been changed to: {newLanguage}";
             return true;
