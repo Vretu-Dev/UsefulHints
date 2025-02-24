@@ -1,34 +1,17 @@
-﻿using Exiled.API.Features.Core.UserSettings;
-using Exiled.Events.EventArgs.Player;
+﻿using Exiled.Events.EventArgs.Player;
 using PlayerRoles;
 
 namespace UsefulHints.EventHandlers.Modules
 {
     public static class FFWarning
     {
-        public static TwoButtonsSetting ShowFFWarningSetting { get; private set; }
         public static void RegisterEvents()
         {
             Exiled.Events.Handlers.Player.Hurting += OnHurting;
-
-            ShowFFWarningSetting = new TwoButtonsSetting(
-            id: 774,
-            label: UsefulHints.Instance.Translation.FriendlyFireWarning,
-            firstOption: UsefulHints.Instance.Translation.ButtonOn,
-            secondOption: UsefulHints.Instance.Translation.ButtonOff,
-            defaultIsSecond: false,
-            hintDescription: UsefulHints.Instance.Translation.FriendlyFireWarningDescription,
-            onChanged: (player, setting) =>
-            {
-                var showFFWarning = (setting as TwoButtonsSetting)?.IsFirst ?? true;
-                player.SessionVariables["ShowFFWarning"] = showFFWarning;
-            });
-            SettingBase.Register(new[] { ShowFFWarningSetting });
         }
         public static void UnregisterEvents()
         {
             Exiled.Events.Handlers.Player.Hurting -= OnHurting;
-            SettingBase.Unregister(settings: new[] { ShowFFWarningSetting });
         }
         private static void OnHurting(HurtingEventArgs ev)
         {

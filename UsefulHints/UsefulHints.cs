@@ -10,7 +10,7 @@ namespace UsefulHints
         public override string Name => "UsefulHints";
         public override string Author => "Vretu";
         public override string Prefix { get; } = "UH";
-        public override Version Version => new Version(2, 3, 0);
+        public override Version Version => new Version(2, 4, 0);
         public override Version RequiredExiledVersion { get; } = new Version(9, 4, 0);
         public override PluginPriority Priority { get; } = PluginPriority.Low;
         public static UsefulHints Instance { get; private set; }
@@ -18,9 +18,10 @@ namespace UsefulHints
         public override void OnEnabled()
         {
             Instance = this;
-            SettingBase.Register(new[] { SettingsHeader });
+            if(Config.EnableServerSettings) {SettingBase.Register(new[] { SettingsHeader }); }
             if(Config.AutoUpdate){ Extensions.UpdateChecker.RegisterEvents(); }
             if(Config.Translations){ _ = Extensions.TranslationManager.RegisterEvents(); }
+            if(Config.EnableServerSettings) { Extensions.ServerSpecificSettings.RegisterSettings(); }
             if(Config.EnableHints){ EventHandlers.Entities.SCP096.RegisterEvents(); }
             if(Config.EnableHints){ EventHandlers.Items.Hints.RegisterEvents(); }
             if(Config.EnableWarnings){ EventHandlers.Items.WarningHints.RegisterEvents(); }
@@ -35,8 +36,9 @@ namespace UsefulHints
         public override void OnDisabled()
         {
             Instance = null;
-            SettingBase.Unregister(settings: new[] { SettingsHeader });
+            if(Config.EnableServerSettings) {SettingBase.Unregister(settings: new[] { SettingsHeader }); }
             if(Config.AutoUpdate){ Extensions.UpdateChecker.UnregisterEvents(); }
+            if(Config.EnableServerSettings) { Extensions.ServerSpecificSettings.UnregisterSettings(); }
             if(Config.EnableHints){ EventHandlers.Entities.SCP096.UnregisterEvents(); }
             if(Config.EnableHints){ EventHandlers.Items.Hints.UnregisterEvents(); }
             if(Config.EnableWarnings){ EventHandlers.Items.WarningHints.UnregisterEvents(); }

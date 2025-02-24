@@ -1,36 +1,19 @@
 ﻿using System.Collections.Generic;
 using Player = Exiled.API.Features.Player;
 using Exiled.Events.EventArgs.Player;
-using Exiled.API.Features.Core.UserSettings;
 
 namespace UsefulHints.EventHandlers.Modules
 {
     public static class KillCounter
     {
         private static readonly Dictionary<Player, int> playerKills = new Dictionary<Player, int>();
-        public static TwoButtonsSetting ShowKillCounterSetting { get; private set; }
         public static void RegisterEvents()
         {
             Exiled.Events.Handlers.Player.Died += OnPlayerDied;
-
-            ShowKillCounterSetting = new TwoButtonsSetting(
-            id: 773,
-            label: UsefulHints.Instance.Translation.KillCounter,
-            firstOption: UsefulHints.Instance.Translation.ButtonOn,
-            secondOption: UsefulHints.Instance.Translation.ButtonOff,
-            defaultIsSecond: false,
-            hintDescription: UsefulHints.Instance.Translation.KillCounterDescription,
-            onChanged: (player, setting) =>
-            {
-                var showKillCount = (setting as TwoButtonsSetting)?.IsFirst ?? true;
-                player.SessionVariables["ShowKillCount"] = showKillCount;
-            });
-            SettingBase.Register(new[] { ShowKillCounterSetting });
         }
         public static void UnregisterEvents()
         {
             Exiled.Events.Handlers.Player.Died -= OnPlayerDied;
-            SettingBase.Unregister(settings: new[] { ShowKillCounterSetting });
         }
         private static void OnPlayerDied(DiedEventArgs ev)
         {

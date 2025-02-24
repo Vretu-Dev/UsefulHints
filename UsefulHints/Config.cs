@@ -17,6 +17,8 @@ namespace UsefulHints
         public bool AutoUpdate { get; set; } = true;
         public bool EnableLogging { get; set; } = true;
         public bool EnableBackup { get; set; } = false;
+        [Description("Specific Server Settings:")]
+        public bool EnableServerSettings { get; set; } = true;
         [Description("Hint Settings:")]
         public bool EnableHints { get; set; } = true;
         public string Scp096LookMessage { get; set; } = "You looked at SCP-096!";

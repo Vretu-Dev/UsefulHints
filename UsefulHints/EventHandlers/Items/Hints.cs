@@ -9,7 +9,6 @@ using InventorySystem.Items.ThrowableProjectiles;
 using InventorySystem.Items.Jailbird;
 using CustomPlayerEffects;
 using MEC;
-using Exiled.API.Features.Core.UserSettings;
 
 namespace UsefulHints.EventHandlers.Items
 {
@@ -17,9 +16,6 @@ namespace UsefulHints.EventHandlers.Items
     {
         private static readonly Dictionary<Player, CoroutineHandle> activeCoroutines = new Dictionary<Player, CoroutineHandle>();
         private static Dictionary<Player, ItemType> activeItems = new Dictionary<Player, ItemType>();
-        public static TwoButtonsSetting ShowHintSetting { get; private set; }
-        public static TwoButtonsSetting ShowTimersSetting { get; private set; }
-
         public static void RegisterEvents()
         {
             Exiled.Events.Handlers.Player.Hurting += OnGrenadeHurting;
@@ -34,34 +30,6 @@ namespace UsefulHints.EventHandlers.Items
             Exiled.Events.Handlers.Server.WaitingForPlayers += OnWaitingForPlayers;
             Exiled.Events.Handlers.Player.PickingUpItem += OnPickingUpJailbird;
             Exiled.Events.Handlers.Player.ChangingItem += OnEquipJailbird;
-
-            ShowHintSetting = new TwoButtonsSetting(
-            id: 777,
-            label: UsefulHints.Instance.Translation.ShowHints,
-            firstOption: UsefulHints.Instance.Translation.ButtonOn,
-            secondOption: UsefulHints.Instance.Translation.ButtonOff,
-            defaultIsSecond: false,
-            hintDescription: UsefulHints.Instance.Translation.ShowHintsDescription,
-            onChanged: (player, setting) =>
-            {
-                var showHints = (setting as TwoButtonsSetting)?.IsFirst ?? true;
-                player.SessionVariables["ShowHints"] = showHints;
-            });
-
-            ShowTimersSetting = new TwoButtonsSetting(
-            id: 776,
-            label: UsefulHints.Instance.Translation.ShowTimers,
-            firstOption: UsefulHints.Instance.Translation.ButtonOn,
-            secondOption: UsefulHints.Instance.Translation.ButtonOff,
-            defaultIsSecond: false,
-            hintDescription: UsefulHints.Instance.Translation.ShowTimersDescription,
-            onChanged: (player, setting) =>
-            {
-                var showTimers = (setting as TwoButtonsSetting)?.IsFirst ?? true;
-                player.SessionVariables["ShowTimers"] = showTimers;
-            });
-            SettingBase.Register(new[] { ShowHintSetting });
-            SettingBase.Register(new[] { ShowTimersSetting });
         }
         public static void UnregisterEvents()
         {
@@ -77,8 +45,6 @@ namespace UsefulHints.EventHandlers.Items
             Exiled.Events.Handlers.Server.WaitingForPlayers -= OnWaitingForPlayers;
             Exiled.Events.Handlers.Player.PickingUpItem -= OnPickingUpJailbird;
             Exiled.Events.Handlers.Player.ChangingItem -= OnEquipJailbird;
-            SettingBase.Unregister(settings: new[] { ShowHintSetting });
-            SettingBase.Unregister(settings: new[] { ShowTimersSetting });
         }
         // Explosion Damage Handler
         private static void OnGrenadeHurting(HurtingEventArgs ev)

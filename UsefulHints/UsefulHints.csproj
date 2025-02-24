@@ -59,6 +59,7 @@
     <Compile Include="EventHandlers\Modules\Teammates.cs" />
     <Compile Include="Extensions\AutoTranslation.cs" />
     <Compile Include="Extensions\AutoUpdate.cs" />
+    <Compile Include="Extensions\Server-Specific.cs" />
     <Compile Include="Translations.cs" />
     <Compile Include="UsefulHints.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
