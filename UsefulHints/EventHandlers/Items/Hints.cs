@@ -25,7 +25,7 @@ namespace UsefulHints.EventHandlers.Items
             LabApi.Events.Handlers.PlayerEvents.UsedItem += OnSCP268Used;
             LabApi.Events.Handlers.PlayerEvents.InteractingDoor += OnSCP268Interacting;
             LabApi.Events.Handlers.PlayerEvents.ChangedItem += OnSCP268ChangedItem;
-            LabApi.Events.Handlers.ServerEvents.GrenadeExploding += OnSCP2176Grenade;
+            LabApi.Events.Handlers.ServerEvents.ProjectileExploding += OnSCP2176Grenade;
             LabApi.Events.Handlers.ServerEvents.WaitingForPlayers += OnWaitingForPlayers;
             LabApi.Events.Handlers.PlayerEvents.PickingUpItem += OnPickingUpJailbird;
             LabApi.Events.Handlers.PlayerEvents.ChangingItem += OnEquipJailbird;
@@ -40,7 +40,7 @@ namespace UsefulHints.EventHandlers.Items
             LabApi.Events.Handlers.PlayerEvents.UsedItem -= OnSCP268Used;
             LabApi.Events.Handlers.PlayerEvents.InteractingDoor -= OnSCP268Interacting;
             LabApi.Events.Handlers.PlayerEvents.ChangedItem -= OnSCP268ChangedItem;
-            LabApi.Events.Handlers.ServerEvents.GrenadeExploding -= OnSCP2176Grenade;
+            LabApi.Events.Handlers.ServerEvents.ProjectileExploding -= OnSCP2176Grenade;
             LabApi.Events.Handlers.ServerEvents.WaitingForPlayers -= OnWaitingForPlayers;
             LabApi.Events.Handlers.PlayerEvents.PickingUpItem -= OnPickingUpJailbird;
             LabApi.Events.Handlers.PlayerEvents.ChangingItem -= OnEquipJailbird;
@@ -48,7 +48,7 @@ namespace UsefulHints.EventHandlers.Items
         // Explosion Damage Handler
         private static void OnGrenadeHurting(PlayerHurtingEventArgs ev)
         {
-            if (!ev.IsAllowed || ev.Target == null || ev.Player == null || ev.Player == ev.Target)
+            if (!ev.IsAllowed || ev.Player == null || ev.Player == null || ev.Player == ev.Player)
                 return;
 
             if (ev.DamageHandler is ExplosionDamageHandler explosionDamageHandler)
@@ -86,7 +86,7 @@ namespace UsefulHints.EventHandlers.Items
         // SCP 1576 Handler
         private static void OnSCP1576Used(PlayerUsedItemEventArgs ev)
         {
-            if (ev.Item.Type == ItemType.SCP1576)
+            if (ev.UsableItem.Type == ItemType.SCP1576)
             {
                 if (activeCoroutines.ContainsKey(ev.Player))
                 {
@@ -100,7 +100,7 @@ namespace UsefulHints.EventHandlers.Items
 
                 var coroutine = Timing.RunCoroutine(Scp1576Timer(ev.Player));
                 activeCoroutines.Add(ev.Player, coroutine);
-                activeItems.Add(ev.Player, ev.Item.Type);
+                activeItems.Add(ev.Player, ev.UsableItem.Type);
             }
         }
         private static void OnSCP1576ChangedItem(PlayerChangedItemEventArgs ev)
@@ -127,7 +127,7 @@ namespace UsefulHints.EventHandlers.Items
         // SCP 268 Handler
         private static void OnSCP268Used(PlayerUsedItemEventArgs ev)
         {
-            if (ev.Item.Type == ItemType.SCP268)
+            if (ev.UsableItem.Type == ItemType.SCP268)
             {
                 if (activeCoroutines.ContainsKey(ev.Player))
                 {
@@ -141,7 +141,7 @@ namespace UsefulHints.EventHandlers.Items
 
                 var coroutine = Timing.RunCoroutine(Scp268Timer(ev.Player));
                 activeCoroutines.Add(ev.Player, coroutine);
-                activeItems.Add(ev.Player, ev.Item.Type);
+                activeItems.Add(ev.Player, ev.UsableItem.Type);
             }
         }
         private static void OnSCP268Interacting(PlayerInteractingDoorEventArgs ev)
@@ -175,9 +175,9 @@ namespace UsefulHints.EventHandlers.Items
             activeCoroutines.Remove(player);
         }
         // SCP 2176 Handler
-        private static void OnSCP2176Grenade(GrenadeExplodingEventArgs ev)
+        private static void OnSCP2176Grenade(ProjectileExplodingEventArgs ev)
         {
-            if (ev.Grenade is Scp2176Projectile)
+            if (ev.TimedGrenade.Base is Scp2176Projectile)
             {
                 if (ev.Player != null)
                 {

@@ -48,8 +48,8 @@ namespace UsefulHints.EventHandlers.Modules
         // Handler for player hurting another player
         private static void OnPlayerHurting(PlayerHurtingEventArgs ev)
         {
-            Player attacker = ev.Player;
-            Player victim = ev.Target;
+            Player attacker = ev.Attacker;
+            Player victim = ev.Player;
 
             if (attacker != null && attacker != victim && attacker.RoleBase.Team != Team.SCPs && victim.RoleBase.Team == Team.SCPs)
             {
