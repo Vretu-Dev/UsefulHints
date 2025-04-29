@@ -32,14 +32,16 @@ namespace UsefulHints.EventHandlers.Modules
                     .Where(p => p.RoleBase.Team == player.RoleBase.Team && p != player)
                     .Select(p => p.Nickname)
                     .ToList();
-
-                if (teammates.Count > 0)
-                {
-                    player.SendHint(string.Format(UsefulHints.Instance.Config.TeammateHintMessage, string.Join("\n", teammates)), UsefulHints.Instance.Config.TeammateMessageDuration);
-                }
-                else
-                {
-                    player.SendHint(string.Format(UsefulHints.Instance.Config.AloneHintMessage), UsefulHints.Instance.Config.AloneMessageDuration);
+                if (!player.IsHost)
+                { 
+                    if (teammates.Count > 0)
+                    {
+                        player.SendHint(string.Format(UsefulHints.Instance.Config.TeammateHintMessage, string.Join("\n", teammates)), UsefulHints.Instance.Config.TeammateMessageDuration);
+                    }
+                    else
+                    {
+                        player.SendHint(string.Format(UsefulHints.Instance.Config.AloneHintMessage), UsefulHints.Instance.Config.AloneMessageDuration);
+                    }
                 }
             }
         }

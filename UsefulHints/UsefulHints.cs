@@ -6,10 +6,10 @@ namespace UsefulHints
 {
     public class UsefulHints : Plugin<Config>
     {
-        public override string Name => "UsefulHints LabApi";
+        public override string Name => "UsefulHints";
         public override string Description => "Display extra hint like a timers and notifications."; 
         public override string Author => "Vretu";
-        public override Version Version => new Version(1, 0, 0);
+        public override Version Version => new Version(1, 1, 0);
         public override Version RequiredApiVersion { get; } = new Version(LabApiProperties.CompiledVersion);
         public static UsefulHints Instance { get; private set; }
         public override void Enable()
