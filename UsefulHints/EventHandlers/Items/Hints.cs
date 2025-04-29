@@ -48,7 +48,7 @@ namespace UsefulHints.EventHandlers.Items
         // Explosion Damage Handler
         private static void OnGrenadeHurting(PlayerHurtingEventArgs ev)
         {
-            if (!ev.IsAllowed || ev.Player == null || ev.Player == null || ev.Player == ev.Player)
+            if (!ev.IsAllowed || ev.Attacker == null || ev.Player == null || ev.Player == ev.Attacker)
                 return;
 
             if (ev.DamageHandler is ExplosionDamageHandler explosionDamageHandler)
@@ -57,7 +57,7 @@ namespace UsefulHints.EventHandlers.Items
                 float RemainingHealth = ev.Player.Health - amount;
 
                 if (RemainingHealth > 0)
-                    ev.Player.SendHint($"<color=white>{new string('\n', 5)}{string.Format(UsefulHints.Instance.Config.GrenadeDamageHint, Math.Round(amount))}</color>", 4);
+                    ev.Attacker.SendHint($"<color=white>{new string('\n', 5)}{string.Format(UsefulHints.Instance.Config.GrenadeDamageHint, Math.Round(amount))}</color>", 4);
             }
         }
         // SCP 207 Handler
