@@ -37,7 +37,6 @@
     <Reference Include="UnityEngine" HintPath="$(LABAPI_REFERENCES)\UnityEngine.dll" Private="false" />
     <Reference Include="UnityEngine.CoreModule" HintPath="$(LABAPI_REFERENCES)\UnityEngine.CoreModule.dll" Private="false" />
     <Reference Include="UnityEngine.PhysicsModule" HintPath="$(LABAPI_REFERENCES)\UnityEngine.PhysicsModule.dll" Private="false" />
-    <Reference Include="LabApi" HintPath="$(LABAPI_REFERENCES)\LabApi.dll" Private="false" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -61,6 +60,10 @@
     <Compile Include="UsefulHints.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <PackageReference Include="Northwood.LabAPI">
+      <Version>1.0.2</Version>
+    </PackageReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
