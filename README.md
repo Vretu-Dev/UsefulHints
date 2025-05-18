@@ -3,15 +3,14 @@
 [![downloads](https://img.shields.io/github/downloads/Vretu-Dev/UsefulHints/total?style=for-the-badge&logo=icloud&color=%233A6D8C)](https://github.com/Vretu-Dev/UsefulHints/releases/latest)
 ![Latest](https://img.shields.io/github/v/release/Vretu-Dev/UsefulHints?style=for-the-badge&label=Latest%20Release&color=%23D91656)
 
-# UsefulHints for EXILED & LabAPI
-<h4>If you like this plugin you can support me!</h4>
-<a href="https://opencollective.com/ucs/projects/usefulhints/donate"><img src="https://github.com/user-attachments/assets/f5aa3e98-d73c-470d-a134-5e9d923ea30b" style="width:154px;height:40px;"></a>
-<h4>UCS Independent Developer</h4>
-<a href='https://opencollective.com/ucs'><img src="https://github.com/user-attachments/assets/517f8cae-32ac-4886-8bd6-5e95447073e2" style="width:154px;height:40px;"></a>
-<a href='https://discord.gg/5StRGu8EJV'><img src="https://github.com/user-attachments/assets/17cc06b8-ced8-4223-93dc-8d3a21c55753" style="width:154px;height:40px;"></a>
+# UsefulHints
 
-### Minimum Exiled Version: 9.4.0 | [Download](https://github.com/Vretu-Dev/UsefulHints/releases/latest)
-### Minimum LabAPI Version: 0.6.0 | [Download](https://github.com/Vretu-Dev/UsefulHints/releases/tag/1.1.0-LabAPI)
+## Downloads:
+| Framework | Version    |  Release                                                              |
+|:---------:|:----------:|:----------------------------------------------------------------------:|
+| Exiled    | ≥ 9.6.0    | [⬇️](https://github.com/Vretu-Dev/UsefulHints/releases/latest)        |
+| LabAPI    | 1.0.2      | [⬇️](https://github.com/JustVretu/UsefulHints-LabAPI/releases/latest) |
+
 ## Features:
 - SCP-268 countdown timer
 - SCP-1576 countdown timer
@@ -28,7 +27,7 @@
 - Customize functions to your needs with Server-Specific
 ## Translations
 | Language  | Short Name | Done | Required Verification|
-|-----------|------------|------|----------------------|
+|-----------|------------|:------:|----------------------|
 | English   | en         |  ✅  | No                   |
 | Polish    | pl         |  ✅  | No                   |
 | Russian   | ru         |  ✅  | No                   |
@@ -45,6 +44,14 @@
 
 ✅ - Verified, ❓- From Chat GPT
 #### If you want to use your translations in `<port>-config.yml` set `translations: false`❗
+
+## Support:
+<h4>UCS Independent Developer</h4>
+<a href='https://opencollective.com/ucs'><img src="https://github.com/user-attachments/assets/517f8cae-32ac-4886-8bd6-5e95447073e2" style="width:154px;height:40px;"></a>
+<a href='https://discord.gg/5StRGu8EJV'><img src="https://github.com/user-attachments/assets/17cc06b8-ced8-4223-93dc-8d3a21c55753" style="width:154px;height:40px;"></a>
+<h4>If you like this plugin you can support me!</h4>
+<a href="https://opencollective.com/ucs/projects/usefulhints/donate"><img src="https://github.com/user-attachments/assets/f5aa3e98-d73c-470d-a134-5e9d923ea30b" style="width:154px;height:40px;"></a>
+
 ## Credits:
 - Thanks [@NamelessSCP](https://github.com/NamelessSCP) for using the [RoundMVP](https://github.com/NamelessSCP/RoundMVP) idea.<br>
 - Thanks [@XoMiya-WPC](https://github.com/XoMiya-WPC) for using the [WhoAreMyTeammates](https://github.com/XoMiya-WPC/WhoAreMyTeammates) idea.<br>
@@ -53,6 +60,7 @@
 Testers: [Cat Potato](https://github.com/Cat-Potato), [Aserciak](https://steamcommunity.com/profiles/76561199053527692), [AVE_SATAN](https://steamcommunity.com/id/AVE_S4TAN/), [N](https://steamcommunity.com/profiles/76561199207670378), [Folia](https://steamcommunity.com/profiles/76561198004167374), [MVP_Faker](https://steamcommunity.com/id/746237524/), [Aime](https://steamcommunity.com/profiles/76561199125886809), [Clown](https://steamcommunity.com/profiles/76561199318901590), [OneManArmy](https://steamcommunity.com/profiles/76561199120200596)<br>
 Bug Reporters: iksemdem, 𝒯𝓇𝒾𝓈𝓉𝒶𝓃𝐿𝒾𝓀𝑒𝓈𝒰𝓇𝒶𝓃 <br>
 Translators: dxstruction [RU], Vretu [PL], Vretu [EN], [kldhsh123](https://github.com/kldhsh123) [ZH], baek_sol_ha [KO], [Lukaol-is](https://github.com/Lukaol-is) [CS]
+
 ## Config:
 
 ```yaml
@@ -68,7 +76,7 @@ UH:
   enable_logging: true
   enable_backup: false
   # Specific Server Settings:
-  EnableServerSettings: true
+  enable_server_settings: true
   # Hint Settings:
   enable_hints: true
   scp096_look_message: 'You looked at SCP-096!'
@@ -124,7 +132,7 @@ UH:
 ```
 ## Command
 | Command              | Alias | Usage          | Permission           | Description                  |
-|----------------------|-------|----------------|----------------------|------------------------------|
+|:--------------------:|:-----:|:--------------:|:--------------------:|:----------------------------:|
 | usefulhints_language | uhl   | uhl [language] | uh.changelanguage    | Dynamically switches language|
 ## Showcase:
 ### Hints:
