@@ -15,6 +15,9 @@ namespace UsefulHints.EventHandlers.Entities
         }
         private static void OnScp096AddingTarget(AddingTargetEventArgs ev)
         {
+            if (!ev.IsAllowed || ev.Player == null || ev.Target == null)
+                return;
+
             if (ev.Target.SessionVariables.TryGetValue("ShowHints", out var showHints) && !(bool)showHints)
                 return;
 
