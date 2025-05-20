@@ -1,6 +1,6 @@
 
 ![UsefulHints](https://github.com/user-attachments/assets/a01fc940-f540-4c8b-8caf-65848a22335d)<br><br><br>
-[![downloads](https://img.shields.io/github/downloads/Vretu-Dev/UsefulHints/total?style=for-the-badge&logo=icloud&color=%233A6D8C)](https://github.com/Vretu-Dev/UsefulHints/releases/latest)
+[![downloads](https://img.shields.io/github/downloads/JustVretu/UsefulHints-LabAPI/total?style=for-the-badge&logo=icloud&color=%233A6D8C)](https://github.com/JustVretu/UsefulHints-LabAPI/releases/latest)
 ![Latest](https://img.shields.io/github/v/release/Vretu-Dev/UsefulHints?style=for-the-badge&label=Latest%20Release&color=%23D91656)
 
 ## Downloads:
