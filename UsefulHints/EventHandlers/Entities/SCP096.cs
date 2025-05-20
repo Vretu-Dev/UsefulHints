@@ -14,6 +14,9 @@ namespace UsefulHints.EventHandlers.Entities
         }
         private static void OnScp096AddingTarget(Scp096AddingTargetEventArgs ev)
         {
+            if (!ev.IsAllowed || ev.Player == null || ev.Target == null)
+                return;
+
             ev.Target.SendHint(UsefulHints.Instance.Config.Scp096LookMessage, 5);
         }
     }
