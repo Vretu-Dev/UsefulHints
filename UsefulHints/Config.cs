@@ -46,6 +46,7 @@ namespace UsefulHints
         [Description("Kill Counter:")]
         public bool EnableKillCounter { get; set; } = true;
         public string KillCountMessage { get; set; } = "{0} kills";
+        public bool CountPocketKills { get; set; } = false;
         [Description("Round Summary:")]
         public bool EnableRoundSummary { get; set; } = true;
         public ushort RoundSummaryMessageDuration { get; set; } = 10;

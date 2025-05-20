@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using Player = Exiled.API.Features.Player;
 using Exiled.Events.EventArgs.Player;
+using Exiled.API.Enums;
+using PlayerRoles;
 
 namespace UsefulHints.EventHandlers.Modules
 {
@@ -17,6 +19,32 @@ namespace UsefulHints.EventHandlers.Modules
         }
         private static void OnPlayerDied(DiedEventArgs ev)
         {
+            if (ev.DamageHandler.Type == DamageType.PocketDimension && UsefulHints.Instance.Config.CountPocketKills)
+            {
+                foreach (var player in Player.List)
+                {
+                    if (player.Role.Type == RoleTypeId.Scp106)
+                    {
+                        Player killer = player;
+                        if (playerKills.ContainsKey(killer))
+                        {
+                            playerKills[killer]++;
+                        }
+                        else
+                        {
+                            playerKills[killer] = 1;
+                        }
+                        if (!killer.IsHost)
+                        {
+                            if (killer.SessionVariables.TryGetValue("ShowKillCount", out var showKillCount) && !(bool)showKillCount)
+                                return;
+
+                            killer.ShowHint(string.Format(UsefulHints.Instance.Config.KillCountMessage, playerKills[killer]), 4);
+                        }
+                    }
+                }
+            }
+
             if (ev.Attacker != null && ev.Attacker != ev.Player)
             {
                 Player killer = ev.Attacker;
