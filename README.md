@@ -3,22 +3,18 @@
 [![downloads](https://img.shields.io/github/downloads/Vretu-Dev/UsefulHints/total?style=for-the-badge&logo=icloud&color=%233A6D8C)](https://github.com/Vretu-Dev/UsefulHints/releases/latest)
 ![Latest](https://img.shields.io/github/v/release/Vretu-Dev/UsefulHints?style=for-the-badge&label=Latest%20Release&color=%23D91656)
 
-# UsefulHints for EXILED
-<h4>If you like this plugin you can support me!</h4>
-<a href="https://opencollective.com/ucs/projects/usefulhints/donate"><img src="https://github.com/user-attachments/assets/f5aa3e98-d73c-470d-a134-5e9d923ea30b" style="width:154px;height:40px;"></a>
-<h4>UCS Independent Developer</h4>
-<a href='https://opencollective.com/ucs'><img src="https://github.com/user-attachments/assets/517f8cae-32ac-4886-8bd6-5e95447073e2" style="width:154px;height:40px;"></a>
-<a href='https://discord.gg/5StRGu8EJV'><img src="https://github.com/user-attachments/assets/17cc06b8-ced8-4223-93dc-8d3a21c55753" style="width:154px;height:40px;"></a>
+## Downloads:
+| Framework | Version    |  Release                                                              |
+|:---------:|:----------:|:----------------------------------------------------------------------:|
+| Exiled    | ≥ 9.6.0    | [⬇️](https://github.com/Vretu-Dev/UsefulHints/releases/latest)        |
+| LabAPI    | 1.0.2      | [⬇️](https://github.com/JustVretu/UsefulHints-LabAPI/releases/latest) |
 
-### Minimum Exiled Version: 9.0.0
 ## Features:
-- Display remaining time after using SCP-268
 - SCP-268 countdown timer
 - SCP-1576 countdown timer
 - SCP-2176 lockdown timer
 - Hint displayed when looking at SCP-096's face
 - Track remaining Jailbird charges
-- Track remaining MicroHid energy
 - Display SCP-207 & Anti SCP-207 doses when picked up
 - Warning hints when affected by SCP-207, Anti SCP-207, or SCP-1853
 - Friendly fire warnings when damaging teammates
@@ -26,25 +22,14 @@
 - End-of-game summary
 - Show teammates at the start of the round
 - Broadcast the last human alive
-## Translations
-| Language  | Short Name | Done | Required Verification|
-|-----------|------------|------|----------------------|
-| English   | en         |  ✅  | No                   |
-| Polish    | pl         |  ✅  | No                   |
-| Russian   | ru         |  ✅  | No                   |
-| Czech     | cs         |  ✅  | Yes                  |
-| Slovak    | sk         |  ✅  | Yes                  |
-| French    | fr         |  ✅  | Yes                  |
-| Spanish   | es         |  ✅  | Yes                  |
-| Italian   | it         |  ✅  | Yes                  |
-| German    | de         |  ✅  | Yes                  |
-| Turkish   | tr         |  ✅  | Yes                  |
-| Portuguese| pt         |  ✅  | Yes                  |
-| Chinese   | zh         |  ✅  | No                  |
 
-#### Remember to set your translation path correctly❗
-#### Default: `/home/container/.config/EXILED/Configs/UsefulHints/Translations`
-#### If you want to use your translations in `<port>-config.yml` set `translations: false`❗
+## Support:
+<h4>UCS Independent Developer</h4>
+<a href='https://opencollective.com/ucs'><img src="https://github.com/user-attachments/assets/517f8cae-32ac-4886-8bd6-5e95447073e2" style="width:154px;height:40px;"></a>
+<a href='https://discord.gg/5StRGu8EJV'><img src="https://github.com/user-attachments/assets/17cc06b8-ced8-4223-93dc-8d3a21c55753" style="width:154px;height:40px;"></a>
+<h4>If you like this plugin you can support me!</h4>
+<a href="https://opencollective.com/ucs/projects/usefulhints/donate"><img src="https://github.com/user-attachments/assets/f5aa3e98-d73c-470d-a134-5e9d923ea30b" style="width:154px;height:40px;"></a>
+
 ## Credits:
 - Thanks [@NamelessSCP](https://github.com/NamelessSCP) for using the [RoundMVP](https://github.com/NamelessSCP/RoundMVP) idea.<br>
 - Thanks [@XoMiya-WPC](https://github.com/XoMiya-WPC) for using the [WhoAreMyTeammates](https://github.com/XoMiya-WPC/WhoAreMyTeammates) idea.<br>
@@ -52,23 +37,14 @@
 - Thank you to these wonderful people for testing, bug reporting and translating:<br>
 Testers: [Cat Potato](https://github.com/Cat-Potato), [Aserciak](https://steamcommunity.com/profiles/76561199053527692), [AVE_SATAN](https://steamcommunity.com/id/AVE_S4TAN/), [N](https://steamcommunity.com/profiles/76561199207670378), [Folia](https://steamcommunity.com/profiles/76561198004167374), [MVP_Faker](https://steamcommunity.com/id/746237524/), [Aime](https://steamcommunity.com/profiles/76561199125886809), [Clown](https://steamcommunity.com/profiles/76561199318901590), [OneManArmy](https://steamcommunity.com/profiles/76561199120200596)<br>
 Bug Reporters: iksemdem, 𝒯𝓇𝒾𝓈𝓉𝒶𝓃𝐿𝒾𝓀𝑒𝓈𝒰𝓇𝒶𝓃 <br>
-Translators: dxstruction [RU], Vretu [PL], Vretu [EN], [kldhsh123](https://github.com/kldhsh123) [ZH]
+Translators: dxstruction [RU], Vretu [PL], Vretu [EN], [kldhsh123](https://github.com/kldhsh123) [ZH], baek_sol_ha [KO], [Lukaol-is](https://github.com/Lukaol-is) [CS]
+
 ## Config:
 
 ```yaml
 UH:
   is_enabled: true
   debug: false
-  # Auto Translations:
-  translations: true
-  # Available Languages: pl, en, de, fr, cs, sk, es, it, pt, ru, tr, zh
-  language: 'en'
-  translations_path: '/home/container/.config/EXILED/Configs/UsefulHints/Translations'
-  # Auto Update:
-  auto_update: true
-  enable_logging: true
-  enable_backup: false
-  plugin_path: '/home/container/.config/EXILED/Plugins/UsefulHints.dll'
   # Hint Settings:
   enable_hints: true
   scp096_look_message: 'You looked at SCP-096!'
@@ -122,6 +98,7 @@ UH:
   enable_map_broadcast: true
   broadcast_warning_lcz: '<color=yellow>Light Zone</color> will be decontaminated in 5 minutes!'
 ```
+
 ## Showcase:
 ### Hints:
 https://github.com/user-attachments/assets/f2125ab2-4ee3-4c71-a697-88949c00ddc2
