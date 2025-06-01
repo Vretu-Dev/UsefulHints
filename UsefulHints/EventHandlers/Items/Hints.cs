@@ -1,38 +1,44 @@
 ﻿using System;
-using System.Linq;
 using System.Collections.Generic;
 using Exiled.API.Enums;
-using Exiled.API.Extensions;
 using JailbirdPickup = Exiled.API.Features.Pickups.JailbirdPickup;
 using Player = Exiled.API.Features.Player;
 using Exiled.Events.EventArgs.Map;
 using Exiled.Events.EventArgs.Player;
 using InventorySystem.Items.ThrowableProjectiles;
 using InventorySystem.Items.Jailbird;
-using MEC;
 using HintServiceMeow.Core.Models.Hints;
 using HintServiceMeow.Core.Utilities;
 using HintServiceMeow.Core.Extension;
 using HintServiceMeow.Core.Enum;
 using CustomPlayerEffects;
+using UnityEngine;
+using MEC;
 
 namespace UsefulHints.EventHandlers.Items
 {
     public static class Hints
     {
-        private static readonly Dictionary<Player, CoroutineHandle> activeCoroutines = new Dictionary<Player, CoroutineHandle>();
-        private static Dictionary<Player, ItemType> activeItems = new Dictionary<Player, ItemType>();
-        
+        // Timer SCP-1576
+        private static readonly Dictionary<Player, float> active1576Timers = new Dictionary<Player, float>();
+        private static readonly Dictionary<Player, DynamicHint> active1576Hints = new Dictionary<Player, DynamicHint>();
+
+        // Timer SCP-268
+        private static readonly Dictionary<Player, float> active268Timers = new Dictionary<Player, float>();
+        private static readonly Dictionary<Player, DynamicHint> active268Hints = new Dictionary<Player, DynamicHint>();
+
+        // Timer SCP-2176
+        private static readonly Dictionary<Player, float> active2176Timers = new Dictionary<Player, float>();
+        private static readonly Dictionary<Player, DynamicHint> active2176Hints = new Dictionary<Player, DynamicHint>();
+
         public static void RegisterEvents()
         {
             Exiled.Events.Handlers.Player.Hurting += OnGrenadeHurting;
             Exiled.Events.Handlers.Player.PickingUpItem += OnPickingUpSCP207;
             Exiled.Events.Handlers.Player.ChangingItem += OnEquipSCP207;
-            Exiled.Events.Handlers.Player.UsedItem += OnSCP1576Used;
-            Exiled.Events.Handlers.Player.ChangedItem += OnSCP1576ChangedItem;
-            Exiled.Events.Handlers.Player.UsedItem += OnSCP268Used;
+            Exiled.Events.Handlers.Player.UsedItem += OnSCP1576or268Used;
             Exiled.Events.Handlers.Player.InteractingDoor += OnSCP268Interacting;
-            Exiled.Events.Handlers.Player.ChangedItem += OnSCP268ChangedItem;
+            Exiled.Events.Handlers.Player.ChangedItem += OnSCP1576or268ChangeItem;
             Exiled.Events.Handlers.Map.ExplodingGrenade += OnSCP2176Grenade;
             Exiled.Events.Handlers.Server.WaitingForPlayers += OnWaitingForPlayers;
             Exiled.Events.Handlers.Player.PickingUpItem += OnPickingUpJailbird;
@@ -43,11 +49,9 @@ namespace UsefulHints.EventHandlers.Items
             Exiled.Events.Handlers.Player.Hurting -= OnGrenadeHurting;
             Exiled.Events.Handlers.Player.PickingUpItem -= OnPickingUpSCP207;
             Exiled.Events.Handlers.Player.ChangingItem -= OnEquipSCP207;
-            Exiled.Events.Handlers.Player.UsedItem -= OnSCP1576Used;
-            Exiled.Events.Handlers.Player.ChangedItem -= OnSCP1576ChangedItem;
-            Exiled.Events.Handlers.Player.UsedItem -= OnSCP268Used;
+            Exiled.Events.Handlers.Player.UsedItem -= OnSCP1576or268Used;
             Exiled.Events.Handlers.Player.InteractingDoor -= OnSCP268Interacting;
-            Exiled.Events.Handlers.Player.ChangedItem -= OnSCP268ChangedItem;
+            Exiled.Events.Handlers.Player.ChangedItem -= OnSCP1576or268ChangeItem;
             Exiled.Events.Handlers.Map.ExplodingGrenade -= OnSCP2176Grenade;
             Exiled.Events.Handlers.Server.WaitingForPlayers -= OnWaitingForPlayers;
             Exiled.Events.Handlers.Player.PickingUpItem -= OnPickingUpJailbird;
@@ -143,216 +147,103 @@ namespace UsefulHints.EventHandlers.Items
                 }
             }
         }
-        // SCP 1576 Handler
-        private static readonly Dictionary<Player, DynamicHint> active1576Hints = new Dictionary<Player, DynamicHint>();
-        private static void OnSCP1576Used(UsedItemEventArgs ev)
+        
+        // Add Timers on Event
+        private static void OnSCP1576or268Used(UsedItemEventArgs ev)
         {
             if (ev.Item.Type == ItemType.SCP1576)
-            {
-                if (activeCoroutines.ContainsKey(ev.Player))
-                {
-                    Timing.KillCoroutines(activeCoroutines[ev.Player]);
-                    activeCoroutines.Remove(ev.Player);
-                }
-                if (activeItems.ContainsKey(ev.Player))
-                {
-                    activeItems.Remove(ev.Player);
-                }
-                if (active1576Hints.ContainsKey(ev.Player))
-                {
-                    ev.Player.GetPlayerDisplay().RemoveHint(active1576Hints[ev.Player]);
-                    active1576Hints.Remove(ev.Player);
-                }
+                StartOrRefreshTimer(ev.Player, 30f, active1576Timers, active1576Hints, "<color=#FFA500>{0}</color>", UsefulHints.Instance.Config.Scp1576TimeLeftMessage, 900, 30);
 
-                var coroutine = Timing.RunCoroutine(Scp1576Timer(ev.Player));
-                activeCoroutines[ev.Player] = coroutine;
-                activeItems[ev.Player] = ev.Item.Type;
-            }
-        }
-        private static void OnSCP1576ChangedItem(ChangedItemEventArgs ev)
-        {
-            if (activeCoroutines.ContainsKey(ev.Player) && activeItems.ContainsKey(ev.Player) && activeItems[ev.Player] == ItemType.SCP1576)
-            {
-                Timing.KillCoroutines(activeCoroutines[ev.Player]);
-                activeCoroutines.Remove(ev.Player);
-                activeItems.Remove(ev.Player);
-
-                if (active1576Hints.ContainsKey(ev.Player))
-                {
-                    ev.Player.GetPlayerDisplay().RemoveHint(active1576Hints[ev.Player]);
-                    active1576Hints.Remove(ev.Player);
-                }
-            }
-        }
-        private static IEnumerator<float> Scp1576Timer(Player player)
-        {
-            float duration = 30f;
-
-            var SCP1576Hint = new DynamicHint()
-            {
-                TargetY = 900,
-                FontSize = 28,
-                SyncSpeed = HintSyncSpeed.UnSync
-            };
-
-            if (!active1576Hints.ContainsKey(player))
-            {
-                active1576Hints.Add(player, SCP1576Hint);
-            }
-
-            while (duration > 0)
-            {
-                SCP1576Hint.Text = $"<color=#FFA500>{string.Format(UsefulHints.Instance.Config.Scp1576TimeLeftMessage, (int)duration)}</color>";
-                player.GetPlayerDisplay().AddHint(SCP1576Hint);
-                yield return Timing.WaitForSeconds(1f);
-                duration -= 1f;
-            }
-
-            player.GetPlayerDisplay().RemoveHint(SCP1576Hint);
-            active1576Hints.Remove(player);
-            activeCoroutines.Remove(player);
-        }
-        // SCP 268 Handler
-        private static readonly Dictionary<Player, DynamicHint> active268Hints = new Dictionary<Player, DynamicHint>();
-        private static void OnSCP268Used(UsedItemEventArgs ev)
-        {
             if (ev.Item.Type == ItemType.SCP268)
-            {
-                if (activeCoroutines.ContainsKey(ev.Player))
-                {
-                    Timing.KillCoroutines(activeCoroutines[ev.Player]);
-                    activeCoroutines.Remove(ev.Player);
-                }
-                if (activeItems.ContainsKey(ev.Player))
-                {
-                    activeItems.Remove(ev.Player);
-                }
-                if (active268Hints.ContainsKey(ev.Player))
-                {
-                    ev.Player.GetPlayerDisplay().RemoveHint(active268Hints[ev.Player]);
-                    active268Hints.Remove(ev.Player);
-                }
-
-                var coroutine = Timing.RunCoroutine(Scp268Timer(ev.Player));
-                activeCoroutines.Add(ev.Player, coroutine);
-                activeItems.Add(ev.Player, ev.Item.Type);
-            }
+                StartOrRefreshTimer(ev.Player, 15f, active268Timers, active268Hints, "<color=purple>{0}</color>", UsefulHints.Instance.Config.Scp268TimeLeftMessage, 900, 30);
         }
-        private static void OnSCP268Interacting(InteractingDoorEventArgs ev)
+        public static void OnSCP2176Grenade(ExplodingGrenadeEventArgs ev)
         {
-            if (activeCoroutines.ContainsKey(ev.Player) && activeItems.ContainsKey(ev.Player) && activeItems[ev.Player] == ItemType.SCP268)
-            {
-                Timing.KillCoroutines(activeCoroutines[ev.Player]);
-                activeCoroutines.Remove(ev.Player);
-                activeItems.Remove(ev.Player);
-
-                if (active268Hints.ContainsKey(ev.Player))
-                {
-                    ev.Player.GetPlayerDisplay().RemoveHint(active268Hints[ev.Player]);
-                    active268Hints.Remove(ev.Player);
-                }
-            }
+            if (ev.Projectile.Base is Scp2176Projectile && ev.Player != null)
+                StartOrRefreshTimer(ev.Player, 13f, active2176Timers, active2176Hints, "<color=#1CAA21>{0}</color>", UsefulHints.Instance.Config.Scp2176TimeLeftMessage, 900, 30);
         }
-        private static void OnSCP268ChangedItem(ChangedItemEventArgs ev)
-        {
-            if (activeCoroutines.ContainsKey(ev.Player) && activeItems.ContainsKey(ev.Player) && activeItems[ev.Player] == ItemType.SCP268)
-            {
-                Timing.KillCoroutines(activeCoroutines[ev.Player]);
-                activeCoroutines.Remove(ev.Player);
-                activeItems.Remove(ev.Player);
 
-                if (active268Hints.ContainsKey(ev.Player))
-                {
-                    ev.Player.GetPlayerDisplay().RemoveHint(active268Hints[ev.Player]);
-                    active268Hints.Remove(ev.Player);
-                }
-            }
+        // Remove Timers on Event
+        private static void OnSCP1576or268ChangeItem(ChangedItemEventArgs ev)
+        {
+            StopTimer(ev.Player, active1576Timers, active1576Hints);
+            StopTimer(ev.Player, active268Timers, active268Hints);
         }
-        private static IEnumerator<float> Scp268Timer(Player player)
+        public static void OnSCP268Interacting(InteractingDoorEventArgs ev)
         {
-            float duration = 15f;
-
-            var SCP268Hint = new DynamicHint()
-            {
-                TargetY = 900,
-                FontSize = 28,
-                SyncSpeed = HintSyncSpeed.UnSync
-            };
-
-            if (!active268Hints.ContainsKey(player))
-            {
-                active268Hints.Add(player, SCP268Hint);
-            }
-
-            while (duration > 0)
-            {
-                SCP268Hint.Text = $"<color=purple>{string.Format(UsefulHints.Instance.Config.Scp268TimeLeftMessage, (int)duration)}</color>";
-                player.GetPlayerDisplay().AddHint(SCP268Hint);
-                yield return Timing.WaitForSeconds(1f);
-                duration -= 1f;
-            }
-
-            player.GetPlayerDisplay().RemoveHint(SCP268Hint);
-            active268Hints.Remove(player);
-            activeCoroutines.Remove(player);
+            StopTimer(ev.Player, active268Timers, active268Hints);
         }
-        // SCP 2176 Handler
-        private static readonly Dictionary<Player, DynamicHint> active2176Hints = new Dictionary<Player, DynamicHint>();
-        private static void OnSCP2176Grenade(ExplodingGrenadeEventArgs ev)
+
+
+        // Template for Starting or Refreshing Timers
+        private static void StartOrRefreshTimer(Player player, float duration, Dictionary<Player, float> timerDict, Dictionary<Player, DynamicHint> hintDict, string colorFormat, string msgFormat, int y, int fontSize)
         {
-            if (ev.Projectile.Base is Scp2176Projectile)
+            float endTime = Time.time + duration;
+            timerDict[player] = endTime;
+
+
+            if (hintDict.TryGetValue(player, out var oldHint))
             {
-                if (ev.Player != null)
+                player.GetPlayerDisplay().RemoveHint(oldHint);
+                hintDict.Remove(player);
+            }
+
+            var hint = new DynamicHint
+            {
+                AutoText = arg =>
                 {
-                    if (activeCoroutines.ContainsKey(ev.Player))
+                    float tLeft = 0f;
+                    if (timerDict.TryGetValue(player, out var hintEndTime))
                     {
-                        Timing.KillCoroutines(activeCoroutines[ev.Player]);
-                        activeCoroutines.Remove(ev.Player);
+                        tLeft = endTime - Time.time;
+                        if (tLeft < 0f)
+                            tLeft = 0f;
                     }
 
-                    if (active2176Hints.ContainsKey(ev.Player))
-                    {
-                        ev.Player.GetPlayerDisplay().RemoveHint(active2176Hints[ev.Player]);
-                        active2176Hints.Remove(ev.Player);
-                    }
+                    if (tLeft <= 0f)
+                        return string.Empty;
 
-                    var coroutine = Timing.RunCoroutine(Scp2176Timer(ev.Player));
-                    activeCoroutines.Add(ev.Player, coroutine);
-                }
-            }
-        }
-        private static IEnumerator<float> Scp2176Timer(Player player)
-        {
-            float duration = 13f;
-
-            var SCP2176Hint = new DynamicHint()
-            {
-                TargetY = 900,
-                FontSize = 28,
-                SyncSpeed = HintSyncSpeed.UnSync
+                    return string.Format(colorFormat, string.Format(msgFormat, (int)tLeft));
+                },
+                FontSize = fontSize,
+                TargetY = y,
+                SyncSpeed = HintSyncSpeed.Fast
             };
 
-            if (!active2176Hints.ContainsKey(player))
-            {
-                active2176Hints.Add(player, SCP2176Hint);
-            }
-
-            while (duration > 0)
-            {
-                SCP2176Hint.Text = $"<color=#1CAA21>{string.Format(UsefulHints.Instance.Config.Scp2176TimeLeftMessage, (int)duration)}</color>";
-                player.GetPlayerDisplay().AddHint(SCP2176Hint);
-                yield return Timing.WaitForSeconds(1f);
-                duration -= 1f;
-            }
-
-            player.GetPlayerDisplay().RemoveHint(SCP2176Hint);
-            active2176Hints.Remove(player);
-            activeCoroutines.Remove(player);
+            hintDict[player] = hint;
+            player.GetPlayerDisplay().AddHint(hint);
         }
-        // Reset Coroutines
+
+        private static void StopTimer(Player player, Dictionary<Player, float> timerDict, Dictionary<Player, DynamicHint> hintDict)
+        {
+            timerDict.Remove(player);
+            if (hintDict.TryGetValue(player, out var hint))
+            {
+                player.GetPlayerDisplay().RemoveHint(hint);
+                hintDict.Remove(player);
+            }
+        }
+
+        // Reset Hints
         private static void OnWaitingForPlayers()
         {
-            activeCoroutines.Clear();
+            foreach (var kvp in active1576Hints)
+            {
+                kvp.Key.GetPlayerDisplay().RemoveHint(kvp.Value);
+            }
+            active1576Hints.Clear();
+
+            foreach (var kvp in active268Hints)
+            {
+                kvp.Key.GetPlayerDisplay().RemoveHint(kvp.Value);
+            }
+            active268Hints.Clear();
+
+            foreach (var kvp in active2176Hints)
+            {
+                kvp.Key.GetPlayerDisplay().RemoveHint(kvp.Value);
+            }
+            active2176Hints.Clear();
         }
         // Jailbird Handler
         private static void OnPickingUpJailbird(PickingUpItemEventArgs ev)
@@ -414,9 +305,7 @@ namespace UsefulHints.EventHandlers.Items
                         PlayerDisplay playerDisplay = PlayerDisplay.Get(ev.Player);
                         playerDisplay.AddHint(hint);
 
-                        Timing.CallDelayed(2f, () => {
-                            playerDisplay.RemoveHint(hint);
-                        });
+                        Timing.CallDelayed(2f, () => { playerDisplay.RemoveHint(hint); });
                     }
                     else
                     {
@@ -430,9 +319,7 @@ namespace UsefulHints.EventHandlers.Items
                         PlayerDisplay playerDisplay = PlayerDisplay.Get(ev.Player);
                         playerDisplay.AddHint(hint);
 
-                        Timing.CallDelayed(2f, () => {
-                            playerDisplay.RemoveHint(hint);
-                        });
+                        Timing.CallDelayed(2f, () => { playerDisplay.RemoveHint(hint); });
                     }
                 }
             }
