@@ -13,12 +13,6 @@ namespace UsefulHints
         public bool Translations { get; set; } = true;
         [Description("Available Languages: pl, en, de, fr, cs, sk, es, it, pt, ru, tr, zh")]
         public string Language { get; set; } = "en";
-        public string TranslationsPath { get; set; } = "/home/container/.config/EXILED/Configs/UsefulHints/Translations";
-        [Description("Auto Update:")]
-        public bool AutoUpdate { get; set; } = true;
-        public bool EnableLogging { get; set; } = true;
-        public bool EnableBackup { get; set; } = false;
-        public string PluginPath { get; set; } = "/home/container/.config/EXILED/Plugins/UsefulHints.dll";
         [Description("Hint Settings:")]
         public bool EnableHints { get; set; } = true;
         public string Scp096LookMessage { get; set; } = "You looked at SCP-096!";
@@ -46,6 +40,7 @@ namespace UsefulHints
         [Description("Kill Counter:")]
         public bool EnableKillCounter { get; set; } = true;
         public string KillCountMessage { get; set; } = "{0} kills";
+        public bool CountPocketKills { get; set; } = false;
         [Description("Round Summary:")]
         public bool EnableRoundSummary { get; set; } = true;
         public ushort RoundSummaryMessageDuration { get; set; } = 10;

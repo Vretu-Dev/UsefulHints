@@ -61,7 +61,7 @@ namespace UsefulHints
 
         private static async Task DownloadTranslationsAsync(string language)
         {
-            string pluginDirectory = UsefulHints.Instance.Config.TranslationsPath;
+            string pluginDirectory = Path.Combine(Paths.IndividualTranslations, "UsefulHints");
             string filePath = Path.Combine(pluginDirectory, $"{language}.json");
 
             try

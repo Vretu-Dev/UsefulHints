@@ -18,6 +18,9 @@ namespace UsefulHints.EventHandlers.Entities
         }
         private static void OnScp096AddingTarget(AddingTargetEventArgs ev)
         {
+            if (!ev.IsAllowed || ev.Player == null || ev.Target == null)
+                return;
+
             var hint = new DynamicHint
             {
                 Text = UsefulHints.Instance.Config.Scp096LookMessage,
