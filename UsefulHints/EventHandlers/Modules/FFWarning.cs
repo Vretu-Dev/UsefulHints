@@ -54,8 +54,9 @@ namespace UsefulHints.EventHandlers.Modules
                     {
                         if (UsefulHints.Instance.Config.ClassDAreTeammates)
                         {
-                            playerDisplay.AddHint(AttackerHint);
-                            Timing.CallDelayed(2f, () => { playerDisplay.RemoveHint(AttackerHint); });
+                            
+                            attackerDisplay.AddHint(AttackerHint);
+                            Timing.CallDelayed(2f, () => { attackerDisplay.RemoveHint(AttackerHint); });
 
                             playerDisplay.AddHint(PlayerHint);
                             Timing.CallDelayed(2f, () => { playerDisplay.RemoveHint(PlayerHint); });
@@ -63,8 +64,8 @@ namespace UsefulHints.EventHandlers.Modules
                     }
                     else
                     {
-                        playerDisplay.AddHint(AttackerHint);
-                        Timing.CallDelayed(2f, () => { playerDisplay.RemoveHint(AttackerHint); });
+                        attackerDisplay.AddHint(AttackerHint);
+                        Timing.CallDelayed(2f, () => { attackerDisplay.RemoveHint(AttackerHint); });
 
                         playerDisplay.AddHint(PlayerHint);
                         Timing.CallDelayed(2f, () => { playerDisplay.RemoveHint(PlayerHint); });
@@ -72,7 +73,7 @@ namespace UsefulHints.EventHandlers.Modules
                 }
                 if (UsefulHints.Instance.Config.EnableCuffedWarning && ev.Player.IsCuffed && ev.Attacker != ev.Player)
                 {
-                    playerDisplay.AddHint(CuffedAttackerHint);
+                    attackerDisplay.AddHint(CuffedAttackerHint);
                     Timing.CallDelayed(2f, () => { playerDisplay.RemoveHint(CuffedAttackerHint); });
 
                     playerDisplay.AddHint(CuffedPlayerHint);
