@@ -70,15 +70,15 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="ExMod.Exiled">
-      <Version>9.6.0</Version>
+      <Version>9.6.1</Version>
     </PackageReference>
     <PackageReference Include="Fody">
-      <Version>6.9.1</Version>
+      <Version>6.9.2</Version>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="Lib.Harmony">
-      <Version>2.3.3</Version>
+      <Version>2.3.6</Version>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
       <Version>13.0.3</Version>
