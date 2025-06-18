@@ -15,12 +15,12 @@ namespace UsefulHints.EventHandlers.Commands
         {
             if (!sender.CheckPermission("uh.changelanguage"))
             {
-                response = "Missing permission uh.changelanguage";
+                response = "You don't have permission: uh.changelanguage";
                 return false;
             }
             if (arguments.Count != 1)
             {
-                response = "Usage: uhl <language>";
+                response = "Usage: uhl [language]";
                 return false;
             }
 

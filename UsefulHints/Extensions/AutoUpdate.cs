@@ -8,6 +8,7 @@ namespace UsefulHints.Extensions
 {
     public static class UpdateChecker
     {
+        private static Config Config => UsefulHints.Instance.Config;
         private static readonly string RepositoryUrl = "https://api.github.com/repos/Vretu-Dev/UsefulHints/releases/latest";
         private static readonly string PluginPath = Path.Combine(Paths.Plugins, "UsefulHints.dll");
         private static readonly string CurrentVersion = UsefulHints.Instance.Version.ToString();
@@ -32,21 +33,21 @@ namespace UsefulHints.Extensions
         }
         private static void LogInfo(string message)
         {
-            if (UsefulHints.Instance.Config.EnableLogging)
+            if (Config.EnableLogging)
             {
                 Log.Info(message);
             }
         }
         private static void LogWarn(string message)
         {
-            if (UsefulHints.Instance.Config.EnableLogging)
+            if (Config.EnableLogging)
             {
                 Log.Warn(message);
             }
         }
         private static void LogError(string message)
         {
-            if (UsefulHints.Instance.Config.EnableLogging)
+            if (Config.EnableLogging)
             {
                 Log.Error(message);
             }
@@ -162,7 +163,7 @@ namespace UsefulHints.Extensions
         }
         private static void BackupAndWritePlugin(byte[] pluginData)
         {
-            if (UsefulHints.Instance.Config.EnableBackup)
+            if (Config.EnableBackup)
             {
                 string backupPath = PluginPath + ".backup";
                 if (File.Exists(PluginPath))

@@ -7,23 +7,29 @@ namespace UsefulHints.EventHandlers.Modules
 {
     public static class Teammates
     {
+        private static Config Config => UsefulHints.Instance.Config;
+
         public static void RegisterEvents()
         {
             Exiled.Events.Handlers.Server.RoundStarted += OnRoundStartedTeammates;
         }
+
         public static void UnregisterEvents()
         {
             Exiled.Events.Handlers.Server.RoundStarted -= OnRoundStartedTeammates;
         }
+
         private static IEnumerator<float> DelayedDisplayTeammates()
         {
-            yield return Timing.WaitForSeconds(UsefulHints.Instance.Config.TeammateHintDelay);
+            yield return Timing.WaitForSeconds(Config.TeammateHintDelay);
             DisplayTeammates();
         }
+
         private static void OnRoundStartedTeammates()
         {
             Timing.RunCoroutine(DelayedDisplayTeammates());
         }
+
         private static void DisplayTeammates()
         {
             foreach (var player in Player.List)
@@ -35,11 +41,11 @@ namespace UsefulHints.EventHandlers.Modules
 
                 if (teammates.Count > 0)
                 {
-                    player.ShowHint(string.Format(UsefulHints.Instance.Config.TeammateHintMessage, string.Join("\n", teammates)), UsefulHints.Instance.Config.TeammateMessageDuration);
+                    player.ShowHint(string.Format(Config.TeammateHintMessage, string.Join("\n", teammates)), Config.TeammateMessageDuration);
                 }
                 else
                 {
-                    player.ShowHint(string.Format(UsefulHints.Instance.Config.AloneHintMessage), UsefulHints.Instance.Config.AloneMessageDuration);
+                    player.ShowHint(string.Format(Config.AloneHintMessage), Config.AloneMessageDuration);
                 }
             }
         }

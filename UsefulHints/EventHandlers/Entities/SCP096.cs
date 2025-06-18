@@ -1,10 +1,12 @@
 ﻿using Exiled.API.Features.Core.UserSettings;
 using Exiled.Events.EventArgs.Scp096;
+using UsefulHints.Extensions;
 
 namespace UsefulHints.EventHandlers.Entities
 {
     public static class SCP096
     {
+        private static Config Config => UsefulHints.Instance.Config;
         public static void RegisterEvents()
         {
             Exiled.Events.Handlers.Scp096.AddingTarget += OnScp096AddingTarget;
@@ -15,13 +17,10 @@ namespace UsefulHints.EventHandlers.Entities
         }
         private static void OnScp096AddingTarget(AddingTargetEventArgs ev)
         {
-            if (!ev.IsAllowed || ev.Player == null || ev.Target == null)
+            if (!ev.IsAllowed || ev.Player == null || ev.Target == null || !ServerSettings.ShouldShowHints(ev.Target))
                 return;
 
-            if (ev.Target.SessionVariables.TryGetValue("ShowHints", out var showHints) && !(bool)showHints)
-                return;
-
-            ev.Target.ShowHint(UsefulHints.Instance.Config.Scp096LookMessage, 5);
+            ev.Target.ShowHint(Config.Scp096LookMessage, 5);
         }
     }
 }

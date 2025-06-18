@@ -11,6 +11,7 @@ namespace UsefulHints.EventHandlers.Modules
 {
     public static class RoundSummary
     {
+        private static Config Config => UsefulHints.Instance.Config;
         private static Dictionary<Player, int> scpKills = new Dictionary<Player, int>();
         private static Dictionary<Player, int> humanKills = new Dictionary<Player, int>();
         private static Dictionary<Player, float> humanDamage = new Dictionary<Player, float>();
@@ -30,6 +31,7 @@ namespace UsefulHints.EventHandlers.Modules
             Exiled.Events.Handlers.Server.RestartingRound += OnRestartingRound;
             Exiled.Events.Handlers.Server.RoundStarted += OnRoundStarted;
         }
+
         public static void UnregisterEvents()
         {
             Exiled.Events.Handlers.Player.Died -= OnPlayerDied;
@@ -40,10 +42,12 @@ namespace UsefulHints.EventHandlers.Modules
             Exiled.Events.Handlers.Server.RestartingRound -= OnRestartingRound;
             Exiled.Events.Handlers.Server.RoundStarted -= OnRoundStarted;
         }
+
         private static void OnRoundStarted()
         {
             roundStartTime = DateTime.Now;
         }
+
         // Handler for player hurting another player
         private static void OnPlayerHurting(HurtingEventArgs ev)
         {
@@ -58,6 +62,7 @@ namespace UsefulHints.EventHandlers.Modules
                 humanDamage[attacker] += (int)Math.Round(ev.Amount);
             }
         }
+
         // Handler for "When Player dying" (FirstScpKiller)
         private static void OnPlayerDying(DyingEventArgs ev)
         {
@@ -72,6 +77,7 @@ namespace UsefulHints.EventHandlers.Modules
                 }
             }
         }
+
         // Handler for "When Player died" (SCP and Human kill count)
         private static void OnPlayerDied(DiedEventArgs ev)
         {
@@ -95,6 +101,7 @@ namespace UsefulHints.EventHandlers.Modules
                 }
             }
         }
+
         // Handler for Escaped Player
         private static void OnPlayerEscaping(EscapingEventArgs ev)
         {
@@ -104,6 +111,7 @@ namespace UsefulHints.EventHandlers.Modules
                 escapeTime = DateTime.Now - roundStartTime;
             }
         }
+
         // Handler for End Round messages
         private static void OnRoundEnded(RoundEndedEventArgs ev)
         {
@@ -114,19 +122,20 @@ namespace UsefulHints.EventHandlers.Modules
             Player topDamageDealer = GetTopDamageDealer(humanDamage);
 
             if (humanKiller != null)
-                text += string.Format(UsefulHints.Instance.Config.HumanKillMessage, humanKiller.Nickname, humanKills[humanKiller]) + "\n";
+                text += string.Format(Config.HumanKillMessage, humanKiller.Nickname, humanKills[humanKiller]) + "\n";
             if (scpKiller != null)
-                text += string.Format(UsefulHints.Instance.Config.ScpKillMessage, scpKiller.Nickname, scpKills[scpKiller]) + "\n";
+                text += string.Format(Config.ScpKillMessage, scpKiller.Nickname, scpKills[scpKiller]) + "\n";
             if (topDamageDealer != null)
-                text += string.Format(UsefulHints.Instance.Config.TopDamageMessage, topDamageDealer.Nickname, humanDamage[topDamageDealer]) + "\n";
+                text += string.Format(Config.TopDamageMessage, topDamageDealer.Nickname, humanDamage[topDamageDealer]) + "\n";
             if (firstEscaper != null)
-                text += string.Format(UsefulHints.Instance.Config.EscaperMessage, firstEscaper.Nickname, escapeTime.Minutes.ToString("D2"), escapeTime.Seconds.ToString("D2")) + "\n";
+                text += string.Format(Config.EscaperMessage, firstEscaper.Nickname, escapeTime.Minutes.ToString("D2"), escapeTime.Seconds.ToString("D2")) + "\n";
             if (firstScpKiller != null)
-                text += string.Format(UsefulHints.Instance.Config.FirstScpKillerMessage, firstScpKiller.Nickname) + "\n";
+                text += string.Format(Config.FirstScpKillerMessage, firstScpKiller.Nickname) + "\n";
             if (!string.IsNullOrEmpty(text))
-                Map.Broadcast(UsefulHints.Instance.Config.RoundSummaryMessageDuration, text, BroadcastFlags.Normal, true);
+                Map.Broadcast(Config.RoundSummaryMessageDuration, text, BroadcastFlags.Normal, true);
         }
-        // Reset Handlers
+
+        // Clear Dictionaries
         private static void OnRestartingRound()
         {
             scpKills.Clear();
@@ -135,6 +144,7 @@ namespace UsefulHints.EventHandlers.Modules
             firstEscaper = null;
             firstScpKiller = null;
         }
+
         // Helper to find player with most kills
         private static Player GetTopKiller(Dictionary<Player, int> kills)
         {
@@ -151,6 +161,7 @@ namespace UsefulHints.EventHandlers.Modules
             }
             return topKiller;
         }
+
         // Helper to find player with most damage
         private static Player GetTopDamageDealer(Dictionary<Player, float> damage)
         {
