@@ -13,8 +13,12 @@ namespace UsefulHints.EventHandlers.Items
         {
             LabApi.Events.Handlers.PlayerEvents.PickingUpItem -= OnPickingUpWarning;
         }
+
         private static void OnPickingUpWarning(PlayerPickingUpItemEventArgs ev)
         {
+            if (ev.Player == null)
+                return;
+
             if (ev.Pickup.Type == ItemType.SCP207 || ev.Pickup.Type == ItemType.AntiSCP207 || ev.Pickup.Type == ItemType.SCP1853)
             {
                 if (ev.Player.HasEffect<Scp207>() && ev.Pickup.Type != ItemType.SCP207)

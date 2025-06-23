@@ -51,7 +51,7 @@ namespace UsefulHints.EventHandlers.Modules
             Player attacker = ev.Attacker;
             Player victim = ev.Player;
 
-            if (attacker != null && attacker != victim && attacker.RoleBase.Team != Team.SCPs && victim.RoleBase.Team == Team.SCPs)
+            if (attacker != null && attacker != victim && attacker.Team != Team.SCPs && victim.Team == Team.SCPs)
             {
                 if (ev.DamageHandler is StandardDamageHandler standardDamageHandler)
                 {
@@ -70,7 +70,7 @@ namespace UsefulHints.EventHandlers.Modules
             Player attacker = ev.Attacker;
             Player victim = ev.Player;
 
-            if (victim.RoleBase.Team == Team.SCPs && victim.RoleBase.RoleTypeId != RoleTypeId.Scp0492)
+            if (victim.Team == Team.SCPs && victim.Role != RoleTypeId.Scp0492)
             {
                 if (firstScpKiller == null)
                 {
@@ -85,7 +85,7 @@ namespace UsefulHints.EventHandlers.Modules
 
             if (attacker != null && attacker != ev.Player)
             {
-                if (attacker.RoleBase.Team == Team.SCPs)
+                if (attacker.Team == Team.SCPs)
                 {
                     if (!scpKills.ContainsKey(attacker))
                         scpKills[attacker] = 0;

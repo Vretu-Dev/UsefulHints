@@ -29,7 +29,7 @@ namespace UsefulHints.EventHandlers.Modules
             foreach (var player in Player.List)
             {
                 List<string> teammates = Player.List
-                    .Where(p => p.RoleBase.Team == player.RoleBase.Team && p != player)
+                    .Where(p => p.Team == player.Team && p != player)
                     .Select(p => p.Nickname)
                     .ToList();
                 if (!player.IsHost)

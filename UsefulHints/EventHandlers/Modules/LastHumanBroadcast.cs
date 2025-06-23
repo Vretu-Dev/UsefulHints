@@ -19,13 +19,17 @@ namespace UsefulHints.EventHandlers.Modules
         }
         private static void OnPlayerDied(PlayerDeathEventArgs ev)
         {
-            var aliveHumans = Player.List.Where(p => p.IsAlive && IsHuman(p));
+            if (ev.Player == null || ev.Attacker == null)
+                return;
 
-            if (aliveHumans.Count() > 1)
-            {
+            var aliveHumans = Player.List.Where(p => p.IsAlive && p.IsHuman && (!UsefulHints.Instance.Config.IgnoreTutorialRole || p.Role != RoleTypeId.Tutorial));
+
+            int count = aliveHumans.Count();
+
+            if (count > 1)
                 hasBroadcastBeenSent = false;
-            }
-            if (aliveHumans.Count() == 1 && !hasBroadcastBeenSent)
+
+            if (count == 1 && !hasBroadcastBeenSent)
             {
                 Player lastAlive = aliveHumans.First();
 
@@ -36,20 +40,17 @@ namespace UsefulHints.EventHandlers.Modules
 
                 string message = string.Format(UsefulHints.Instance.Config.BroadcastForScp, lastAlive.Nickname, teamName, zone);
 
-                foreach (var scp in Player.List.Where(p => p.RoleBase.Team == Team.SCPs))
+                foreach (var scp in Player.List.Where(p => p.Team == Team.SCPs))
                 {
                     scp.SendBroadcast(message, 10);
                 }
+
                 hasBroadcastBeenSent = true;
             }
         }
-        private static bool IsHuman(Player player)
-        {
-            return (player.RoleBase.Team == Team.FoundationForces || player.RoleBase.Team == Team.ClassD || player.RoleBase.Team == Team.Scientists || player.RoleBase.Team == Team.ChaosInsurgency) && (!UsefulHints.Instance.Config.IgnoreTutorialRole || player.RoleBase.RoleTypeId != RoleTypeId.Tutorial);
-        }
         private static string GetZoneName(Player player)
         {
-            FacilityZone zone = player.Room.Zone;
+            FacilityZone zone = player.Zone;
 
             switch (zone)
             {
@@ -67,7 +68,7 @@ namespace UsefulHints.EventHandlers.Modules
         }
         private static string GetRoleTeamName(Player player)
         {
-            Team team = player.RoleBase.Team;
+            Team team = player.Team;
 
             switch (team)
             {

@@ -63,6 +63,9 @@ namespace UsefulHints.EventHandlers.Items
         // SCP 207 Handler
         private static void OnPickingUpSCP207(PlayerPickingUpItemEventArgs ev)
         {
+            if (ev.Player == null)
+                return;
+
             if (ev.Player.HasEffect<Scp207>() && ev.Pickup.Type == ItemType.SCP207)
                 ev.Player.SendHint($"<color=#A60C0E>{new string('\n', 10)}{string.Format(UsefulHints.Instance.Config.Scp207HintMessage, ev.Player.GetEffect<Scp207>().Intensity)}</color>", 4);
 
@@ -73,7 +76,7 @@ namespace UsefulHints.EventHandlers.Items
         {
             if (UsefulHints.Instance.Config.ShowHintOnEquipItem)
             {
-                if (ev.NewItem == null)
+                if (ev.NewItem == null || ev.Player == null)
                     return;
 
                 if (ev.Player.HasEffect<Scp207>() && ev.NewItem.Type == ItemType.SCP207)
@@ -179,17 +182,17 @@ namespace UsefulHints.EventHandlers.Items
         {
             if (ev.TimedGrenade.Base is Scp2176Projectile)
             {
-                if (ev.Player != null)
-                {
-                    if (activeCoroutines.ContainsKey(ev.Player))
-                    {
-                        Timing.KillCoroutines(activeCoroutines[ev.Player]);
-                        activeCoroutines.Remove(ev.Player);
-                    }
+                if (ev.Player == null)
+                    return;
 
-                    var coroutine = Timing.RunCoroutine(Scp2176Timer(ev.Player));
-                    activeCoroutines.Add(ev.Player, coroutine);
+                if (activeCoroutines.ContainsKey(ev.Player))
+                {
+                    Timing.KillCoroutines(activeCoroutines[ev.Player]);
+                    activeCoroutines.Remove(ev.Player);
                 }
+
+                var coroutine = Timing.RunCoroutine(Scp2176Timer(ev.Player));
+                activeCoroutines.Add(ev.Player, coroutine);
             }
         }
         private static IEnumerator<float> Scp2176Timer(Player player)

@@ -15,29 +15,26 @@ namespace UsefulHints.EventHandlers.Modules
         }
         private static void OnHurting(PlayerHurtingEventArgs ev)
         {
-            if (ev.Attacker != null && ev.Player != null && ev.Attacker.RoleBase.Team != Team.SCPs && ev.Player.RoleBase.Team != Team.SCPs)
+            if (ev.Attacker == null || ev.Player == null || ev.Attacker.Team == Team.SCPs || ev.Player.Team == Team.SCPs || ev.Attacker == ev.Player || ev.Player.Nickname == null || ev.Attacker.Nickname == null)
+                return;
+
+            if (ev.Attacker.Team == ev.Player.Team)
             {
-                if (ev.Attacker.Team == ev.Player.Team && ev.Attacker != ev.Player)
+                if (ev.Attacker.Team == Team.ClassD && ev.Player.Team == Team.ClassD && UsefulHints.Instance.Config.ClassDAreTeammates)
                 {
-                    if (ev.Attacker.RoleBase.Team == Team.ClassD && ev.Player.RoleBase.Team == Team.ClassD)
-                    {
-                        if (UsefulHints.Instance.Config.ClassDAreTeammates)
-                        {
-                            ev.Attacker.SendHint(string.Format(UsefulHints.Instance.Config.FriendlyFireWarning), 1);
-                            ev.Player.SendHint(string.Format(UsefulHints.Instance.Config.DamageTakenWarning, ev.Attacker.Nickname), 2);
-                        }
-                    }
-                    else
-                    {
-                        ev.Attacker.SendHint(string.Format(UsefulHints.Instance.Config.FriendlyFireWarning), 1);
-                        ev.Player.SendHint(string.Format(UsefulHints.Instance.Config.DamageTakenWarning, ev.Attacker.Nickname), 2);
-                    }
+                    ev.Attacker.SendHint(string.Format(UsefulHints.Instance.Config.FriendlyFireWarning), 1);
+                    ev.Player.SendHint(string.Format(UsefulHints.Instance.Config.DamageTakenWarning, ev.Attacker.Nickname), 2);
                 }
-                if (UsefulHints.Instance.Config.EnableCuffedWarning && ev.Player.IsDisarmed && ev.Attacker != ev.Player)
+                else
                 {
-                    ev.Attacker.SendHint(string.Format(UsefulHints.Instance.Config.CuffedAttackerWarning), 2);
-                    ev.Player.SendHint(string.Format(UsefulHints.Instance.Config.CuffedPlayerWarning, ev.Attacker.Nickname), 2);
+                    ev.Attacker.SendHint(string.Format(UsefulHints.Instance.Config.FriendlyFireWarning), 1);
+                    ev.Player.SendHint(string.Format(UsefulHints.Instance.Config.DamageTakenWarning, ev.Attacker.Nickname), 2);
                 }
+            }
+            if (UsefulHints.Instance.Config.EnableCuffedWarning && ev.Player.IsDisarmed)
+            {
+                ev.Attacker.SendHint(string.Format(UsefulHints.Instance.Config.CuffedAttackerWarning), 2);
+                ev.Player.SendHint(string.Format(UsefulHints.Instance.Config.CuffedPlayerWarning, ev.Attacker.Nickname), 2);
             }
         }
     }
