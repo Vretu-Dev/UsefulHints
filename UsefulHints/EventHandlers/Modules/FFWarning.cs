@@ -1,13 +1,14 @@
-﻿using HintServiceMeow.Core.Utilities;
-using HintServiceMeow.Core.Models.Hints;
-using Exiled.Events.EventArgs.Player;
+﻿using Exiled.Events.EventArgs.Player;
+using UsefulHints.Extensions;
+using HintServiceMeow.Core.Extension;
 using PlayerRoles;
-using MEC;
 
 namespace UsefulHints.EventHandlers.Modules
 {
     public static class FFWarning
     {
+        private static Config Config => UsefulHints.Instance.Config;
+
         public static void RegisterEvents()
         {
             Exiled.Events.Handlers.Player.Hurting += OnHurting;
@@ -18,67 +19,45 @@ namespace UsefulHints.EventHandlers.Modules
         }
         private static void OnHurting(HurtingEventArgs ev)
         {
-            if (ev.Attacker != null && ev.Player != null && ev.Attacker.Role != null && ev.Player.Role != null && ev.Attacker.Role.Team != Team.SCPs && ev.Player.Role.Team != Team.SCPs)
+            if (ev.Attacker == null || ev.Player == null || ev.Attacker.Role == null || ev.Player.Role == null || ev.Attacker.Role.Team == Team.SCPs || ev.Player.Role.Team == Team.SCPs || ev.Attacker == ev.Player)
+                return;
+
+            if (!ServerSettings.ShouldShowFFWarning(ev.Player) || !ServerSettings.ShouldShowFFWarning(ev.Attacker))
+                return;
+
+            if (ev.Attacker.Role.Side == ev.Player.Role.Side)
             {
-                PlayerDisplay playerDisplay = PlayerDisplay.Get(ev.Player);
-                PlayerDisplay attackerDisplay = PlayerDisplay.Get(ev.Attacker);
+                var attackerHint = HintService.FriendlyFireWarning(Config.FriendlyFireWarning);
+                var playerHint = HintService.DamageTakenWarning(Config.DamageTakenWarning, ev.Attacker.Nickname);
 
-                var AttackerHint = new Hint
+                if (ev.Attacker.Role.Team == Team.ClassD && ev.Player.Role.Team == Team.ClassD && Config.ClassDAreTeammates)
                 {
-                    Text = string.Format(UsefulHints.Instance.Config.FriendlyFireWarning),
-                    YCoordinate = 700,
-                    FontSize = 30,
-                };
-                var PlayerHint = new Hint
-                {
-                    Text = string.Format(UsefulHints.Instance.Config.DamageTakenWarning, ev.Attacker.Nickname),
-                    YCoordinate = 700,
-                    FontSize = 30,
-                };
-                var CuffedAttackerHint = new Hint
-                {
-                    Text = string.Format(UsefulHints.Instance.Config.CuffedAttackerWarning),
-                    YCoordinate = 700,
-                    FontSize = 30,
-                };
-                var CuffedPlayerHint = new Hint
-                {
-                    Text = string.Format(UsefulHints.Instance.Config.CuffedPlayerWarning, ev.Attacker.Nickname),
-                    YCoordinate = 700,
-                    FontSize = 30,
-                };
+                    ev.Player.Display().AddHint(playerHint);
+                    ev.Player.Display().RemoveAfter(playerHint, 2f);
 
-                if (ev.Attacker.Role.Side == ev.Player.Role.Side && ev.Attacker != ev.Player)
-                {
-                    if (ev.Attacker.Role.Team == Team.ClassD && ev.Player.Role.Team == Team.ClassD)
-                    {
-                        if (UsefulHints.Instance.Config.ClassDAreTeammates)
-                        {
-                            
-                            attackerDisplay.AddHint(AttackerHint);
-                            Timing.CallDelayed(2f, () => { attackerDisplay.RemoveHint(AttackerHint); });
+                    ev.Attacker.Display().AddHint(attackerHint);
+                    ev.Attacker.Display().RemoveAfter(attackerHint, 2f);
 
-                            playerDisplay.AddHint(PlayerHint);
-                            Timing.CallDelayed(2f, () => { playerDisplay.RemoveHint(PlayerHint); });
-                        }
-                    }
-                    else
-                    {
-                        attackerDisplay.AddHint(AttackerHint);
-                        Timing.CallDelayed(2f, () => { attackerDisplay.RemoveHint(AttackerHint); });
-
-                        playerDisplay.AddHint(PlayerHint);
-                        Timing.CallDelayed(2f, () => { playerDisplay.RemoveHint(PlayerHint); });
-                    }
                 }
-                if (UsefulHints.Instance.Config.EnableCuffedWarning && ev.Player.IsCuffed && ev.Attacker != ev.Player)
+                else
                 {
-                    attackerDisplay.AddHint(CuffedAttackerHint);
-                    Timing.CallDelayed(2f, () => { playerDisplay.RemoveHint(CuffedAttackerHint); });
+                    ev.Player.Display().AddHint(playerHint);
+                    ev.Player.Display().RemoveAfter(playerHint, 2f);
 
-                    playerDisplay.AddHint(CuffedPlayerHint);
-                    Timing.CallDelayed(2f, () => { playerDisplay.RemoveHint(CuffedPlayerHint); });
+                    ev.Attacker.Display().AddHint(attackerHint);
+                    ev.Attacker.Display().RemoveAfter(attackerHint, 2f);
                 }
+            }
+            if (Config.EnableCuffedWarning && ev.Player.IsCuffed)
+            {
+                var attackerHint = HintService.FriendlyFireWarning(Config.FriendlyFireWarning);
+                var playerHint = HintService.DamageTakenWarning(Config.DamageTakenWarning, ev.Attacker.Nickname);
+
+                ev.Player.Display().AddHint(playerHint);
+                ev.Player.Display().RemoveAfter(playerHint, 2f);
+
+                ev.Attacker.Display().AddHint(attackerHint);
+                ev.Attacker.Display().RemoveAfter(attackerHint, 2f);
             }
         }
     }

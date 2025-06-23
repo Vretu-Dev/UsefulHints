@@ -1,15 +1,16 @@
 ﻿using System.Linq;
 using System.Collections.Generic;
 using Player = Exiled.API.Features.Player;
+using UsefulHints.Extensions;
+using HintServiceMeow.Core.Extension;
 using MEC;
-using HintServiceMeow.Core.Utilities;
-using HintServiceMeow.Core.Models.Hints;
-using HintServiceMeow.Core.Enum;
 
 namespace UsefulHints.EventHandlers.Modules
 {
     public static class Teammates
     {
+        private static Config Config => UsefulHints.Instance.Config;
+
         public static void RegisterEvents()
         {
             Exiled.Events.Handlers.Server.RoundStarted += OnRoundStartedTeammates;
@@ -20,7 +21,7 @@ namespace UsefulHints.EventHandlers.Modules
         }
         private static IEnumerator<float> DelayedDisplayTeammates()
         {
-            yield return Timing.WaitForSeconds(UsefulHints.Instance.Config.TeammateHintDelay);
+            yield return Timing.WaitForSeconds(Config.TeammateHintDelay);
             DisplayTeammates();
         }
         private static void OnRoundStartedTeammates()
@@ -36,32 +37,17 @@ namespace UsefulHints.EventHandlers.Modules
                     .Select(p => p.Nickname)
                     .ToList();
 
-                PlayerDisplay playerDisplay = PlayerDisplay.Get(player);
-
-                var TeammatesHint = new Hint
-                {
-                    Text = string.Format(UsefulHints.Instance.Config.TeammateHintMessage, string.Join("\n", teammates)),
-                    FontSize = 28,
-                    YCoordinate = 600,
-                    Alignment = HintAlignment.Left
-                };
-                var AloneHint = new Hint
-                {
-                    Text = string.Format(UsefulHints.Instance.Config.AloneHintMessage),
-                    FontSize = 30,
-                    YCoordinate = 600,
-                    Alignment = HintAlignment.Left
-                };
-
                 if (teammates.Count > 0)
                 {
-                    playerDisplay.AddHint(TeammatesHint);
-                    Timing.CallDelayed(UsefulHints.Instance.Config.TeammateMessageDuration, () => { playerDisplay.RemoveHint(TeammatesHint); });
+                    var teammatesHint = HintService.TeammatesHint(teammates, Config.TeammateHintMessage);
+                    player.Display().AddHint(teammatesHint);
+                    player.Display().RemoveAfter(teammatesHint, Config.TeammateMessageDuration);
                 }
                 else
                 {
-                    playerDisplay.AddHint(AloneHint);
-                    Timing.CallDelayed(UsefulHints.Instance.Config.TeammateMessageDuration, () => { playerDisplay.RemoveHint(AloneHint); });
+                    var aloneHint = HintService.AloneHint(Config.AloneHintMessage);
+                    player.Display().AddHint(aloneHint);
+                    player.Display().RemoveAfter(aloneHint, Config.TeammateMessageDuration);
                 }
             }
         }

@@ -7,11 +7,14 @@ using MEC;
 using System;
 using Exiled.API.Enums;
 using PlayerRoles;
+using UsefulHints.Extensions;
+using HintServiceMeow.Core.Extension;
 
 namespace UsefulHints.EventHandlers.Modules
 {
     public static class KillCounter
     {
+        private static Config Config => UsefulHints.Instance.Config;
         private static readonly Dictionary<Player, int> playerKills = new Dictionary<Player, int>();
         public static void RegisterEvents()
         {
@@ -23,7 +26,8 @@ namespace UsefulHints.EventHandlers.Modules
         }
         private static void OnPlayerDied(DiedEventArgs ev)
         {
-            if (ev.DamageHandler.Type == DamageType.PocketDimension && UsefulHints.Instance.Config.CountPocketKills)
+            // Kill Counter for 106 Pocket Dimension kills
+            if (ev.DamageHandler.Type == DamageType.PocketDimension && Config.CountPocketKills)
             {
                 foreach (var player in Player.List)
                 {
@@ -38,19 +42,12 @@ namespace UsefulHints.EventHandlers.Modules
                         {
                             playerKills[killer] = 1;
                         }
-                        if (!killer.IsHost)
-                        {
-                            var KillHint = new DynamicHint
-                            {
-                                Text = string.Format(UsefulHints.Instance.Config.KillCountMessage, playerKills[killer]),
-                                TargetY = 600,
-                                FontSize = 32
-                            };
+                        if (!ServerSettings.ShouldShowKillCount(killer) || ev.Player.IsHost || ev.Attacker.IsHost)
+                            return;
 
-                            PlayerDisplay playerDisplay = PlayerDisplay.Get(ev.Attacker);
-                            playerDisplay.AddHint(KillHint);
-                            Timing.CallDelayed(2f, () => { playerDisplay.RemoveHint(KillHint); });
-                        }
+                        var hint = HintService.KillCountHint(playerKills[killer], Config.KillCountMessage);
+                        ev.Attacker.Display().AddHint(hint);
+                        ev.Attacker.Display().RemoveAfter(hint, 2f);
                     }
                 }
             }
@@ -67,19 +64,12 @@ namespace UsefulHints.EventHandlers.Modules
                 {
                     playerKills[killer] = 1;
                 }
-                if (!killer.IsHost)
-                {
-                    var KillHint = new DynamicHint
-                    {
-                        Text = string.Format(UsefulHints.Instance.Config.KillCountMessage, playerKills[killer]),
-                        TargetY = 600,
-                        FontSize = 32
-                    };
+                if (!ServerSettings.ShouldShowKillCount(killer) || ev.Player.IsHost || ev.Attacker.IsHost)
+                    return;
 
-                    PlayerDisplay playerDisplay = PlayerDisplay.Get(ev.Attacker);
-                    playerDisplay.AddHint(KillHint);
-                    Timing.CallDelayed(2f, () => { playerDisplay.RemoveHint(KillHint); });
-                }
+                var hint = HintService.KillCountHint(playerKills[killer], Config.KillCountMessage);
+                ev.Attacker.Display().AddHint(hint);
+                ev.Attacker.Display().RemoveAfter(hint, 2f);
             }
         }
     }

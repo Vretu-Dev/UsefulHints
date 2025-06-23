@@ -10,18 +10,17 @@ namespace UsefulHints.EventHandlers.Commands
         public string Command => "usefulhints_language";
         public string[] Aliases => new string[] { "uhl" };
         public string Description => "Changes the language of UsefulHints.";
-        private static readonly string[] SupportedLanguages = { "pl", "en", "de", "fr", "cs", "sk", "es", "it", "pt", "ru", "tr", "zh" };
-
+        private static readonly string[] SupportedLanguages = { "pl", "en", "de", "fr", "cs", "sk", "es", "it", "pt", "ru", "tr", "zh", "ko" };
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
             if (!sender.CheckPermission("uh.changelanguage"))
             {
-                response = "Missing permission uh.changelanguage";
+                response = "You don't have permission: uh.changelanguage";
                 return false;
             }
             if (arguments.Count != 1)
             {
-                response = "Usage: uhl <language>";
+                response = "Usage: uhl [language]";
                 return false;
             }
 
@@ -34,7 +33,7 @@ namespace UsefulHints.EventHandlers.Commands
             }
 
             UsefulHints.Instance.Config.Language = newLanguage;
-            _ = TranslationManager.RegisterEvents();
+            _ = Extensions.TranslationManager.RegisterEvents();
 
             response = $"The language has been changed to: {newLanguage}";
             return true;

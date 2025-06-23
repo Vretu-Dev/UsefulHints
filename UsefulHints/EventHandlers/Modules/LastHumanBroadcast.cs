@@ -8,45 +8,52 @@ namespace UsefulHints.EventHandlers.Modules
 {
     public static class LastHumanBroadcast
     {
+        private static Config Config => UsefulHints.Instance.Config;
+        private static Translations Translation => UsefulHints.Instance.Translation;
         private static bool hasBroadcastBeenSent = false;
+
         public static void RegisterEvents()
         {
             Exiled.Events.Handlers.Player.Died += OnPlayerDied;
         }
+
         public static void UnregisterEvents()
         {
             Exiled.Events.Handlers.Player.Died -= OnPlayerDied;
         }
+
         private static void OnPlayerDied(DiedEventArgs ev)
         {
-            var aliveHumans = Player.List.Where(p => p.IsAlive && IsHuman(p));
+            if (ev.Player == null || ev.Attacker == null)
+                return;
 
-            if (aliveHumans.Count() > 1)
-            {
+            var aliveHumans = Player.List.Where(p => p.IsAlive && p.IsHuman && (!Config.IgnoreTutorialRole || p.Role.Type != RoleTypeId.Tutorial));
+
+            int count = aliveHumans.Count();
+
+            if (count > 1)
                 hasBroadcastBeenSent = false;
-            }
-            if (aliveHumans.Count() == 1 && !hasBroadcastBeenSent)
+
+            if (count == 1 && !hasBroadcastBeenSent)
             {
                 Player lastAlive = aliveHumans.First();
 
-                lastAlive.Broadcast(10, UsefulHints.Instance.Config.BroadcastForHuman);
+                lastAlive.Broadcast(10, Config.BroadcastForHuman);
 
                 var zone = GetZoneName(lastAlive);
                 var teamName = GetRoleTeamName(lastAlive);
 
-                string message = string.Format(UsefulHints.Instance.Config.BroadcastForScp, lastAlive.Nickname, teamName, zone);
+                string message = string.Format(Config.BroadcastForScp, lastAlive.Nickname, teamName, zone);
 
                 foreach (var scp in Player.List.Where(p => p.Role.Team == Team.SCPs))
                 {
                     scp.Broadcast(10, message);
                 }
+
                 hasBroadcastBeenSent = true;
             }
         }
-        private static bool IsHuman(Player player)
-        {
-            return (player.Role.Team == Team.FoundationForces || player.Role.Team == Team.ClassD || player.Role.Team == Team.Scientists || player.Role.Team == Team.ChaosInsurgency) && (!UsefulHints.Instance.Config.IgnoreTutorialRole || player.Role.Type != RoleTypeId.Tutorial);
-        }
+
         private static string GetZoneName(Player player)
         {
             ZoneType zone = player.CurrentRoom.Zone;
@@ -54,17 +61,18 @@ namespace UsefulHints.EventHandlers.Modules
             switch (zone)
             {
                 case ZoneType.LightContainment:
-                    return "Light Containment";
+                    return Translation.Lcz;
                 case ZoneType.HeavyContainment:
-                    return "Heavy Containment";
+                    return Translation.Hcz;
                 case ZoneType.Entrance:
-                    return "Entrance Zone";
+                    return Translation.Entrance;
                 case ZoneType.Surface:
-                    return "Surface";
+                    return Translation.Surface;
                 default:
                     return "Unknown Zone";
             }
         }
+
         private static string GetRoleTeamName(Player player)
         {
             Team team = player.Role.Team;
@@ -72,13 +80,13 @@ namespace UsefulHints.EventHandlers.Modules
             switch (team)
             {
                 case Team.FoundationForces:
-                    return "<color=#0096FF>Mobile Task Force</color>";
+                    return Translation.FoundationForces;
                 case Team.ClassD:
-                    return "<color=#FF8E00>Class D</color>";
+                    return Translation.ClassD;
                 case Team.Scientists:
-                    return "<color=#FFFF7C>Scientist</color>";
+                    return Translation.Scientists;
                 case Team.ChaosInsurgency:
-                    return "<color=#15853D>Chaos Insurgency</color>";
+                    return Translation.ChaosInsurgency;
                 default:
                     return "Unknown Team";
             }

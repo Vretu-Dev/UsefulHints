@@ -7,6 +7,7 @@ namespace UsefulHints.EventHandlers.Modules
 {
     public static class Maps
     {
+        private static Config Config => UsefulHints.Instance.Config;
         private static CoroutineHandle broadcastCoroutine;
 
         public static void RegisterEvents()
@@ -38,7 +39,7 @@ namespace UsefulHints.EventHandlers.Modules
             if (Round.IsEnded)
                 yield break;
 
-            string message = UsefulHints.Instance.Config.BroadcastWarningLcz;
+            string message = Config.BroadcastWarningLcz;
 
             foreach (var player in Player.List)
             {
