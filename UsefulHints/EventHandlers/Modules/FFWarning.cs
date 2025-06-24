@@ -15,10 +15,10 @@ namespace UsefulHints.EventHandlers.Modules
         }
         private static void OnHurting(PlayerHurtingEventArgs ev)
         {
-            if (ev.Attacker == null || ev.Player == null || ev.Attacker.Team == Team.SCPs || ev.Player.Team == Team.SCPs || ev.Attacker == ev.Player || ev.Player.Nickname == null || ev.Attacker.Nickname == null)
+            if (ev.Attacker == null || ev.Player == null || ev.Attacker.Team == Team.SCPs || ev.Player.Team == Team.SCPs || ev.Attacker == ev.Player || ev.Player.Nickname == null || ev.Attacker.Nickname == null || !ev.Player.IsAlive || !ev.Attacker.IsAlive)
                 return;
 
-            if (ev.Attacker.Team == ev.Player.Team)
+            if (ev.Attacker.Role.GetFaction() == ev.Player.Role.GetFaction())
             {
                 if (ev.Attacker.Team == Team.ClassD && ev.Player.Team == Team.ClassD && UsefulHints.Instance.Config.ClassDAreTeammates)
                 {
