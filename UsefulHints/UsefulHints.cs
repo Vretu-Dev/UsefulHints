@@ -9,7 +9,7 @@ namespace UsefulHints
         public override string Name => "UsefulHints";
         public override string Description => "Display extra hint like a timers and notifications."; 
         public override string Author => "Vretu";
-        public override Version Version => new Version(1, 3, 1);
+        public override Version Version => new Version(1, 3, 2);
         public override Version RequiredApiVersion { get; } = new Version(LabApiProperties.CompiledVersion);
         public static UsefulHints Instance { get; private set; }
         public override void Enable()
