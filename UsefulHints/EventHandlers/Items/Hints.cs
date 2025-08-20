@@ -10,6 +10,8 @@ using InventorySystem.Items.Jailbird;
 using UsefulHints.Extensions;
 using CustomPlayerEffects;
 using MEC;
+using Events.Scp1576;
+using Events.Scp268Item;
 
 namespace UsefulHints.EventHandlers.Items
 {
@@ -26,6 +28,8 @@ namespace UsefulHints.EventHandlers.Items
             Exiled.Events.Handlers.Player.ChangingItem += OnEquipSCP207;
             Exiled.Events.Handlers.Player.UsedItem += OnSCP1576Used;
             Exiled.Events.Handlers.Player.ChangedItem += OnSCP1576ChangedItem;
+            Scp1576Events.StoppingTransmission += OnSCP1576StoppingTransmission;
+            Scp268Events.UsedScp268 += OnSCP268Using;
             Exiled.Events.Handlers.Player.UsedItem += OnSCP268Used;
             Exiled.Events.Handlers.Player.InteractingDoor += OnSCP268Interacting;
             Exiled.Events.Handlers.Player.ChangedItem += OnSCP268ChangedItem;
@@ -42,6 +46,8 @@ namespace UsefulHints.EventHandlers.Items
             Exiled.Events.Handlers.Player.ChangingItem -= OnEquipSCP207;
             Exiled.Events.Handlers.Player.UsedItem -= OnSCP1576Used;
             Exiled.Events.Handlers.Player.ChangedItem -= OnSCP1576ChangedItem;
+            Scp1576Events.StoppingTransmission -= OnSCP1576StoppingTransmission;
+            Scp268Events.UsedScp268 += OnSCP268Using;
             Exiled.Events.Handlers.Player.UsedItem -= OnSCP268Used;
             Exiled.Events.Handlers.Player.InteractingDoor -= OnSCP268Interacting;
             Exiled.Events.Handlers.Player.ChangedItem -= OnSCP268ChangedItem;
@@ -128,6 +134,16 @@ namespace UsefulHints.EventHandlers.Items
             }
         }
 
+        private static void OnSCP1576StoppingTransmission(StoppingTransmissionEventArgs ev)
+        {
+            if (activeCoroutines.ContainsKey(ev.Player) && activeItems.ContainsKey(ev.Player) && activeItems[ev.Player] == ItemType.SCP1576)
+            {
+                Timing.KillCoroutines(activeCoroutines[ev.Player]);
+                activeCoroutines.Remove(ev.Player);
+                activeItems.Remove(ev.Player);
+            }
+        }
+
         private static IEnumerator<float> Scp1576Timer(Player player)
         {
             float duration = 30f;
@@ -183,6 +199,13 @@ namespace UsefulHints.EventHandlers.Items
                 activeCoroutines.Remove(ev.Player);
                 activeItems.Remove(ev.Player);
             }
+        }
+
+        private static void OnSCP268Using(UsedScp268EventArgs ev)
+        {
+            ev.Cooldown = 5f;
+            ev.InvisibilityTime = 5f;
+            ev.Player.ShowHint($"You are now invisible for {ev.InvisibilityTime} seconds!", 1.15f);
         }
 
         private static IEnumerator<float> Scp268Timer(Player player)

@@ -1,7 +1,8 @@
-﻿using System;
-using Exiled.API.Enums;
+﻿using Exiled.API.Enums;
 using Exiled.API.Features;
 using Exiled.API.Features.Core.UserSettings;
+using HarmonyLib;
+using System;
 
 namespace UsefulHints
 {
@@ -10,15 +11,21 @@ namespace UsefulHints
         public override string Name => "UsefulHints";
         public override string Author => "Vretu";
         public override string Prefix { get; } = "UH";
-        public override Version Version => new Version(3, 0, 1);
-        public override Version RequiredExiledVersion { get; } = new Version(9, 6, 0);
+        public override Version Version => new Version(3, 1, 0);
+        public override Version RequiredExiledVersion { get; } = new Version(9, 8, 0);
         public override PluginPriority Priority { get; } = PluginPriority.Low;
         public static UsefulHints Instance { get; private set; }
         public HeaderSetting SettingsHeader { get; set; } = new HeaderSetting(772, "Useful Hints");
 
+        private Harmony _harmony;
+
         public override void OnEnabled()
         {
             Instance = this;
+
+            _harmony = new Harmony("com.vretu");
+            _harmony.PatchAll();
+
             if (Config.EnableServerSettings) SettingBase.Register(new[] { SettingsHeader });
             if (Config.AutoUpdate) Extensions.UpdateChecker.RegisterEvents();
             if (Config.Translations) _ = Extensions.TranslationManager.RegisterEvents();
@@ -38,6 +45,10 @@ namespace UsefulHints
         public override void OnDisabled()
         {
             Instance = null;
+
+            _harmony?.UnpatchAll(_harmony.Id);
+            _harmony = null;
+
             if (Config.EnableServerSettings) SettingBase.Unregister(settings: new[] { SettingsHeader });
             if (Config.AutoUpdate) Extensions.UpdateChecker.UnregisterEvents();
             if (Config.EnableServerSettings) Extensions.ServerSettings.UnregisterSettings();

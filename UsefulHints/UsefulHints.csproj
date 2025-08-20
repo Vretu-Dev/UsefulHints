@@ -57,9 +57,18 @@
     <Compile Include="EventHandlers\Modules\Maps.cs" />
     <Compile Include="EventHandlers\Modules\RoundSummary.cs" />
     <Compile Include="EventHandlers\Modules\Teammates.cs" />
+    <Compile Include="Events\Scp268\Scp268Events.cs" />
+    <Compile Include="Events\Scp268\UsedScp268EventArgs.cs" />
     <Compile Include="Extensions\AutoTranslation.cs" />
     <Compile Include="Extensions\AutoUpdate.cs" />
     <Compile Include="Extensions\ServerSettings.cs" />
+    <Compile Include="Events\Scp1576\Scp1576Events.cs" />
+    <Compile Include="Patches\Scp1576\Scp1576HarmonyPatch.cs" />
+    <Compile Include="Events\Scp1576\StoppingTransmissionEventArgs.cs" />
+    <Compile Include="Patches\Scp268\EquipUpdate.cs" />
+    <Compile Include="Patches\Scp268\Runtime.cs" />
+    <Compile Include="Patches\Scp268\ServerOnUsingCompleted.cs" />
+    <Compile Include="Patches\Scp268\SetState.cs" />
     <Compile Include="Translations.cs" />
     <Compile Include="UsefulHints.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -70,7 +79,7 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="ExMod.Exiled">
-      <Version>9.7.1</Version>
+      <Version>9.8.1</Version>
     </PackageReference>
     <PackageReference Include="Fody">
       <Version>6.9.2</Version>
