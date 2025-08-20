@@ -21,7 +21,13 @@ namespace UsefulHints
         
         [Description("Specific Server Settings:")]
         public bool EnableServerSettings { get; set; } = true;
-        
+
+        [Description("Aditional Settings:")]
+        public float Scp268InvisibilityTime { get; set; } = 15f;
+        public float Scp2176LockdownDuration { get; set; } = 13f;
+        public float Scp268Cooldown { get; set; } = 120f;
+        public float Scp1576Cooldown { get; set; } = 120f;
+
         [Description("Hint Settings:")]
         public bool EnableHints { get; set; } = true;
         public string Scp096LookMessage { get; set; } = "You looked at SCP-096!";

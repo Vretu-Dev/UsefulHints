@@ -57,6 +57,8 @@
     <Compile Include="EventHandlers\Modules\Maps.cs" />
     <Compile Include="EventHandlers\Modules\RoundSummary.cs" />
     <Compile Include="EventHandlers\Modules\Teammates.cs" />
+    <Compile Include="Events\Scp2176\Scp2176EventArgs.cs" />
+    <Compile Include="Events\Scp2176\Scp2176Events.cs" />
     <Compile Include="Events\Scp268\Scp268Events.cs" />
     <Compile Include="Events\Scp268\UsedScp268EventArgs.cs" />
     <Compile Include="Extensions\AutoTranslation.cs" />
@@ -65,6 +67,7 @@
     <Compile Include="Events\Scp1576\Scp1576Events.cs" />
     <Compile Include="Patches\Scp1576\Scp1576HarmonyPatch.cs" />
     <Compile Include="Events\Scp1576\StoppingTransmissionEventArgs.cs" />
+    <Compile Include="Patches\Scp2176\ServerShatter.cs" />
     <Compile Include="Patches\Scp268\EquipUpdate.cs" />
     <Compile Include="Patches\Scp268\Runtime.cs" />
     <Compile Include="Patches\Scp268\ServerOnUsingCompleted.cs" />
