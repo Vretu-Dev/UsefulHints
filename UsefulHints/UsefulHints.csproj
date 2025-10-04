@@ -11,6 +11,7 @@
     <AssemblyName>UsefulHints</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <LangVersion>latest</LangVersion>
     <Deterministic>true</Deterministic>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -47,7 +48,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Config.cs" />
-    <Compile Include="EventHandlers\Commands\ChangeLanguage.cs" />
     <Compile Include="EventHandlers\Entities\SCP096.cs" />
     <Compile Include="EventHandlers\Items\WarningHints.cs" />
     <Compile Include="EventHandlers\Modules\FFWarning.cs" />
@@ -57,31 +57,14 @@
     <Compile Include="EventHandlers\Modules\Maps.cs" />
     <Compile Include="EventHandlers\Modules\RoundSummary.cs" />
     <Compile Include="EventHandlers\Modules\Teammates.cs" />
-    <Compile Include="Extensions\AutoTranslation.cs" />
-    <Compile Include="Extensions\AutoUpdate.cs" />
     <Compile Include="Extensions\ServerSettings.cs" />
     <Compile Include="Translations.cs" />
     <Compile Include="UsefulHints.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Costura.Fody">
-      <Version>6.0.0</Version>
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
     <PackageReference Include="ExMod.Exiled">
-      <Version>9.8.1</Version>
-    </PackageReference>
-    <PackageReference Include="Fody">
-      <Version>6.9.2</Version>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
-    <PackageReference Include="Lib.Harmony">
-      <Version>2.3.6</Version>
-    </PackageReference>
-    <PackageReference Include="Newtonsoft.Json">
-      <Version>13.0.3</Version>
+      <Version>9.9.2</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup />

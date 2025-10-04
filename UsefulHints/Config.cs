@@ -8,17 +8,6 @@ namespace UsefulHints
         public bool IsEnabled { get; set; } = true;
         public bool Debug { get; set; } = false;
         
-        [Description("Auto Translations:")]
-        public bool Translations { get; set; } = true;
-        
-        [Description("Available Languages: pl, en, de, fr, cs, sk, es, it, pt, ru, tr, zh, ko")]
-        public string Language { get; set; } = "en";
-        
-        [Description("Auto Update:")]
-        public bool AutoUpdate { get; set; } = true;
-        public bool EnableLogging { get; set; } = true;
-        public bool EnableBackup { get; set; } = false;
-        
         [Description("Specific Server Settings:")]
         public bool EnableServerSettings { get; set; } = true;
         
