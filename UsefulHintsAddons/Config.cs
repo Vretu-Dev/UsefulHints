@@ -20,16 +20,13 @@ namespace UsefulHintsAddons
         [Description("Only notify about new version.")]
         public bool NotifyOnly { get; set; } = false;
 
-        [Description("Download new DLL and overwrite when update found.")]
-        public bool DownloadAndReplace { get; set; } = true;
-
         [Description("Create .backup before overwrite.")]
         public bool EnableBackup { get; set; } = false;
 
         [Description("Show logs from addons.")]
         public bool EnableLogging { get; set; } = true;
 
-        [Description("Warn that real update requires full process restart.")]
+        [Description("After downloading a new version restart server after round.")]
         public bool RestartNextRound { get; set; } = true;
     }
 }

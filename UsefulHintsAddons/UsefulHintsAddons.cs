@@ -12,7 +12,7 @@ namespace UsefulHintsAddons
     {
         public override string Name => "UsefulHints.Addons";
         public override string Author => "Vretu";
-        public override string Prefix { get; } = "UH Addons";
+        public override string Prefix { get; } = "UH.Addons";
         public override Version Version => new Version(1, 0, 0);
         public override Version RequiredExiledVersion { get; } = new Version(9, 9, 0);
         public override PluginPriority Priority { get; } = PluginPriority.Lowest;

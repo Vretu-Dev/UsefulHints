@@ -24,14 +24,11 @@ namespace UsefulHintsAddons.Extensions
         private static CancellationTokenSource _cts = new CancellationTokenSource();
         private static Dictionary<string, string> _map = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
 
-        /// <summary>
-        /// Public call used by plugin OnEnabled or language command.
-        /// </summary>
         public static Task ApplyAsync(string lang)
         {
             if (UsefulHints.UsefulHints.Instance == null)
             {
-                Log.Warn(" Core not ready. Retrying in 2s.");
+                Log.Warn("[Trans] Core not ready. Retry in 2s.");
                 Timing.RunCoroutine(Retry(lang));
                 return Task.CompletedTask;
             }
@@ -67,12 +64,12 @@ namespace UsefulHintsAddons.Extensions
                 await Download(lang, ct);
                 MapIntoCore();
                 if (AddonsCfg.EnableLogging)
-                    Log.Info($"Language applied: {lang}");
+                    Log.Info($"[Trans] Language applied: {lang}");
             }
             catch (OperationCanceledException) { }
             catch (Exception ex)
             {
-                Log.Error("Translation apply failed: " + ex.Message);
+                Log.Error("[Trans] Apply failed: " + ex.Message);
             }
             finally
             {
@@ -98,7 +95,7 @@ namespace UsefulHintsAddons.Extensions
             }
             catch (Exception ex)
             {
-                Log.Warn($"Download failed ({lang}): {ex.Message}");
+                Log.Warn($"[Trans] Download failed ({lang}): {ex.Message}");
                 if (File.Exists(file))
                 {
                     try
@@ -106,11 +103,11 @@ namespace UsefulHintsAddons.Extensions
                         string cached = File.ReadAllText(file);
                         _map = JsonConvert.DeserializeObject<Dictionary<string, string>>(cached)
                                ?? new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
-                        Log.Warn("Using cached translation file.");
+                        Log.Warn("[UH-Addons][Trans] Using cached translation file.");
                     }
                     catch (Exception cacheEx)
                     {
-                        Log.Error("Cache read failed: " + cacheEx.Message);
+                        Log.Error("[Trans] Cache read failed: " + cacheEx.Message);
                         _map.Clear();
                     }
                 }

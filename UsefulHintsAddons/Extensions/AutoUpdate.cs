@@ -35,7 +35,7 @@ namespace UsefulHintsAddons.Extensions
             _registered = true;
 
             if (Cfg.EnableLogging)
-                Log.Debug("UpdateChecker registered.");
+                Log.Debug("[Update] UpdateChecker registered.");
         }
 
         public static void Unregister()
@@ -47,7 +47,7 @@ namespace UsefulHintsAddons.Extensions
             _registered = false;
 
             if (Cfg?.EnableLogging == true)
-                Log.Debug("UpdateChecker unregistered.");
+                Log.Debug("[Update] UpdateChecker unregistered.");
         }
 
         private static void OnWaiting()
@@ -63,7 +63,7 @@ namespace UsefulHintsAddons.Extensions
             try
             {
                 if (Cfg.EnableLogging)
-                    Log.Info("Checking for UsefulHints update...");
+                    Log.Info("[Update] Checking for UsefulHints update...");
 
                 string json = await Http.GetStringAsync(ApiUrl);
                 var obj = JObject.Parse(json);
@@ -74,23 +74,23 @@ namespace UsefulHintsAddons.Extensions
                 if (string.IsNullOrWhiteSpace(latest))
                 {
                     if (Cfg.EnableLogging)
-                        Log.Warn("Could not parse latest version tag.");
+                        Log.Warn("[Update] Could not parse latest version tag.");
                     return;
                 }
 
                 if (IsNewer(CurrentVersion, latest))
                 {
-                    Log.Warn($"New version available: {latest} (current {CurrentVersion})");
+                    Log.Warn($"[Update] New version available: {latest} (current {CurrentVersion})");
 
                     if (Cfg.NotifyOnly)
                     {
-                        Log.Info("NotifyOnly = true (no download).");
+                        Log.Info("[Update] NotifyOnly = true (no download).");
                         return;
                     }
 
-                    if (!Cfg.DownloadAndReplace || string.IsNullOrWhiteSpace(downloadUrl))
+                    if (string.IsNullOrWhiteSpace(downloadUrl))
                     {
-                        Log.Info("Download disabled or missing asset URL.");
+                        Log.Info("[Update] Download disabled or missing asset URL.");
                         return;
                     }
 
@@ -99,12 +99,12 @@ namespace UsefulHintsAddons.Extensions
                 else
                 {
                     if (Cfg.EnableLogging)
-                        Log.Info("Already up to date.");
+                        Log.Info("[Update] Already up to date.");
                 }
             }
             catch (Exception ex)
             {
-                Log.Error("Update check failed: " + ex.Message);
+                Log.Error("[Update] Update check failed: " + ex.Message);
             }
         }
 
@@ -120,28 +120,28 @@ namespace UsefulHintsAddons.Extensions
         {
             try
             {
-                Log.Info(" Downloading new UsefulHints version...");
+                Log.Info("[Update] Downloading new UsefulHints version...");
                 var data = await Http.GetByteArrayAsync(url);
 
                 if (Cfg.EnableBackup && File.Exists(PluginPath))
                 {
                     string backup = PluginPath + ".backup";
                     File.Copy(PluginPath, backup, true);
-                    Log.Warn($"Backup created: {backup}");
+                    Log.Warn($"[Update] Backup created: {backup}");
                 }
 
                 File.WriteAllBytes(PluginPath, data);
-                Log.Warn($"UsefulHints {latest} downloaded.");
+                Log.Warn($"[Update] UsefulHints {latest} downloaded.");
 
                 if (Cfg.RestartNextRound)
                 {
-                    Log.Warn("Init Restart Next Round");
+                    Log.Warn("[Update] Init Restart Next Round");
                     Server.ExecuteCommand("rnr");
                 }
             }
             catch (Exception ex)
             {
-                Log.Error("Download failed: " + ex.Message);
+                Log.Error("[Update] Download failed: " + ex.Message);
             }
         }
     }

@@ -33,14 +33,12 @@ namespace UsefulHintsAddons.Commands
 
             string arg = arguments.At(0).ToLowerInvariant();
 
-            // List supported
             if (arg is "list" or "langs" or "languages")
             {
                 response = "Supported languages: " + string.Join(", ", Supported);
                 return true;
             }
 
-            // Reload current language
             if (arg is "reload" or "refresh")
             {
                 var current = UsefulHintsAddons.Instance.Config.Language;
@@ -49,7 +47,6 @@ namespace UsefulHintsAddons.Commands
                 return true;
             }
 
-            // Change language
             if (!Supported.Contains(arg))
             {
                 response = $"Unsupported language: {arg}. Use: uhl list";
@@ -62,14 +59,11 @@ namespace UsefulHintsAddons.Commands
             return true;
         }
 
-        private string GetHelp()
-        {
-            return
-                "Usage:\n" +
-                "  uhl <lang>    - Change language (e.g. uhl pl)\n" +
-                "  uhl reload    - Force re-download current language\n" +
-                "  uhl list      - Show supported languages\n" +
-                $"Supported: {string.Join(", ", Supported)}";
-        }
+        private string GetHelp() =>
+            "Usage:\n" +
+            "  uhl <lang>    - Change language (e.g. uhl pl)\n" +
+            "  uhl reload    - Force re-download current language\n" +
+            "  uhl list      - Show supported languages\n" +
+            $"Supported: {string.Join(", ", Supported)}";
     }
 }
