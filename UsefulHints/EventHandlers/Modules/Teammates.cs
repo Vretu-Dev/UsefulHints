@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 using System.Collections.Generic;
-using Player = Exiled.API.Features.Player;
+using Exiled.API.Features;
 using MEC;
 
 namespace UsefulHints.EventHandlers.Modules
@@ -40,13 +40,9 @@ namespace UsefulHints.EventHandlers.Modules
                     .ToList();
 
                 if (teammates.Count > 0)
-                {
                     player.ShowHint(string.Format(Config.TeammateHintMessage, string.Join("\n", teammates)), Config.TeammateMessageDuration);
-                }
                 else
-                {
                     player.ShowHint(string.Format(Config.AloneHintMessage), Config.AloneMessageDuration);
-                }
             }
         }
     }

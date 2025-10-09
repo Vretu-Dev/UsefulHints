@@ -12,10 +12,12 @@ namespace UsefulHints.EventHandlers.Modules
         {
             Exiled.Events.Handlers.Player.Hurting += OnHurting;
         }
+
         public static void UnregisterEvents()
         {
             Exiled.Events.Handlers.Player.Hurting -= OnHurting;
         }
+
         private static void OnHurting(HurtingEventArgs ev)
         {
             if (ev.Attacker == null || ev.Player == null || ev.Attacker.Role == null || ev.Player.Role == null || ev.Attacker.Role.Team == Team.SCPs || ev.Player.Role.Team == Team.SCPs || ev.Attacker == ev.Player)
@@ -37,6 +39,7 @@ namespace UsefulHints.EventHandlers.Modules
                     ev.Player.ShowHint(string.Format(Config.DamageTakenWarning, ev.Attacker.Nickname), 2);
                 }
             }
+
             if (Config.EnableCuffedWarning && ev.Player.IsCuffed)
             {
                 ev.Attacker.ShowHint(string.Format(Config.CuffedAttackerWarning), 2);

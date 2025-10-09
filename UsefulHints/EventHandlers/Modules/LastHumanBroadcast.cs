@@ -1,8 +1,9 @@
-﻿using System.Linq;
-using Exiled.API.Enums;
+﻿using Exiled.API.Enums;
 using Exiled.API.Features;
 using Exiled.Events.EventArgs.Player;
+using Exiled.Events.EventArgs.Server;
 using PlayerRoles;
+using System.Linq;
 
 namespace UsefulHints.EventHandlers.Modules
 {
@@ -15,28 +16,38 @@ namespace UsefulHints.EventHandlers.Modules
         public static void RegisterEvents()
         {
             Exiled.Events.Handlers.Player.Died += OnPlayerDied;
+            Exiled.Events.Handlers.Server.WaitingForPlayers += OnWaitingForPlayers;
+            Exiled.Events.Handlers.Server.RespawnedTeam += OnRespawnedTeam;
         }
 
         public static void UnregisterEvents()
         {
             Exiled.Events.Handlers.Player.Died -= OnPlayerDied;
+            Exiled.Events.Handlers.Server.WaitingForPlayers -= OnWaitingForPlayers;
+            Exiled.Events.Handlers.Server.RespawnedTeam -= OnRespawnedTeam;
         }
+
+        private static void OnWaitingForPlayers() => hasBroadcastBeenSent = false;
+        private static void OnRespawnedTeam(RespawnedTeamEventArgs ev) => hasBroadcastBeenSent = false;
 
         private static void OnPlayerDied(DiedEventArgs ev)
         {
-            if (ev.Player == null || ev.Attacker == null)
+            if (ev.Player == null)
                 return;
 
-            var aliveHumans = Player.List.Where(p => p.IsAlive && p.IsHuman && (!Config.IgnoreTutorialRole || p.Role.Type != RoleTypeId.Tutorial));
+            var aliveHumans = Player.List
+                .Where(p => p.IsHuman && (!Config.IgnoreTutorialRole || p.Role.Type != RoleTypeId.Tutorial))
+                .ToList();
 
-            int count = aliveHumans.Count();
-
-            if (count > 1)
-                hasBroadcastBeenSent = false;
-
-            if (count == 1 && !hasBroadcastBeenSent)
+            if (aliveHumans.Count > 1)
             {
-                Player lastAlive = aliveHumans.First();
+                hasBroadcastBeenSent = false;
+                return;
+            }
+
+            if (aliveHumans.Count ==  1 && !hasBroadcastBeenSent)
+            {
+                Player lastAlive = aliveHumans[0];
 
                 lastAlive.Broadcast(10, Config.BroadcastForHuman);
 
@@ -56,9 +67,10 @@ namespace UsefulHints.EventHandlers.Modules
 
         private static string GetZoneName(Player player)
         {
-            ZoneType zone = player.CurrentRoom.Zone;
+            if (player.CurrentRoom == null)
+                return "Unknown Zone";
 
-            switch (zone)
+            switch (player.CurrentRoom.Zone)
             {
                 case ZoneType.LightContainment:
                     return Translation.Lcz;
@@ -75,9 +87,7 @@ namespace UsefulHints.EventHandlers.Modules
 
         private static string GetRoleTeamName(Player player)
         {
-            Team team = player.Role.Team;
-
-            switch (team)
+            switch (player.Role.Team)
             {
                 case Team.FoundationForces:
                     return Translation.FoundationForces;

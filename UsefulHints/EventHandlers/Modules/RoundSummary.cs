@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using Exiled.API.Features;
-using Player = Exiled.API.Features.Player;
 using Exiled.Events.EventArgs.Player;
 using Exiled.Events.EventArgs.Server;
 using PlayerRoles;
@@ -28,7 +27,7 @@ namespace UsefulHints.EventHandlers.Modules
             Exiled.Events.Handlers.Player.Escaping += OnPlayerEscaping;
             Exiled.Events.Handlers.Player.Hurting += OnPlayerHurting;
             Exiled.Events.Handlers.Server.RoundEnded += OnRoundEnded;
-            Exiled.Events.Handlers.Server.RestartingRound += OnRestartingRound;
+            Exiled.Events.Handlers.Server.WaitingForPlayers += OnWaitingForPlayers;
             Exiled.Events.Handlers.Server.RoundStarted += OnRoundStarted;
         }
 
@@ -39,7 +38,7 @@ namespace UsefulHints.EventHandlers.Modules
             Exiled.Events.Handlers.Player.Escaping -= OnPlayerEscaping;
             Exiled.Events.Handlers.Player.Hurting -= OnPlayerHurting;
             Exiled.Events.Handlers.Server.RoundEnded -= OnRoundEnded;
-            Exiled.Events.Handlers.Server.RestartingRound -= OnRestartingRound;
+            Exiled.Events.Handlers.Server.WaitingForPlayers -= OnWaitingForPlayers;
             Exiled.Events.Handlers.Server.RoundStarted -= OnRoundStarted;
         }
 
@@ -51,29 +50,29 @@ namespace UsefulHints.EventHandlers.Modules
         // Handler for player hurting another player
         private static void OnPlayerHurting(HurtingEventArgs ev)
         {
-            Player attacker = ev.Attacker;
-            Player victim = ev.Player;
+            if (ev.Attacker == null || ev.Player == null || ev.Attacker == ev.Player || ev.Attacker.Role == null || ev.Player.Role == null)
+                return;
 
-            if (attacker != null && attacker != victim && attacker.Role.Team != Team.SCPs && victim.Role.Team == Team.SCPs)
+            if (ev.Attacker.Role.Team != Team.SCPs && ev.Player.Role.Team == Team.SCPs)
             {
-                if (!humanDamage.ContainsKey(attacker))
-                    humanDamage[attacker] = 0;
+                if (!humanDamage.ContainsKey(ev.Attacker))
+                    humanDamage[ev.Attacker] = 0f;
 
-                humanDamage[attacker] += (int)Math.Round(ev.Amount);
+                humanDamage[ev.Attacker] += ev.Amount;
             }
         }
 
         // Handler for "When Player dying" (FirstScpKiller)
         private static void OnPlayerDying(DyingEventArgs ev)
         {
-            Player attacker = ev.Attacker;
-            Player victim = ev.Player;
+            if (ev.Player == null || ev.Player.Role == null)
+                return;
 
-            if (victim.Role.Team == Team.SCPs && victim.Role.Type != RoleTypeId.Scp0492)
+            if (ev.Player.Role.Team == Team.SCPs && ev.Player.Role.Type != RoleTypeId.Scp0492)
             {
                 if (firstScpKiller == null)
                 {
-                    firstScpKiller = attacker;
+                    firstScpKiller = ev.Attacker;
                 }
             }
         }
@@ -81,31 +80,29 @@ namespace UsefulHints.EventHandlers.Modules
         // Handler for "When Player died" (SCP and Human kill count)
         private static void OnPlayerDied(DiedEventArgs ev)
         {
-            Player attacker = ev.Attacker;
+            if (ev.Attacker == null || ev.Player == null || ev.Attacker == ev.Player)
+                return;
 
-            if (attacker != null && attacker != ev.Player)
+            if (ev.Attacker.Role.Team == Team.SCPs)
             {
-                if (attacker.Role.Team == Team.SCPs)
-                {
-                    if (!scpKills.ContainsKey(attacker))
-                        scpKills[attacker] = 0;
+                if (!scpKills.ContainsKey(ev.Attacker))
+                    scpKills[ev.Attacker] = 0;
 
-                    scpKills[attacker]++;
-                }
-                else
-                {
-                    if (!humanKills.ContainsKey(attacker))
-                        humanKills[attacker] = 0;
+                scpKills[ev.Attacker]++;
+            }
+            else
+            {
+                if (!humanKills.ContainsKey(ev.Attacker))
+                    humanKills[ev.Attacker] = 0;
 
-                    humanKills[attacker]++;
-                }
+                humanKills[ev.Attacker]++;
             }
         }
 
         // Handler for Escaped Player
         private static void OnPlayerEscaping(EscapingEventArgs ev)
         {
-            if (firstEscaper == null && ev.IsAllowed)
+            if (firstEscaper == null && ev.IsAllowed &&  ev.Player != null)
             {
                 firstEscaper = ev.Player;
                 escapeTime = DateTime.Now - roundStartTime;
@@ -126,23 +123,25 @@ namespace UsefulHints.EventHandlers.Modules
             if (scpKiller != null)
                 text += string.Format(Config.ScpKillMessage, scpKiller.Nickname, scpKills[scpKiller]) + "\n";
             if (topDamageDealer != null)
-                text += string.Format(Config.TopDamageMessage, topDamageDealer.Nickname, humanDamage[topDamageDealer]) + "\n";
+                text += string.Format(Config.TopDamageMessage, topDamageDealer.Nickname, (int)Math.Round(humanDamage[topDamageDealer])) + "\n";
             if (firstEscaper != null)
                 text += string.Format(Config.EscaperMessage, firstEscaper.Nickname, escapeTime.Minutes.ToString("D2"), escapeTime.Seconds.ToString("D2")) + "\n";
             if (firstScpKiller != null)
                 text += string.Format(Config.FirstScpKillerMessage, firstScpKiller.Nickname) + "\n";
+
             if (!string.IsNullOrEmpty(text))
                 Map.Broadcast(Config.RoundSummaryMessageDuration, text, BroadcastFlags.Normal, true);
         }
 
         // Clear Dictionaries
-        private static void OnRestartingRound()
+        private static void OnWaitingForPlayers()
         {
             scpKills.Clear();
             humanKills.Clear();
             humanDamage.Clear();
             firstEscaper = null;
             firstScpKiller = null;
+            escapeTime = TimeSpan.Zero;
         }
 
         // Helper to find player with most kills
@@ -153,6 +152,9 @@ namespace UsefulHints.EventHandlers.Modules
 
             foreach (var entry in kills)
             {
+                if (entry.Key == null)
+                    continue;
+
                 if (entry.Value > maxKills)
                 {
                     topKiller = entry.Key;
@@ -166,10 +168,13 @@ namespace UsefulHints.EventHandlers.Modules
         private static Player GetTopDamageDealer(Dictionary<Player, float> damage)
         {
             Player topDealer = null;
-            float maxDamage = 0;
+            float maxDamage = 0f;
 
             foreach (var entry in damage)
             {
+                if (entry.Key == null)
+                    continue;
+
                 if (entry.Value > maxDamage)
                 {
                     topDealer = entry.Key;

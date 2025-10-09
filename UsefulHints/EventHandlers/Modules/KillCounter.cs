@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
-using Player = Exiled.API.Features.Player;
 using Exiled.Events.EventArgs.Player;
+using Exiled.API.Features;
 using Exiled.API.Enums;
 using PlayerRoles;
 using UsefulHints.Extensions;
+using System.Linq;
 
 namespace UsefulHints.EventHandlers.Modules
 {
@@ -15,59 +16,60 @@ namespace UsefulHints.EventHandlers.Modules
         public static void RegisterEvents()
         {
             Exiled.Events.Handlers.Player.Died += OnPlayerDied;
+            Exiled.Events.Handlers.Server.WaitingForPlayers += OnWaitingForPlayers;
         }
 
         public static void UnregisterEvents()
         {
             Exiled.Events.Handlers.Player.Died -= OnPlayerDied;
+            Exiled.Events.Handlers.Server.WaitingForPlayers -= OnWaitingForPlayers;
+        }
+
+        private static void OnWaitingForPlayers()
+        {
+            playerKills.Clear();
         }
 
         private static void OnPlayerDied(DiedEventArgs ev)
         {
             // Kill Counter for 106 Pocket Dimension kills
-            if (ev.DamageHandler.Type == DamageType.PocketDimension && Config.CountPocketKills)
+            if (Config.CountPocketKills && ev.DamageHandler.Type == DamageType.PocketDimension)
             {
-                foreach (var player in Player.List)
+                var scp106 = Player.List.FirstOrDefault(p => p.Role.Type == RoleTypeId.Scp106);
+
+                if (scp106 != null)
                 {
-                    if (player.Role.Type == RoleTypeId.Scp106)
-                    {
-                        Player killer = player;
+                    AddKill(scp106);
 
-                        if (playerKills.ContainsKey(killer))
-                        {
-                            playerKills[killer]++;
-                        }
-                        else
-                        {
-                            playerKills[killer] = 1;
-                        }
-                        if (!ServerSettings.ShouldShowKillCount(killer) || ev.Player.IsHost || ev.Attacker.IsHost)
-                            return;
+                    if (!ServerSettings.ShouldShowKillCount(scp106))
+                        return;
 
-                        killer.ShowHint(string.Format(Config.KillCountMessage, playerKills[killer]), 4);
-                    }
+                    scp106.ShowHint(string.Format(Config.KillCountMessage, playerKills[scp106]), 4);
                 }
+                return;
             }
 
             // Kill Counter for every kills
             if (ev.Attacker != null && ev.Attacker != ev.Player)
             {
-                Player killer = ev.Attacker;
+                AddKill(ev.Attacker);
 
-                if (playerKills.ContainsKey(killer))
-                {
-                    playerKills[killer]++;
-                }
-                else
-                {
-                    playerKills[killer] = 1;
-                }
-
-                if (!ServerSettings.ShouldShowKillCount(killer) || ev.Player.IsHost || ev.Attacker.IsHost)
+                if (!ServerSettings.ShouldShowKillCount(ev.Attacker) || ev.Attacker.IsHost || ev.Player.IsHost)
                     return;
 
-                killer.ShowHint(string.Format(Config.KillCountMessage, playerKills[killer]), 4);
+                ev.Attacker.ShowHint(string.Format(Config.KillCountMessage, playerKills[ev.Attacker]), 4);
             }
+        }
+
+        private static void AddKill(Player player)
+        {
+            if (player == null)
+                return;
+
+            if (playerKills.TryGetValue(player, out var count))
+                playerKills[player] = count + 1;
+            else
+                playerKills[player] = 1;
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using Exiled.API.Features;
-using Exiled.Events.EventArgs.Server;
-using MEC;
 using System.Collections.Generic;
+using System.Linq;
+using MEC;
 
 namespace UsefulHints.EventHandlers.Modules
 {
@@ -39,14 +39,9 @@ namespace UsefulHints.EventHandlers.Modules
             if (Round.IsEnded)
                 yield break;
 
-            string message = Config.BroadcastWarningLcz;
-
-            foreach (var player in Player.List)
+            foreach (var player in Player.List.Where(p => p.IsAlive))
             {
-                if (player.IsAlive)
-                {
-                    player.Broadcast(7, message);
-                }
+                player.Broadcast(7, Config.BroadcastWarningLcz);
             }
         }
     }
