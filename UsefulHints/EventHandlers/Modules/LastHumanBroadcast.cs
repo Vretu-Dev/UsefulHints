@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using LabApi.Events.Arguments.PlayerEvents;
+using LabApi.Events.Arguments.ServerEvents;
 using LabApi.Features.Wrappers;
 using MapGeneration;
 using PlayerRoles;
@@ -12,26 +13,37 @@ namespace UsefulHints.EventHandlers.Modules
         public static void RegisterEvents()
         {
             LabApi.Events.Handlers.PlayerEvents.Death += OnPlayerDied;
+            LabApi.Events.Handlers.ServerEvents.WaitingForPlayers += OnWaitingForPlayers;
+            LabApi.Events.Handlers.ServerEvents.WaveRespawned += OnRespawnedTeam;
         }
         public static void UnregisterEvents()
         {
             LabApi.Events.Handlers.PlayerEvents.Death -= OnPlayerDied;
+            LabApi.Events.Handlers.ServerEvents.WaitingForPlayers -= OnWaitingForPlayers;
+            LabApi.Events.Handlers.ServerEvents.WaveRespawned -= OnRespawnedTeam;
         }
+
+        private static void OnWaitingForPlayers() => hasBroadcastBeenSent = false;
+        private static void OnRespawnedTeam(WaveRespawnedEventArgs ev) => hasBroadcastBeenSent = false;
+
         private static void OnPlayerDied(PlayerDeathEventArgs ev)
         {
-            if (ev.Player == null || ev.Attacker == null)
+            if (ev.Player == null)
                 return;
 
-            var aliveHumans = Player.List.Where(p => p.IsAlive && p.IsHuman && (!UsefulHints.Instance.Config.IgnoreTutorialRole || p.Role != RoleTypeId.Tutorial));
+            var aliveHumans = Player.List
+                .Where(p => p.IsHuman && (!UsefulHints.Instance.Config.IgnoreTutorialRole || p.Role != RoleTypeId.Tutorial))
+                .ToList();
 
-            int count = aliveHumans.Count();
-
-            if (count > 1)
-                hasBroadcastBeenSent = false;
-
-            if (count == 1 && !hasBroadcastBeenSent)
+            if (aliveHumans.Count > 1)
             {
-                Player lastAlive = aliveHumans.First();
+                hasBroadcastBeenSent = false;
+                return;
+            }
+
+            if (aliveHumans.Count == 1 && !hasBroadcastBeenSent)
+            {
+                Player lastAlive = aliveHumans[0];
 
                 lastAlive.SendBroadcast(UsefulHints.Instance.Config.BroadcastForHuman, 10);
 
@@ -50,9 +62,7 @@ namespace UsefulHints.EventHandlers.Modules
         }
         private static string GetZoneName(Player player)
         {
-            FacilityZone zone = player.Zone;
-
-            switch (zone)
+            switch (player.Zone)
             {
                 case FacilityZone.LightContainment:
                     return "Light Containment";
@@ -68,9 +78,7 @@ namespace UsefulHints.EventHandlers.Modules
         }
         private static string GetRoleTeamName(Player player)
         {
-            Team team = player.Team;
-
-            switch (team)
+            switch (player.Team)
             {
                 case Team.FoundationForces:
                     return "<color=#0096FF>Mobile Task Force</color>";

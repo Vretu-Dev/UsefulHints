@@ -1,6 +1,7 @@
 ﻿using LabApi.Features.Wrappers;
-using System.Collections.Generic;
 using MEC;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace UsefulHints.EventHandlers.Modules
 {
@@ -37,14 +38,9 @@ namespace UsefulHints.EventHandlers.Modules
             if (Round.IsRoundEnded)
                 yield break;
 
-            string message = UsefulHints.Instance.Config.BroadcastWarningLcz;
-
-            foreach (var player in Player.List)
+            foreach (var player in Player.ReadyList.Where(p => p.IsAlive))
             {
-                if (player.IsAlive)
-                {
-                    player.SendBroadcast(message,7);
-                }
+                player.SendBroadcast(UsefulHints.Instance.Config.BroadcastWarningLcz, 7);
             }
         }
     }

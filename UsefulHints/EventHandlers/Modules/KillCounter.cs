@@ -10,28 +10,35 @@ namespace UsefulHints.EventHandlers.Modules
         public static void RegisterEvents()
         {
             LabApi.Events.Handlers.PlayerEvents.Death += OnPlayerDied;
+            LabApi.Events.Handlers.ServerEvents.WaitingForPlayers += OnWaitingForPlayers;
         }
         public static void UnregisterEvents()
         {
             LabApi.Events.Handlers.PlayerEvents.Death -= OnPlayerDied;
+            LabApi.Events.Handlers.ServerEvents.WaitingForPlayers += OnWaitingForPlayers;
         }
+
+        private static void OnWaitingForPlayers()
+        {
+            playerKills.Clear();
+        }
+
         private static void OnPlayerDied(PlayerDeathEventArgs ev)
         {
             if (ev.Attacker != null && ev.Attacker != ev.Player)
             {
-                Player killer = ev.Attacker;
-
-                if (playerKills.ContainsKey(killer))
+                if (playerKills.ContainsKey(ev.Attacker))
                 {
-                    playerKills[killer]++;
+                    playerKills[ev.Attacker]++;
                 }
                 else
                 {
-                    playerKills[killer] = 1;
+                    playerKills[ev.Attacker] = 1;
                 }
-                if (!killer.IsHost)
+
+                if (!ev.Attacker.IsHost)
                 {
-                    killer.SendHint(string.Format(UsefulHints.Instance.Config.KillCountMessage, playerKills[killer]), 4);
+                    ev.Attacker.SendHint(string.Format(UsefulHints.Instance.Config.KillCountMessage, playerKills[ev.Attacker]), 4);
                 }
             }
         }
