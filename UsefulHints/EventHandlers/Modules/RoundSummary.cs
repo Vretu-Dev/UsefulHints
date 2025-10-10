@@ -102,7 +102,7 @@ namespace UsefulHints.EventHandlers.Modules
         // Handler for Escaped Player
         private static void OnPlayerEscaping(EscapingEventArgs ev)
         {
-            if (firstEscaper == null && ev.IsAllowed &&  ev.Player != null)
+            if (firstEscaper == null && ev.IsAllowed && ev.Player != null)
             {
                 firstEscaper = ev.Player;
                 escapeTime = DateTime.Now - roundStartTime;

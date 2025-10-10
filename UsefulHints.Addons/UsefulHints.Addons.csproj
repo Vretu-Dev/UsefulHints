@@ -7,8 +7,8 @@
     <ProjectGuid>{28901AA9-F243-4501-B388-0482F6A578E1}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>UsefulHintsAddons</RootNamespace>
-    <AssemblyName>UsefulHintsAddons</AssemblyName>
+    <RootNamespace>UsefulHints.Addons</RootNamespace>
+    <AssemblyName>UsefulHints.Addons</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <LangVersion>latest</LangVersion>
@@ -55,7 +55,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\UsefulHints\UsefulHints.csproj" />
+    <ProjectReference Include="..\UsefulHints\UsefulHints.csproj">
+      <Project>{8E4E5067-3ADA-48DD-A6C4-57B8AECD24CD}</Project>
+      <Name>UsefulHints</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Costura.Fody">

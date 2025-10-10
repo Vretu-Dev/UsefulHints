@@ -1,10 +1,7 @@
 ﻿using Exiled.API.Enums;
 using Exiled.API.Features;
-using Exiled.API.Features.Core.UserSettings;
 using Exiled.Loader;
-using MEC;
 using System;
-using System.Linq;
 
 namespace UsefulHintsAddons
 {

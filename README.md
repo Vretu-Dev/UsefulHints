@@ -140,9 +140,11 @@ https://github.com/user-attachments/assets/f2125ab2-4ee3-4c71-a697-88949c00ddc2
 | Korean    | ko         | No                    |
 
 ### Command
-| Command              | Alias | Usage          | Permission           | Description                  |
-|:--------------------:|:-----:|:--------------:|:--------------------:|:----------------------------:|
-| usefulhints_language | uhl   | uhl [language] | uh.changelanguage    | Dynamically switches language|
+| Command     | Permission           | Description                        |
+|:-----------:|:--------------------:|:----------------------------------:|
+| uhl <lang>  | uh.changelanguage    | Change language (e.g. uhl pl)      |
+| uhl reload  | uh.changelanguage    | Force re-download current language |
+| uhl list    | uh.changelanguage    | Show supported languages           |
 
 ### Config
 ```yaml

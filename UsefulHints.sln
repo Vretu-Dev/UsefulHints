@@ -5,7 +5,7 @@ VisualStudioVersion = 17.9.34728.123
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UsefulHints", "UsefulHints\UsefulHints.csproj", "{8E4E5067-3ADA-48DD-A6C4-57B8AECD24CD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UsefulHintsAddons", "UsefulHintsAddons\UsefulHintsAddons.csproj", "{28901AA9-F243-4501-B388-0482F6A578E1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UsefulHints.Addons", "UsefulHints.Addons\UsefulHints.Addons.csproj", "{28901AA9-F243-4501-B388-0482F6A578E1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
