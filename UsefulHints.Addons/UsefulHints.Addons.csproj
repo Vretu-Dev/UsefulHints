@@ -51,6 +51,7 @@
     <Compile Include="Extensions\AutoTranslation.cs" />
     <Compile Include="Extensions\AutoUpdate.cs" />
     <Compile Include="Config.cs" />
+    <Compile Include="Integrations\RueIHandlers.cs" />
     <Compile Include="UsefulHintsAddons.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -75,6 +76,12 @@
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
       <Version>13.0.4</Version>
+    </PackageReference>
+    <PackageReference Include="Northwood.LabAPI">
+      <Version>1.1.3</Version>
+    </PackageReference>
+    <PackageReference Include="RueI">
+      <Version>3.1.1</Version>
     </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

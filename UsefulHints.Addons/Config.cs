@@ -28,5 +28,8 @@ namespace UsefulHintsAddons
 
         [Description("After downloading a new version restart server after round.")]
         public bool RestartNextRound { get; set; } = true;
+
+        [Description("Enable RueI integration and replace UsefulHints ShowHint-based displays with RueI-based displays.")]
+        public bool EnableRueIIntegration { get; set; } = false;
     }
 }
