@@ -144,6 +144,7 @@ namespace UsefulHintsAddons.Integrations.RueI
             })
             {
                 UpdateInterval = TimeSpan.FromSeconds(1),
+                VerticalAlign = VerticalAlign.Center,
             };
 
             RueDisplay.Get(player.ReferenceHub).Show(tag, element, seconds + 0.3f);
