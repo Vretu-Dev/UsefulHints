@@ -114,7 +114,7 @@ https://github.com/user-attachments/assets/f2125ab2-4ee3-4c71-a697-88949c00ddc2
 <h2>Addons:</h2>
 
 > [!IMPORTANT]
-> This features **required** [UsefulHintsAddons.dll](https://github.com/Vretu-Dev/UsefulHints/releases/download/3.1.0/UsefulHintsAddons.dll)
+> This features **required** [UsefulHints.Addons.dll](https://github.com/Vretu-Dev/UsefulHints/releases/download/3.1.1/UsefulHints.Addons.dll)
 
 <details>
 <summary><b>Auto-Translations 🌎</b></summary><br>
@@ -173,6 +173,19 @@ enable_backup: false
 enable_logging: true
 # After downloading a new version restart server after round.
 restart_next_round: true
+```
+</details>
+
+
+<details>
+<summary><b>RueI v3 Integration 🔗</b></summary><br>
+  
+> This extension will replace UsefulHints ShowHint-based displays with RueI-based displays.
+
+### Config
+```yaml
+# Enable RueI integration and replace UsefulHints ShowHint-based displays with RueI-based displays.
+enable_rue_i_integration: false
 ```
 </details>
 
