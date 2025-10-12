@@ -31,7 +31,7 @@ namespace UsefulHints.EventHandlers.Modules
             if (ev.Player == null)
                 return;
 
-            var aliveHumans = Player.List
+            var aliveHumans = Player.ReadyList
                 .Where(p => p.IsHuman && (!UsefulHints.Instance.Config.IgnoreTutorialRole || p.Role != RoleTypeId.Tutorial))
                 .ToList();
 
@@ -52,7 +52,7 @@ namespace UsefulHints.EventHandlers.Modules
 
                 string message = string.Format(UsefulHints.Instance.Config.BroadcastForScp, lastAlive.Nickname, teamName, zone);
 
-                foreach (var scp in Player.List.Where(p => p.Team == Team.SCPs))
+                foreach (var scp in Player.ReadyList.Where(p => p.Team == Team.SCPs))
                 {
                     scp.SendBroadcast(message, 10);
                 }
