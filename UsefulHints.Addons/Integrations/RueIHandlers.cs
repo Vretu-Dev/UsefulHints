@@ -47,7 +47,7 @@ namespace UsefulHintsAddons.Integrations.RueI
                 Exiled.Events.Handlers.Player.PickingUpItem += OnPickingUpSCP207;
                 Exiled.Events.Handlers.Player.ChangingItem += OnEquipSCP207;
                 Exiled.Events.Handlers.Player.UsedItem += OnSCP1576Used;
-                Exiled.Events.Handlers.Player.ChangedItem += OnSCP1576ChangedItem;
+                Exiled.Events.Handlers.Player.Scp1576TransmissionEnded += OnSCP1576TransmissionEnded;
                 Exiled.Events.Handlers.Player.UsedItem += OnSCP268Used;
                 Exiled.Events.Handlers.Player.InteractingDoor += OnSCP268Interacting;
                 Exiled.Events.Handlers.Player.ChangedItem += OnSCP268ChangedItem;
@@ -81,7 +81,7 @@ namespace UsefulHintsAddons.Integrations.RueI
                 Exiled.Events.Handlers.Player.PickingUpItem -= OnPickingUpSCP207;
                 Exiled.Events.Handlers.Player.ChangingItem -= OnEquipSCP207;
                 Exiled.Events.Handlers.Player.UsedItem -= OnSCP1576Used;
-                Exiled.Events.Handlers.Player.ChangedItem -= OnSCP1576ChangedItem;
+                Exiled.Events.Handlers.Player.Scp1576TransmissionEnded -= OnSCP1576TransmissionEnded;
                 Exiled.Events.Handlers.Player.UsedItem -= OnSCP268Used;
                 Exiled.Events.Handlers.Player.InteractingDoor -= OnSCP268Interacting;
                 Exiled.Events.Handlers.Player.ChangedItem -= OnSCP268ChangedItem;
@@ -228,7 +228,7 @@ namespace UsefulHintsAddons.Integrations.RueI
             ShowTimer(ev.Player, 30f, left => $"<color=#FFA500>{new string('\n', 10)}{string.Format(Core.Scp1576TimeLeftMessage, left)}</color>", Timer1576);
         }
 
-        private static void OnSCP1576ChangedItem(ChangedItemEventArgs ev)
+        private static void OnSCP1576TransmissionEnded(Scp1576TransmissionEndedEventArgs ev)
         {
             Remove(ev.Player, Timer1576);
         }

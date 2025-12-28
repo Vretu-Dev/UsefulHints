@@ -10,8 +10,8 @@ namespace UsefulHints
         public override string Name => "UsefulHints";
         public override string Author => "Vretu";
         public override string Prefix { get; } = "UH";
-        public override Version Version => new Version(3, 1, 2);
-        public override Version RequiredExiledVersion { get; } = new Version(9, 9, 0);
+        public override Version Version => new Version(3, 1, 3);
+        public override Version RequiredExiledVersion { get; } = new Version(9, 12, 2);
         public override PluginPriority Priority { get; } = PluginPriority.Low;
         public static UsefulHints Instance { get; private set; }
         public HeaderSetting SettingsHeader { get; set; } = new HeaderSetting(772, "Useful Hints");

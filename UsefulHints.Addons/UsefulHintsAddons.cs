@@ -11,8 +11,8 @@ namespace UsefulHintsAddons
         public override string Name => "UsefulHints.Addons";
         public override string Author => "Vretu";
         public override string Prefix { get; } = "UH.Addons";
-        public override Version Version => new Version(1, 2, 0);
-        public override Version RequiredExiledVersion { get; } = new Version(9, 9, 0);
+        public override Version Version => new Version(1, 3, 0);
+        public override Version RequiredExiledVersion { get; } = new Version(9, 12, 2);
         public override PluginPriority Priority { get; } = PluginPriority.Lowest;
         public static UsefulHintsAddons Instance { get; private set; }
 

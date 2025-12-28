@@ -1,15 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using CustomPlayerEffects;
 using Exiled.API.Enums;
-using JailbirdPickup = Exiled.API.Features.Pickups.JailbirdPickup;
-using Player = Exiled.API.Features.Player;
 using Exiled.Events.EventArgs.Map;
 using Exiled.Events.EventArgs.Player;
-using InventorySystem.Items.ThrowableProjectiles;
+using Exiled.Events.Patches.Events.Player;
 using InventorySystem.Items.Jailbird;
-using UsefulHints.Extensions;
-using CustomPlayerEffects;
+using InventorySystem.Items.ThrowableProjectiles;
 using MEC;
+using System;
+using System.Collections.Generic;
+using UsefulHints.Extensions;
+using JailbirdPickup = Exiled.API.Features.Pickups.JailbirdPickup;
+using Player = Exiled.API.Features.Player;
 
 namespace UsefulHints.EventHandlers.Items
 {
@@ -25,7 +26,7 @@ namespace UsefulHints.EventHandlers.Items
             Exiled.Events.Handlers.Player.PickingUpItem += OnPickingUpSCP207;
             Exiled.Events.Handlers.Player.ChangingItem += OnEquipSCP207;
             Exiled.Events.Handlers.Player.UsedItem += OnSCP1576Used;
-            Exiled.Events.Handlers.Player.ChangedItem += OnSCP1576ChangedItem;
+            Exiled.Events.Handlers.Player.Scp1576TransmissionEnded += OnSCP1576TransmissionEnded;
             Exiled.Events.Handlers.Player.UsedItem += OnSCP268Used;
             Exiled.Events.Handlers.Player.InteractingDoor += OnSCP268Interacting;
             Exiled.Events.Handlers.Player.ChangedItem += OnSCP268ChangedItem;
@@ -41,7 +42,7 @@ namespace UsefulHints.EventHandlers.Items
             Exiled.Events.Handlers.Player.PickingUpItem -= OnPickingUpSCP207;
             Exiled.Events.Handlers.Player.ChangingItem -= OnEquipSCP207;
             Exiled.Events.Handlers.Player.UsedItem -= OnSCP1576Used;
-            Exiled.Events.Handlers.Player.ChangedItem -= OnSCP1576ChangedItem;
+            Exiled.Events.Handlers.Player.Scp1576TransmissionEnded -= OnSCP1576TransmissionEnded;
             Exiled.Events.Handlers.Player.UsedItem -= OnSCP268Used;
             Exiled.Events.Handlers.Player.InteractingDoor -= OnSCP268Interacting;
             Exiled.Events.Handlers.Player.ChangedItem -= OnSCP268ChangedItem;
@@ -118,7 +119,7 @@ namespace UsefulHints.EventHandlers.Items
             }
         }
 
-        private static void OnSCP1576ChangedItem(ChangedItemEventArgs ev)
+        private static void OnSCP1576TransmissionEnded(Scp1576TransmissionEndedEventArgs ev)
         {
             if (activeCoroutines.ContainsKey(ev.Player) && activeItems.ContainsKey(ev.Player) && activeItems[ev.Player] == ItemType.SCP1576)
             {

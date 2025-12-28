@@ -6,8 +6,8 @@
 ## Downloads:
 | Framework | Version    |  Release                                                              |
 |:---------:|:----------:|:----------------------------------------------------------------------:|
-| Exiled    | ≥ 9.9.X    | [⬇️](https://github.com/Vretu-Dev/UsefulHints/releases/latest)        |
-| LabAPI    | ≥ 1.X.X    | [⬇️](https://github.com/JustVretu/UsefulHints-LabAPI/releases/latest) |
+| Exiled    | ≥ 9.12.2    | [⬇️](https://github.com/Vretu-Dev/UsefulHints/releases/latest)        |
+| LabAPI    | ≥ 1.1.4    | [⬇️](https://github.com/JustVretu/UsefulHints-LabAPI/releases/latest) |
 
 <h2>Features:</h2>
 
