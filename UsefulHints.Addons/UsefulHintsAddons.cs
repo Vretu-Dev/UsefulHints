@@ -1,7 +1,8 @@
-﻿using Exiled.API.Enums;
+﻿using System;
+using System.Linq;
+using Exiled.API.Enums;
 using Exiled.API.Features;
 using Exiled.Loader;
-using System;
 using UsefulHintsAddons.Integrations.RueI;
 
 namespace UsefulHintsAddons
@@ -11,22 +12,26 @@ namespace UsefulHintsAddons
         public override string Name => "UsefulHints.Addons";
         public override string Author => "Vretu";
         public override string Prefix { get; } = "UH.Addons";
-        public override Version Version => new Version(1, 3, 0);
-        public override Version RequiredExiledVersion { get; } = new Version(9, 12, 2);
+        public override Version Version => new Version(1, 4, 0);
+        public override Version RequiredExiledVersion { get; } = new Version(9, 14, 2);
         public override PluginPriority Priority { get; } = PluginPriority.Lowest;
         public static UsefulHintsAddons Instance { get; private set; }
-
-        private static UsefulHints.Config Core => UsefulHints.UsefulHints.Instance.Config;
+        private static UsefulHints.Config Core => UsefulHints.UsefulHints.Instance?.Config;
 
         public override void OnEnabled()
         {
             Instance = this;
 
-            if (UsefulHints.UsefulHints.Instance == null && Loader.GetPlugin("UsefulHints") == null)
+            if (UsefulHints.UsefulHints.Instance == null)
             {
-                Log.Error("UsefulHints core plugin not found. Disabling Addons.");
-                Instance = null;
-                return;
+                var corePlugin = Loader.GetPlugin("UsefulHints");
+
+                if (corePlugin == null)
+                {
+                    Log.Error("[UH-Addons] UsefulHints core plugin not found. Disabling Addons.");
+                    Instance = null;
+                    return;
+                }
             }
 
             if (Config.EnableTranslations)
@@ -37,7 +42,28 @@ namespace UsefulHintsAddons
 
             if (Config.EnableRueIIntegration)
             {
-                try
+                InitializeRueI();
+            }
+
+            base.OnEnabled();
+        }
+
+        private void InitializeRueI()
+        {
+            // Use nameof(RueI) and PluginLoader.Plugins for checking RueI plugin presence
+            if (!LabApi.Loader.PluginLoader.Plugins.Any(d => d.Key.Name == nameof(RueI)))
+            {
+                Log.Warn("[RueI] RueI not detected in dependencies. Skipping RueI integration.");
+                return;
+            }
+
+            try
+            {
+                if (Core == null)
+                {
+                    Log.Warn("[RueI] Core Config not ready. Cannot disable core events.");
+                }
+                else
                 {
                     if (Core.EnableHints)
                     {
@@ -56,23 +82,17 @@ namespace UsefulHintsAddons
 
                     if (Core.EnableTeammates)
                         UsefulHints.EventHandlers.Modules.Teammates.UnregisterEvents();
+                }
 
-                    RueIHandlers.Register();
-                    Log.Info($"[RueI] Support Enabled.");
-                }
-                catch (Exception ex)
-                {
-                    Log.Warn("[RueI] Initialization failed: " + ex.Message);
-                }
+                RueIHandlers.Register();
+                Log.Info("[RueI] Support Enabled (Core events overridden).");
             }
-            else if (Config.EnableRueIIntegration)
+            catch (Exception ex)
             {
-                Log.Warn("[RueI] RueI not detected. Skipping RueI integration.");
+                Log.Error($"[RueI] Initialization failed: {ex.Message}");
+                if (Config.Debug) Log.Debug(ex);
             }
-
-            base.OnEnabled();
         }
-
         public override void OnDisabled()
         {
             Extensions.UpdateChecker.Unregister();

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using CustomPlayerEffects;
@@ -22,24 +22,26 @@ namespace UsefulHintsAddons.Integrations.RueI
     {
         private static UsefulHints.Config Core => UsefulHints.UsefulHints.Instance.Config;
 
-        private static readonly Tag Scp096 = new("UH.SCP096");
-        private static readonly Tag Grenade = new("UH.Grenade");
-        private static readonly Tag Scp207 = new("UH.SCP207");
-        private static readonly Tag Anti207 = new("UH.Anti207");
-        private static readonly Tag Timer1576 = new("UH.Timer1576");
-        private static readonly Tag Timer268 = new("UH.Timer268");
-        private static readonly Tag Timer2176 = new("UH.Timer2176");
-        private static readonly Tag Jailbird = new("UH.Jailbird");
-        private static readonly Tag Warn = new("UH.Warn");
-        private static readonly Tag FF = new("UH.FF");
-        private static readonly Tag FFR = new("UH.FF.R");
-        private static readonly Tag Cuffed = new("UH.Cuffed");
-        private static readonly Tag CuffedR = new("UH.Cuffed.R");
-        private static readonly Tag Kills = new("UH.Kills");
-        private static readonly Tag Mates = new("UH.Mates");
+        private static object Scp096;
+        private static object Grenade;
+        private static object Scp207;
+        private static object Anti207;
+        private static object Timer1576;
+        private static object Timer268;
+        private static object Timer2176;
+        private static object Jailbird;
+        private static object Warn;
+        private static object FF;
+        private static object FFR;
+        private static object Cuffed;
+        private static object CuffedR;
+        private static object Kills;
+        private static object Mates;
 
         public static void Register()
         {
+            InitializeTags();
+
             if (Core.EnableHints)
             {
                 Exiled.Events.Handlers.Scp096.AddingTarget += OnScp096AddingTarget;
@@ -70,6 +72,25 @@ namespace UsefulHintsAddons.Integrations.RueI
 
             if (Core.EnableTeammates)
                 Exiled.Events.Handlers.Server.RoundStarted += OnRoundStartedTeammates;
+        }
+
+        private static void InitializeTags()
+        {
+            Scp096 = new Tag("UH.SCP096");
+            Grenade = new Tag("UH.Grenade");
+            Scp207 = new Tag("UH.SCP207");
+            Anti207 = new Tag("UH.Anti207");
+            Timer1576 = new Tag("UH.Timer1576");
+            Timer268 = new Tag("UH.Timer268");
+            Timer2176 = new Tag("UH.Timer2176");
+            Jailbird = new Tag("UH.Jailbird");
+            Warn = new Tag("UH.Warn");
+            FF = new Tag("UH.FF");
+            FFR = new Tag("UH.FF.R");
+            Cuffed = new Tag("UH.Cuffed");
+            CuffedR = new Tag("UH.Cuffed.R");
+            Kills = new Tag("UH.Kills");
+            Mates = new Tag("UH.Mates");
         }
 
         public static void Unregister()
@@ -107,37 +128,39 @@ namespace UsefulHintsAddons.Integrations.RueI
         }
 
         // Helpers
-        private static void Show(Player player, string content, float duration, Tag tag)
+        private static void Show(Player player, string content, float duration, object tag)
         {
-            if (player is null || player.ReferenceHub is null || string.IsNullOrWhiteSpace(content))
+            if (player == null || string.IsNullOrWhiteSpace(content) || tag == null)
                 return;
 
             Remove(player, tag);
 
-            var el = new BasicElement(350f, content)
+            // IMPORTANT: Object here to prevent the compiler from creating a field of type BasicElement 
+            // in the auto-generated closure class, which would trigger ReflectionTypeLoadException if RueI is missing.
+            object el = new BasicElement(350f, content)
             {
                 VerticalAlign = VerticalAlign.Center
             };
 
-            Timing.CallDelayed(0.1f, () => RueDisplay.Get(player.ReferenceHub).Show(tag, el, duration));
+            Timing.CallDelayed(0.1f, () => RueDisplay.Get(player).Show((Tag)tag, (BasicElement)el, duration));
         }
 
-        private static void Remove(Player player, Tag tag)
+        private static void Remove(Player player, object tag)
         {
-            if (player is null || player.ReferenceHub is null || tag is null)
+            if (player == null || tag == null)
                 return;
 
-            RueDisplay.Get(player.ReferenceHub).Remove(tag);
+            RueDisplay.Get(player).Remove((Tag)tag);
         }
 
-        private static void ShowTimer(Player player, float seconds, Func<int, string> builder, Tag tag)
+        private static void ShowTimer(Player player, float seconds, Func<int, string> builder, object tag)
         {
-            if (player is null || player.ReferenceHub is null || seconds <= 0)
+            if (player == null || seconds <= 0 || tag == null)
                 return;
 
             float end = Time.timeSinceLevelLoad + seconds;
 
-            var element = new DynamicElement(350f, hub =>
+            object element = new DynamicElement(350f, hub =>
             {
                 int left = Math.Max(0, (int)Math.Ceiling(end - Time.timeSinceLevelLoad));
                 return builder(left);
@@ -147,7 +170,7 @@ namespace UsefulHintsAddons.Integrations.RueI
                 VerticalAlign = VerticalAlign.Center,
             };
 
-            RueDisplay.Get(player.ReferenceHub).Show(tag, element, seconds + 0.3f);
+            RueDisplay.Get(player).Show((Tag)tag, (DynamicElement)element, seconds + 0.3f);
         }
 
         // SCP-096
@@ -197,10 +220,7 @@ namespace UsefulHintsAddons.Integrations.RueI
 
         private static void OnEquipSCP207(ChangingItemEventArgs ev)
         {
-            if (!Core.ShowHintOnEquipItem)
-                return;
-
-            if (ev.Item == null || ev.Player == null || !ServerSettings.ShouldShowHints(ev.Player))
+            if (!Core.ShowHintOnEquipItem || ev.Item == null || ev.Player == null || !ServerSettings.ShouldShowHints(ev.Player))
                 return;
 
             if (ev.Player.IsEffectActive<Scp207>() && ev.Item.Type == ItemType.SCP207)
@@ -219,10 +239,7 @@ namespace UsefulHintsAddons.Integrations.RueI
         // SCP-1576
         private static void OnSCP1576Used(UsedItemEventArgs ev)
         {
-            if (ev.Item.Type != ItemType.SCP1576)
-                return;
-
-            if (!ServerSettings.ShouldShowTimers(ev.Player))
+            if (ev.Item.Type != ItemType.SCP1576 || !ServerSettings.ShouldShowTimers(ev.Player))
                 return;
 
             ShowTimer(ev.Player, 30f, left => $"<color=#FFA500>{new string('\n', 10)}{string.Format(Core.Scp1576TimeLeftMessage, left)}</color>", Timer1576);
@@ -236,10 +253,7 @@ namespace UsefulHintsAddons.Integrations.RueI
         // SCP-268
         private static void OnSCP268Used(UsedItemEventArgs ev)
         {
-            if (ev.Item.Type != ItemType.SCP268)
-                return;
-
-            if (!ServerSettings.ShouldShowTimers(ev.Player))
+            if (ev.Item.Type != ItemType.SCP268 || !ServerSettings.ShouldShowTimers(ev.Player))
                 return;
 
             ShowTimer(ev.Player, 15f, left => $"<color=purple>{new string('\n', 10)}{string.Format(Core.Scp268TimeLeftMessage, left)}</color>", Timer268);
@@ -258,11 +272,8 @@ namespace UsefulHintsAddons.Integrations.RueI
         // SCP-2176
         private static void OnSCP2176Grenade(ExplodingGrenadeEventArgs ev)
         {
-            if (ev.Projectile.Base is Scp2176Projectile)
+            if (ev.Projectile.Base is Scp2176Projectile && ev.Player != null && ServerSettings.ShouldShowTimers(ev.Player))
             {
-                if (ev.Player == null || !ServerSettings.ShouldShowTimers(ev.Player))
-                    return;
-
                 ShowTimer(ev.Player, 13f, left => $"<color=#1CAA21>{new string('\n', 10)}{string.Format(Core.Scp2176TimeLeftMessage, left)}</color>", Timer2176);
             }
         }
@@ -270,13 +281,12 @@ namespace UsefulHintsAddons.Integrations.RueI
         // Jailbird
         private static void OnPickingUpJailbird(PickingUpItemEventArgs ev)
         {
-            if (!ServerSettings.ShouldShowHints(ev.Player))
+            if (ev.Player == null || !ServerSettings.ShouldShowHints(ev.Player))
                 return;
 
             if (ev.Pickup is Exiled.API.Features.Pickups.JailbirdPickup jailbirdPickup)
             {
-                int maxCharges = 5;
-                int remainingCharges = maxCharges - jailbirdPickup.TotalCharges;
+                int remainingCharges = 5 - jailbirdPickup.TotalCharges;
                 string color = remainingCharges > 1 ? "#00B7EB" : "#C73804";
                 string text = $"<color={color}>{new string('\n', 10)}{string.Format(Core.JailbirdUseMessage, remainingCharges)}</color>";
                 Show(ev.Player, text, 4f, Jailbird);
@@ -285,13 +295,12 @@ namespace UsefulHintsAddons.Integrations.RueI
 
         private static void OnEquipJailbird(ChangingItemEventArgs ev)
         {
-            if (!Core.ShowHintOnEquipItem)
+            if (!Core.ShowHintOnEquipItem || ev.Player == null || !ServerSettings.ShouldShowHints(ev.Player))
                 return;
 
-            if (ev.Item?.Base is JailbirdItem jailbirdItem && ServerSettings.ShouldShowHints(ev.Player))
+            if (ev.Item?.Base is JailbirdItem jailbirdItem)
             {
-                int maxCharges = 5;
-                int remainingCharges = maxCharges - jailbirdItem.TotalChargesPerformed;
+                int remainingCharges = 5 - jailbirdItem.TotalChargesPerformed;
                 string color = remainingCharges > 1 ? "#00B7EB" : "#C73804";
                 string text = $"<color={color}>{new string('\n', 10)}{string.Format(Core.JailbirdUseMessage, remainingCharges)}</color>";
                 Show(ev.Player, text, 2f, Jailbird);
@@ -307,20 +316,23 @@ namespace UsefulHintsAddons.Integrations.RueI
             if (ev.Pickup.Type == ItemType.SCP207 || ev.Pickup.Type == ItemType.AntiSCP207 || ev.Pickup.Type == ItemType.SCP1853)
             {
                 if (ev.Player.IsEffectActive<Scp207>() && ev.Pickup.Type != ItemType.SCP207)
-                    Show(ev.Player, string.Format(Core.Scp207Warning), 4f, Warn);
+                    Show(ev.Player, Core.Scp207Warning, 4f, Warn);
 
-                if (ev.Player.IsEffectActive<AntiScp207>() && ev.Pickup.Type != ItemType.AntiSCP207)
-                    Show(ev.Player, string.Format(Core.AntiScp207Warning), 4f, Warn);
+                else if (ev.Player.IsEffectActive<AntiScp207>() && ev.Pickup.Type != ItemType.AntiSCP207)
+                    Show(ev.Player, Core.AntiScp207Warning, 4f, Warn);
 
-                if (ev.Player.IsEffectActive<Scp1853>() && ev.Pickup.Type != ItemType.SCP1853)
-                    Show(ev.Player, string.Format(Core.Scp1853Warning), 4f, Warn);
+                else if (ev.Player.IsEffectActive<Scp1853>() && ev.Pickup.Type != ItemType.SCP1853)
+                    Show(ev.Player, Core.Scp1853Warning, 4f, Warn);
             }
         }
 
         // Friendly fire
         private static void OnFriendlyFireHurting(HurtingEventArgs ev)
         {
-            if (ev.Attacker == null || ev.Player == null || ev.Attacker.Role == null || ev.Player.Role == null || ev.Attacker.Role.Team == Team.SCPs || ev.Player.Role.Team == Team.SCPs || ev.Attacker == ev.Player)
+            if (ev.Attacker == null || ev.Player == null || ev.Attacker == ev.Player)
+                return;
+
+            if (ev.Attacker.Role.Team == Team.SCPs || ev.Player.Role.Team == Team.SCPs)
                 return;
 
             if (!ServerSettings.ShouldShowFFWarning(ev.Player) || !ServerSettings.ShouldShowFFWarning(ev.Attacker))
@@ -328,13 +340,13 @@ namespace UsefulHintsAddons.Integrations.RueI
 
             if (ev.Attacker.Role.Side == ev.Player.Role.Side)
             {
-                Show(ev.Attacker, string.Format(Core.FriendlyFireWarning), 1f, FF);
+                Show(ev.Attacker, Core.FriendlyFireWarning, 1f, FF);
                 Show(ev.Player, string.Format(Core.DamageTakenWarning, ev.Attacker.Nickname), 2f, FFR);
             }
 
             if (Core.EnableCuffedWarning && ev.Player.IsCuffed)
             {
-                Show(ev.Attacker, string.Format(Core.CuffedAttackerWarning), 2f, Cuffed);
+                Show(ev.Attacker, Core.CuffedAttackerWarning, 2f, Cuffed);
                 Show(ev.Player, string.Format(Core.CuffedPlayerWarning, ev.Attacker.Nickname), 2f, CuffedR);
             }
         }
@@ -342,50 +354,36 @@ namespace UsefulHintsAddons.Integrations.RueI
         // Kill counter
         private static readonly Dictionary<Player, int> PlayerKills = new();
 
-        private static void OnWaitingForPlayers()
-        {
-            PlayerKills.Clear();
-        }
+        private static void OnWaitingForPlayers() => PlayerKills.Clear();
 
         private static void OnPlayerDied(DiedEventArgs ev)
         {
             if (Core.CountPocketKills && ev.DamageHandler.Type == DamageType.PocketDimension)
             {
                 var scp106 = Player.List.FirstOrDefault(p => p.Role.Type == RoleTypeId.Scp106);
-
                 if (scp106 != null)
                 {
-                    AddKill(scp106);
-
-                    if (!ServerSettings.ShouldShowKillCount(scp106))
-                        return;
-
-                    Show(scp106, string.Format(Core.KillCountMessage, PlayerKills[scp106]), 4f, Kills);
+                    IncrementKills(scp106);
+                    if (ServerSettings.ShouldShowKillCount(scp106))
+                        Show(scp106, string.Format(Core.KillCountMessage, PlayerKills[scp106]), 4f, Kills);
                 }
-
                 return;
             }
 
             if (ev.Attacker != null && ev.Attacker != ev.Player)
             {
-                AddKill(ev.Attacker);
-
-                if (!ServerSettings.ShouldShowKillCount(ev.Attacker) || ev.Attacker.IsHost || ev.Player.IsHost)
-                    return;
-
-                Show(ev.Attacker, string.Format(Core.KillCountMessage, PlayerKills[ev.Attacker]), 4f, Kills);
+                IncrementKills(ev.Attacker);
+                if (!ev.Attacker.IsHost && !ev.Player.IsHost && ServerSettings.ShouldShowKillCount(ev.Attacker))
+                    Show(ev.Attacker, string.Format(Core.KillCountMessage, PlayerKills[ev.Attacker]), 4f, Kills);
             }
         }
 
-        private static void AddKill(Player player)
+        private static void IncrementKills(Player player)
         {
             if (player == null)
                 return;
 
-            if (PlayerKills.TryGetValue(player, out var c))
-                PlayerKills[player] = c + 1;
-            else
-                PlayerKills[player] = 1;
+            PlayerKills[player] = PlayerKills.TryGetValue(player, out var c) ? c + 1 : 1;
         }
 
         // Teammates

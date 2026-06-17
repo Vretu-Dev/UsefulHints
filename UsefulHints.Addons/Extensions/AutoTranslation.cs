@@ -4,6 +4,7 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using System.Reflection;
 using Exiled.API.Features;
 using MEC;
 using Newtonsoft.Json;
@@ -17,7 +18,7 @@ namespace UsefulHintsAddons.Extensions
 
         private static readonly HttpClient Http = new HttpClient
         {
-            Timeout = TimeSpan.FromSeconds(6)
+            Timeout = TimeSpan.FromSeconds(8)
         };
 
         private static readonly SemaphoreSlim Gate = new SemaphoreSlim(1, 1);
@@ -28,7 +29,7 @@ namespace UsefulHintsAddons.Extensions
         {
             if (UsefulHints.UsefulHints.Instance == null)
             {
-                Log.Warn("[Trans] Core not ready. Retry in 2s.");
+                Log.Warn("[Trans] Core not ready. Retrying in 2s...");
                 Timing.RunCoroutine(Retry(lang));
                 return Task.CompletedTask;
             }
@@ -63,13 +64,14 @@ namespace UsefulHintsAddons.Extensions
 
                 await Download(lang, ct);
                 MapIntoCore();
+
                 if (AddonsCfg.EnableLogging)
                     Log.Info($"[Trans] Language applied: {lang}");
             }
             catch (OperationCanceledException) { }
             catch (Exception ex)
             {
-                Log.Error("[Trans] Apply failed: " + ex.Message);
+                Log.Error($"[Trans] Apply failed: {ex}");
             }
             finally
             {
@@ -86,12 +88,20 @@ namespace UsefulHintsAddons.Extensions
 
             try
             {
-                var req = new HttpRequestMessage(HttpMethod.Get, url);
+                using var req = new HttpRequestMessage(HttpMethod.Get, url);
                 req.Headers.UserAgent.ParseAdd("UsefulHintsAddons/1.0");
-                string json = await (await Http.SendAsync(req, ct)).Content.ReadAsStringAsync();
+                
+                var response = await Http.SendAsync(req, ct).ConfigureAwait(false);
+                response.EnsureSuccessStatusCode();
+
+                string json = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
                 File.WriteAllText(file, json);
-                _map = JsonConvert.DeserializeObject<Dictionary<string, string>>(json)
-                       ?? new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+
+                var newMap = JsonConvert.DeserializeObject<Dictionary<string, string>>(json);
+                if (newMap != null)
+                {
+                    _map = new Dictionary<string, string>(newMap, StringComparer.OrdinalIgnoreCase);
+                }
             }
             catch (Exception ex)
             {
@@ -101,56 +111,37 @@ namespace UsefulHintsAddons.Extensions
                     try
                     {
                         string cached = File.ReadAllText(file);
-                        _map = JsonConvert.DeserializeObject<Dictionary<string, string>>(cached)
-                               ?? new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
-                        Log.Warn("[UH-Addons][Trans] Using cached translation file.");
+                        var cachedMap = JsonConvert.DeserializeObject<Dictionary<string, string>>(cached);
+                        if (cachedMap != null)
+                        {
+                            _map = new Dictionary<string, string>(cachedMap, StringComparer.OrdinalIgnoreCase);
+                            Log.Info("[Trans] Using cached translation file.");
+                        }
                     }
                     catch (Exception cacheEx)
                     {
-                        Log.Error("[Trans] Cache read failed: " + cacheEx.Message);
-                        _map.Clear();
+                        Log.Error($"[Trans] Cache read failed: {cacheEx.Message}");
                     }
-                }
-                else
-                {
-                    _map.Clear();
                 }
             }
         }
 
-        private static string T(string key) => _map.TryGetValue(key, out var v) ? v : key;
-
         private static void MapIntoCore()
         {
-            if (CoreCfg == null || _map.Count == 0)
+            if (CoreCfg == null || _map == null || _map.Count == 0)
                 return;
 
-            CoreCfg.Scp096LookMessage = T("Scp096LookMessage");
-            CoreCfg.Scp268TimeLeftMessage = T("Scp268TimeLeftMessage");
-            CoreCfg.Scp2176TimeLeftMessage = T("Scp2176TimeLeftMessage");
-            CoreCfg.Scp1576TimeLeftMessage = T("Scp1576TimeLeftMessage");
-            CoreCfg.GrenadeDamageHint = T("GrenadeDamageHint");
-            CoreCfg.JailbirdUseMessage = T("JailbirdUseMessage");
-            CoreCfg.Scp207HintMessage = T("Scp207HintMessage");
-            CoreCfg.AntiScp207HintMessage = T("AntiScp207HintMessage");
-            CoreCfg.Scp207Warning = T("Scp207Warning");
-            CoreCfg.AntiScp207Warning = T("AntiScp207Warning");
-            CoreCfg.Scp1853Warning = T("Scp1853Warning");
-            CoreCfg.FriendlyFireWarning = T("FriendlyFireWarning");
-            CoreCfg.DamageTakenWarning = T("DamageTakenWarning");
-            CoreCfg.CuffedAttackerWarning = T("CuffedAttackerWarning");
-            CoreCfg.CuffedPlayerWarning = T("CuffedPlayerWarning");
-            CoreCfg.KillCountMessage = T("KillCountMessage");
-            CoreCfg.HumanKillMessage = T("HumanKillMessage");
-            CoreCfg.ScpKillMessage = T("ScpKillMessage");
-            CoreCfg.TopDamageMessage = T("TopDamageMessage");
-            CoreCfg.FirstScpKillerMessage = T("FirstScpKillerMessage");
-            CoreCfg.EscaperMessage = T("EscaperMessage");
-            CoreCfg.TeammateHintMessage = T("TeammateHintMessage");
-            CoreCfg.AloneHintMessage = T("AloneHintMessage");
-            CoreCfg.BroadcastForHuman = T("BroadcastForHuman");
-            CoreCfg.BroadcastForScp = T("BroadcastForScp");
-            CoreCfg.BroadcastWarningLcz = T("BroadcastWarningLcz");
+            var properties = typeof(UsefulHints.Config).GetProperties(BindingFlags.Public | BindingFlags.Instance);
+            foreach (var prop in properties)
+            {
+                if (prop.PropertyType != typeof(string))
+                    continue;
+
+                if (_map.TryGetValue(prop.Name, out var value) && !string.IsNullOrWhiteSpace(value))
+                {
+                    prop.SetValue(CoreCfg, value);
+                }
+            }
         }
     }
 }

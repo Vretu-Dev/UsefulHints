@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 using Exiled.API.Features;
 using Newtonsoft.Json.Linq;
 
@@ -16,13 +17,13 @@ namespace UsefulHintsAddons.Extensions
         private static int _downloadingFlag;
 
         private static Config Cfg => UsefulHintsAddons.Instance?.Config;
-        private static string CurrentVersion => UsefulHints.UsefulHints.Instance?.Version.ToString() ?? "0.0.0";
+        private static string CurrentVersion => UsefulHints.UsefulHints.Instance?.Version?.ToString() ?? "0.0.0";
         private static string CorePluginPath => Path.Combine(Paths.Plugins, "UsefulHints.dll");
         private static string AddonsPluginPath => Path.Combine(Paths.Plugins, "UsefulHints.Addons.dll");
 
         private static readonly HttpClient Http = new HttpClient
         {
-            Timeout = TimeSpan.FromSeconds(8)
+            Timeout = TimeSpan.FromSeconds(10)
         };
 
         static UpdateChecker()
@@ -58,7 +59,7 @@ namespace UsefulHintsAddons.Extensions
 
         private static void OnWaiting()
         {
-            Task.Run(CheckAsync);
+            _ = Task.Run(CheckAsync);
         }
 
         private static async Task CheckAsync()
@@ -69,145 +70,104 @@ namespace UsefulHintsAddons.Extensions
             try
             {
                 if (Cfg.EnableLogging)
-                    Log.Info("[Update] Checking for UsefulHints update...");
+                    Log.Info("[Update] Checking for updates...");
 
-                string json = await Http.GetStringAsync(ApiUrl);
-                var obj = JObject.Parse(json);
+                var response = await Http.GetStringAsync(ApiUrl).ConfigureAwait(false);
+                var obj = JObject.Parse(response);
 
-                string rawTag = obj["tag_name"]?.ToString() ?? "";
+                string rawTag = obj["tag_name"]?.ToString() ?? string.Empty;
                 string latest = NormalizeVersion(rawTag);
 
                 if (string.IsNullOrWhiteSpace(latest))
                 {
-                    if (Cfg.EnableLogging)
-                        Log.Warn("[Update] Could not parse version tag.");
+                    Log.Warn("[Update] Could not parse latest version tag.");
                     return;
                 }
 
-                // Find assets for core and addons
-                var assets = obj["assets"];
-
-                string coreUrl = assets
-                    ?.Where(a =>
-                    {
-                        var name = a["name"]?.ToString() ?? "";
-                        return name.EndsWith(".dll", StringComparison.OrdinalIgnoreCase) &&
-                               name.IndexOf("usefulhints", StringComparison.OrdinalIgnoreCase) >= 0 &&
-                               name.IndexOf("addons", StringComparison.OrdinalIgnoreCase) < 0;
-                    })
-                    .Select(a => a["browser_download_url"]?.ToString())
-                    .FirstOrDefault(u => !string.IsNullOrWhiteSpace(u));
-
-                string addonsUrl = assets
-                    ?.Where(a =>
-                    {
-                        var name = a["name"]?.ToString() ?? "";
-                        return name.EndsWith(".dll", StringComparison.OrdinalIgnoreCase) &&
-                               name.IndexOf("usefulhints.addons", StringComparison.OrdinalIgnoreCase) >= 0;
-                    })
-                    .Select(a => a["browser_download_url"]?.ToString())
-                    .FirstOrDefault(u => !string.IsNullOrWhiteSpace(u));
-
-                // Update if newer version is available
-                if (IsNewer(CurrentVersion, latest))
-                {
-                    Log.Warn($"[Update] New UsefulHints release: {latest} (current {CurrentVersion})");
-
-                    if (Cfg.NotifyOnly)
-                    {
-                        Log.Info("[Update] NotifyOnly = true (no download).");
-                        return;
-                    }
-
-                    if (string.IsNullOrWhiteSpace(coreUrl))
-                    {
-                        Log.Warn("[Update] No UsefulHints DLL asset found in release.");
-                        return;
-                    }
-
-                    if (Interlocked.CompareExchange(ref _downloadingFlag, 1, 0) != 0)
-                    {
-                        if (Cfg.EnableLogging)
-                            Log.Debug("[Update] Download already in progress.");
-                        return;
-                    }
-
-                    bool anyDownloaded = false;
-                    try
-                    {
-                        if (await DownloadAndReplaceAsync(coreUrl, CorePluginPath, "UsefulHints", latest))
-                            anyDownloaded = true;
-
-                        // Download addons only if available
-                        if (!string.IsNullOrWhiteSpace(addonsUrl))
-                        {
-                            if (await DownloadAndReplaceAsync(addonsUrl, AddonsPluginPath, "UsefulHints.Addons", latest))
-                                anyDownloaded = true;
-                        }
-                        else if (Cfg.EnableLogging)
-                        {
-                            Log.Debug("[Update] No UsefulHints.Addons asset in this release - skipping Addons update.");
-                        }
-
-                        if (anyDownloaded && Cfg.RestartNextRound)
-                        {
-                            Log.Warn("[Update] RestartNextRound = true -> issuing 'rnr' now.");
-                            try
-                            {
-                                Server.ExecuteCommand("rnr");
-                            }
-                            catch (Exception ex)
-                            {
-                                Log.Error("[Update] Failed to execute 'rnr': " + ex.Message);
-                            }
-                        }
-                    }
-                    finally
-                    {
-                        Interlocked.Exchange(ref _downloadingFlag, 0);
-                    }
-                }
-                else
+                if (!IsNewer(CurrentVersion, latest))
                 {
                     if (Cfg.EnableLogging)
-                        Log.Info("[Update] Already up to date.");
+                        Log.Info($"[Update] Already up to date (v{CurrentVersion}).");
+                    return;
+                }
+
+                Log.Warn($"[Update] New version available: v{latest} (Current: v{CurrentVersion})");
+
+                if (Cfg.NotifyOnly) return;
+
+                var assets = obj["assets"] as JArray;
+                if (assets == null) return;
+
+                string coreUrl = GetAssetUrl(assets, "UsefulHints.dll");
+                string addonsUrl = GetAssetUrl(assets, "UsefulHints.Addons.dll");
+
+                if (string.IsNullOrWhiteSpace(coreUrl))
+                {
+                    Log.Warn("[Update] Core DLL asset (UsefulHints.dll) not found in release. Skipping auto-update.");
+                    return;
+                }
+
+                if (Interlocked.CompareExchange(ref _downloadingFlag, 1, 0) != 0)
+                    return;
+
+                try
+                {
+                    var tasks = new List<Task<bool>>
+                    {
+                        DownloadAndReplaceAsync(coreUrl, CorePluginPath, "Core", latest)
+                    };
+
+                    if (!string.IsNullOrWhiteSpace(addonsUrl))
+                    {
+                        tasks.Add(DownloadAndReplaceAsync(addonsUrl, AddonsPluginPath, "Addons", latest));
+                    }
+
+                    bool[] results = await Task.WhenAll(tasks).ConfigureAwait(false);
+                    bool anyDownloaded = results.Any(r => r);
+
+                    if (anyDownloaded && Cfg.RestartNextRound)
+                    {
+                        Log.Warn("[Update] Update completed. Issuing 'rnr'...");
+                        Server.ExecuteCommand("rnr");
+                    }
+                }
+                finally
+                {
+                    Interlocked.Exchange(ref _downloadingFlag, 0);
                 }
             }
             catch (Exception ex)
             {
-                Log.Error("[Update] Check failed: " + ex.Message);
+                Log.Error($"[Update] Check failed: {ex.Message}");
             }
         }
 
-        // Experimental if maybe in future versions tags are not strictly numbers
-        private static string NormalizeVersion(string tag)
+        private static string GetAssetUrl(JArray assets, string fileName)
         {
-            if (string.IsNullOrWhiteSpace(tag))
-                return string.Empty;
-
-            tag = tag.Trim();
-            if (tag.StartsWith("v", StringComparison.OrdinalIgnoreCase))
-                tag = tag.Substring(1);
-            return tag;
+            return assets
+                ?.FirstOrDefault(a => (a["name"]?.ToString() ?? "").Equals(fileName, StringComparison.OrdinalIgnoreCase))
+                ?["browser_download_url"]?.ToString();
         }
+
+        private static string NormalizeVersion(string tag) => tag?.Trim().TrimStart('v', 'V') ?? string.Empty;
 
         private static bool IsNewer(string current, string latest)
         {
-            if (Version.TryParse(current, out var c) && Version.TryParse(latest, out var l))
-                return l > c;
-            return false;
+            return Version.TryParse(current, out var vCurrent) && 
+                   Version.TryParse(latest, out var vLatest) && 
+                   vLatest > vCurrent;
         }
 
-        private static async Task<bool> DownloadAndReplaceAsync(string url, string targetPath, string friendlyName, string latest)
+        private static async Task<bool> DownloadAndReplaceAsync(string url, string targetPath, string label, string version)
         {
             try
             {
-                Log.Info($"[Update] Downloading {friendlyName} {latest}...");
-                var data = await Http.GetByteArrayAsync(url);
+                Log.Info($"[Update] Downloading {label} v{version}...");
+                var data = await Http.GetByteArrayAsync(url).ConfigureAwait(false);
 
                 if (data == null || data.Length == 0)
                 {
-                    Log.Error($"[Update] Downloaded file for {friendlyName} is empty.");
+                    Log.Error($"[Update] {label} download returned empty data.");
                     return false;
                 }
 
@@ -215,16 +175,15 @@ namespace UsefulHintsAddons.Extensions
                 {
                     string backup = targetPath + ".backup";
                     File.Copy(targetPath, backup, true);
-                    Log.Warn($"[Update] Backup created: {backup}");
                 }
 
                 File.WriteAllBytes(targetPath, data);
-                Log.Warn($"[Update] {friendlyName} {latest} downloaded.");
+                Log.Warn($"[Update] {label} updated successfully.");
                 return true;
             }
             catch (Exception ex)
             {
-                Log.Error($"[Update] Download failed for {friendlyName}: " + ex.Message);
+                Log.Error($"[Update] {label} update failed: {ex.Message}");
                 return false;
             }
         }

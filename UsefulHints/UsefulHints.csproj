@@ -64,10 +64,10 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="ExMod.Exiled">
-      <Version>9.12.2</Version>
+      <Version>9.14.2</Version>
     </PackageReference>
     <PackageReference Include="Northwood.LabAPI">
-      <Version>1.1.4</Version>
+      <Version>1.1.7</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup />
