@@ -28,12 +28,9 @@ namespace UsefulHints.EventHandlers.Modules
 
             if (ev.Attacker.Role.Side == ev.Player.Role.Side)
             {
-                if (ev.Attacker.Role.Team == Team.ClassD && ev.Player.Role.Team == Team.ClassD && Config.ClassDAreTeammates)
-                {
-                    ev.Attacker.ShowHint(string.Format(Config.FriendlyFireWarning), 1);
-                    ev.Player.ShowHint(string.Format(Config.DamageTakenWarning, ev.Attacker.Nickname), 2);
-                }
-                else
+                bool bothClassD = ev.Attacker.Role.Team == Team.ClassD && ev.Player.Role.Team == Team.ClassD;
+
+                if (!bothClassD || Config.ClassDAreTeammates)
                 {
                     ev.Attacker.ShowHint(string.Format(Config.FriendlyFireWarning), 1);
                     ev.Player.ShowHint(string.Format(Config.DamageTakenWarning, ev.Attacker.Nickname), 2);
