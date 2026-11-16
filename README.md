@@ -3,11 +3,14 @@
 [![downloads](https://img.shields.io/github/downloads/Vretu-Dev/UsefulHints/total?style=for-the-badge&logo=icloud&color=%233A6D8C)](https://github.com/Vretu-Dev/UsefulHints/releases/latest)
 ![Latest](https://img.shields.io/github/v/release/Vretu-Dev/UsefulHints?style=for-the-badge&label=Latest%20Release&color=%23D91656)
 
+> [!CAUTION]
+> After 15.0 Plugin will be rewrite for Unity DisplayKit intead of Hints. RUEI will be not support anymore
+
 ## Downloads:
 | Framework | Version    |  Release                                                              |
 |:---------:|:----------:|:----------------------------------------------------------------------:|
-| Exiled    | ≥ 9.12.2    | [⬇️](https://github.com/Vretu-Dev/UsefulHints/releases/latest)        |
-| LabAPI    | ≥ 1.1.4    | [⬇️](https://github.com/JustVretu/UsefulHints-LabAPI/releases/latest) |
+| Exiled    | ≥ 9.15.2    | [⬇️](https://github.com/Vretu-Dev/UsefulHints/releases/latest)        |
+| LabAPI    | ≥ 1.1.7    | [⬇️](https://github.com/JustVretu/UsefulHints-LabAPI/releases/latest) |
 
 <h2>Features:</h2>
 
